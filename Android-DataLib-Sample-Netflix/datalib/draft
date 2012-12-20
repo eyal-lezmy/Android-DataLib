@@ -1,0 +1,42 @@
+
+http://api-public.netflix.com/
+	catalog/ (collection only)
+		people/person_id
+http://api-public.netflix.com/catalog/people/person_id
+			filmography
+		titles
+			streaming
+			dvd
+			autocomplete
+http://api-public.netflix.com/catalog/titles/movies/title_id
+http://api-public.netflix.com/catalog/titles/series/series_id
+http://api-public.netflix.com/catalog/titles/series/series_id/seasons/season_id
+http://api-public.netflix.com/catalog/titles/programs/program_id
+http://api-public.netflix.com/catalog/titles/type/title_id/similars
+			[movies|series|series/series_ID/seasons|programs|discs]/title_ID/
+				synopsis
+				format_availability
+				bonus_materials
+				awards
+				cast
+				directors
+				screen_formats
+				episodes (series and seasons only)
+				seasons (series only)
+				similars
+				languages_and_audio
+				synopsis
+	users/current
+	users/user_id
+		feeds
+		queues/ (collection only)
+			instant (feed available)
+				saved (feed available)
+				available (feed available)
+		title_states
+		recommendations (feed available)
+		ratings/ (collection only)
+			title
+				actual (feed available)
+				predicted (feed available)
+		lists
