@@ -1,0 +1,36 @@
+[comment encoding = UTF-8 /]
+[module BusinessObjectDAO('http://www.eyal.fr/android/dataLib')]
+[import fr::eyal::datalib::generator::acceleo::common::BusinessObjectTool /]
+[import fr::eyal::datalib::generator::acceleo::common::Tools /]
+
+[template public businessObjectDAO(aBusinessObject : BusinessObjectDAO){
+_package:String = aBusinessObject._package+'.model.'+getPackage(aBusinessObject);
+_directory:String = getDirectoryFromPackage(_package);
+}]
+[file (_directory + getCompleteNameToUpperFirst(aBusinessObject, '') + '.java', false, 'UTF-8')]
+// [protected (_package+'.'+aBusinessObject.name.toUpperFirst()+'. DO NOT MODIFY THE GENERATED COMMENTS')]
+package [_package/];
+
+import android.os.Parcel;
+
+public class [getCompleteNameToUpperFirst(aBusinessObject, '')/] extends [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base {
+
+    private static final String TAG = [getCompleteNameToUpperFirst(aBusinessObject, '')/].class.getSimpleName();
+
+    public [getCompleteNameToUpperFirst(aBusinessObject, '')/]() {
+        super();
+    }
+
+    public [getCompleteNameToUpperFirst(aBusinessObject, '')/](final Parcel in) {
+        super(in);
+    }
+
+    public [getCompleteNameToUpperFirst(aBusinessObject, '')/](final long id) {
+        super(id);
+    }
+
+
+}
+// [/protected]
+[/file]
+[/template]

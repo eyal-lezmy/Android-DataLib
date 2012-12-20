@@ -1,0 +1,393 @@
+[comment encoding = UTF-8 /]
+[module DataManager('http://www.eyal.fr/android/dataLib')]
+[import fr::eyal::datalib::generator::acceleo::common::Tools /]
+[import fr::eyal::datalib::generator::acceleo::common::BusinessObjectTool /]
+
+[template public dataManager(aProject : DataLibProject) {
+_package:String = aProject._package+'.service';
+_directory:String = getDirectoryFromPackage(_package);
+} ]
+[file (_directory + aProject.name.toUpperFirst() + 'DataManager.java', false, 'UTF-8')]
+package [_package/];
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.net.NetworkInfo;
+import fr.eyal.lib.data.communication.rest.ParameterMap;
+import fr.eyal.lib.data.model.BusinessObjectDAO;
+import fr.eyal.lib.data.model.ResponseBusinessObjectDAO;
+import fr.eyal.lib.data.service.DataManager;
+import fr.eyal.lib.data.service.ServiceHelper;
+import fr.eyal.lib.data.service.model.DataLibRequest;
+[for (webService : WebService | aProject.webservices)]
+import [webService.contentResponse._package+'.model.'+getPackage(webService.contentResponse)+'.*'/];
+[/for]
+import [aProject._package+'.model.'+aProject.name.toUpperFirst()/]Provider;
+
+public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
+
+    @SuppressWarnings("unused")
+    private static final String TAG = [aProject.name.toUpperFirst()/]DataManager.class.getSimpleName();
+
+    /**
+     * Get the instance of the {@link [aProject.name.toUpperFirst()/]DataManager}
+     * 
+     * @param context The context of execution. Any Context can be put here, the application context
+     * will be automatically used for the {@link [aProject.name.toUpperFirst()/]DataManager}
+     * 
+     * @return Returns the singleton
+     */
+    public static [aProject.name.toUpperFirst()/]DataManager getInstance(final Context context) {
+        synchronized ([aProject.name.toUpperFirst()/]DataManager.class) {
+			if (sInstance == null) {
+            	sInstance = new [aProject.name.toUpperFirst()/]DataManager(context.getApplicationContext());
+        	}
+		}
+        return ([aProject.name.toUpperFirst()/]DataManager) sInstance;
+    }
+
+    /**
+     * Get the instance of the {@link [aProject.name.toUpperFirst()/]DataManager}
+     *  
+     * @return Returns the singleton <b>only if</b> the instance have already been create by the call to 
+     * <code>{@linkplain [aProject.name.toUpperFirst()/]DataManager#getInstance(Context)}</code>. If it has not been called, this 
+     * function returns <b>null</b>
+     */
+    public static [aProject.name.toUpperFirst()/]DataManager getInstance() {
+		if (sInstance == null) {
+        	return null;
+    	}
+        return ([aProject.name.toUpperFirst()/]DataManager) sInstance;
+    }
+
+
+    protected [aProject.name.toUpperFirst()/]DataManager(final Context context) {
+        super(context);
+
+        mServiceHelper = [aProject.name.toUpperFirst()/]ServiceHelper.getInstance(context);
+        mServiceHelper.addOnRequestFinishedRelayer(this);
+    }
+
+    @Override
+    public BusinessObjectDAO getBusinessObjectFromCacheByUrl(final int type, final String url) {
+
+        switch (type) {
+		[for (webService : WebService | aProject.webservices)]
+			[if (webService.cached)]
+            case [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.name.toUpper()/]:
+            	return new [webService.name.toUpperFirst()/](url);
+			[/if]
+		[/for]
+            default:
+                return null;
+        }
+    }
+
+
+    @Override
+    protected ResponseBusinessObjectDAO getResponseBusinessObjectById(final int webserviceType, final long id) {
+
+        switch (webserviceType) {
+		[for (webService : WebService | aProject.webservices)]
+			[if (webService.cached)]
+            case [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.name.toUpper()/]:
+            	return new [webService.name.toUpperFirst()/](id);
+			[/if]
+		[/for]
+
+            default:
+                return null;
+        }
+    }
+
+
+    @Override
+    protected ArrayList<?> getBusinessObjectsFromDatabase(final int code, final String where, final String['['/]] whereArgs, final String order, final boolean join) {
+
+        switch (code) {
+		[for (webService : WebService | aProject.webservices)]
+			[if (webService.cached)]
+			[defineGetBusinessObjectsFromDatabaseCase(webService.contentResponse, aProject.name, '')/]
+			[/if]
+		[/for]
+
+            default:
+                return null;
+        }
+    }
+
+	[for (webService : WebService | aProject.webservices)]
+
+	[if (webService.cached)]
+    /**
+     * Get {@link [webService.contentResponse.name.toUpperFirst()/]} objects from the database thanks to standard SQL selectors.
+     * 
+     * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+     * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+     * 
+     * @param whereArgs You may include ?s in selection, which will be replaced by the values
+     * from selectionArgs, in the order that they appear in the selection. The values will be
+     * bound as Strings.
+     * 
+     * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+     * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+     * 
+     * @param join Tells if the {@link [webService.contentResponse.name.toUpperFirst()/]} objects returned have to get his children's
+     * arrays filled thanks to the database.
+     * 
+     * @return An {@link ArrayList} of the {@link [webService.contentResponse.name.toUpperFirst()/]} objects fetch in the database,
+     * corresponding to the sent request.
+     */
+	@SuppressWarnings("unchecked")
+    private ArrayList<[webService.contentResponse.name.toUpperFirst()/]> retrieveData[webService.contentResponse.name.toUpperFirst()/](final String where, final String['['/]] whereArgs, final String order, final boolean join) {
+
+    	final Cursor c = this.mContentResolver.query([webService.contentResponse.name.toUpperFirst()/].CONTENT_URI,
+    			[webService.contentResponse.name.toUpperFirst()/].DATABASE_TABLE_FIELDS_NAMES,
+    			where,
+    			whereArgs,
+    			order);
+
+    	return (ArrayList<[webService.contentResponse.name.toUpperFirst()/]>) [webService.contentResponse.name.toUpperFirst()/].buildArrayFromCursor(c, join);
+    }
+
+    /**
+     * Get {@link [webService.contentResponse.name.toUpperFirst()/]} objects from the database asynchronously thanks to standard
+     * SQL selectors.
+     * 
+     * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+     * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+     * 
+     * @param whereArgs You may include ?s in selection, which will be replaced by the values
+     * from selectionArgs, in the order that they appear in the selection. The values will be
+     * bound as Strings.
+     * 
+     * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+     * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+     * 
+     * @param join Tells if the {@link [webService.contentResponse.name.toUpperFirst()/]} objects returned have to get his children's
+     * arrays filled thanks to the database.
+     * 
+     * @param listener The {@link OnDataListener} that will receive the {@link ArrayList} of fetched
+     * objects.
+     * 
+     * @return The request id generated by the {@link DataManager}.
+     * 
+     * @see cancelRequest() To cancel this request before the response come.
+     */
+    public synchronized int retrieveData[webService.contentResponse.name.toUpperFirst()/]Async(final String where, final String['['/]] whereArgs, final String order, final boolean join, final OnDataListener listener){
+
+    	return startDatabaseAsyncAccess([aProject.name.toUpperFirst()/]Provider.CODE_[webService.contentResponse.name.toUpper()/], where, whereArgs, order, join, listener);
+    }
+
+	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
+    /**
+     * Get {@link [businessObject.name.toUpperFirst()/]} objects from the database thanks to standard SQL selectors.
+     * 
+     * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+     * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+     * 
+     * @param whereArgs You may include ?s in selection, which will be replaced by the values
+     * from selectionArgs, in the order that they appear in the selection. The values will be
+     * bound as Strings.
+     * 
+     * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+     * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+     * 
+[if (businessObject.childs->size() > 0)]
+     * @param join Tells if the {@link [businessObject.name.toUpperFirst()/]} objects returned have to get his children's
+     * arrays filled thanks to the database.
+[/if]
+     * 
+     * 
+     * @return An {@link ArrayList} of the {@link [businessObject.name.toUpperFirst()/]} objects fetch in the database,
+     * corresponding to the sent request.
+     */
+	@SuppressWarnings("unchecked")
+[if (businessObject.childs->size() > 0)]
+    private ArrayList<[getCompleteNameToUpperFirst(businessObject, '')/]> retrieveData[getCompleteNameToUpperFirst(businessObject, '')/](final String where, final String['['/]] whereArgs, final String order, final boolean join) {
+[else]
+	private ArrayList<[getCompleteNameToUpperFirst(businessObject, '')/]> retrieveData[getCompleteNameToUpperFirst(businessObject, '')/](final String where, final String['['/]] whereArgs, final String order) {
+[/if]
+    	final Cursor c = this.mContentResolver.query([getCompleteNameToUpperFirst(businessObject, '')/].CONTENT_URI,
+    			[getCompleteNameToUpperFirst(businessObject, '')/].DATABASE_TABLE_FIELDS_NAMES,
+    			where,
+    			whereArgs,
+    			order);
+
+[if (businessObject.childs->size() > 0)]
+    	return (ArrayList<[getCompleteNameToUpperFirst(businessObject, '')/]>) [getCompleteNameToUpperFirst(businessObject, '')/].buildArrayFromCursor(c, join);
+[else]
+    	return (ArrayList<[getCompleteNameToUpperFirst(businessObject, '')/]>) [getCompleteNameToUpperFirst(businessObject, '')/].buildArrayFromCursor(c, false);
+[/if]
+
+    }
+
+    /**
+     * Get {@link [businessObject.name.toUpperFirst()/]} objects from the database asynchronously thanks to standard
+     * SQL selectors.
+     * 
+     * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+     * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+     * 
+     * @param whereArgs You may include ?s in selection, which will be replaced by the values
+     * from selectionArgs, in the order that they appear in the selection. The values will be
+     * bound as Strings.
+     * 
+     * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+     * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+     * 
+[if (businessObject.childs->size() > 0)]
+     * @param join Tells if the {@link [businessObject.name.toUpperFirst()/]} objects returned have to get his children's
+     * arrays filled thanks to the database.
+[/if]
+     * 
+     * @param listener The {@link OnDataListener} that will receive the {@link ArrayList} of fetched
+     * objects.
+     * 
+     * @return The request id generated by the {@link DataManager}.
+     * 
+     * @see cancelRequest() To cancel this request before the response come.
+     */
+[if (businessObject.childs->size() > 0)]
+    public synchronized int retrieveData[getCompleteNameToUpperFirst(businessObject, '')/]Async(final String where, final String['['/]] whereArgs, final String order, final boolean join, final OnDataListener listener){
+    	return startDatabaseAsyncAccess([aProject.name.toUpperFirst()/]Provider.CODE[getCompleteNameToUpper(businessObject, '_')/],
+    			where, whereArgs, order, join, listener);
+[else]
+    public synchronized int retrieveData[getCompleteNameToUpperFirst(businessObject, '')/]Async(final String where, final String['['/]] whereArgs, final String order, final boolean join, final OnDataListener listener){
+    	return startDatabaseAsyncAccess([aProject.name.toUpperFirst()/]Provider.CODE[getCompleteNameToUpper(businessObject, '_')/],
+    			where, whereArgs, order, false, listener);
+[/if]
+    }
+	[/for]
+
+	[/if]
+	[/for]
+
+
+[for (webService : WebService | aProject.webservices)]
+
+	[if (webService.cached)]
+    /**
+     * Retrieve the {@link [webService.contentResponse.name.toUpperFirst()/]}
+     * 
+     * @param policy Give the policy context of the request using CACHE and/or NETWORK.
+     * 
+     * @param datacacheListener The listener who will receive the data from the cache.
+     * This parameter IS NEEDED in case of Datacache access (TYPE_CACHE, TYPE_CACHE_THEN_NETWORK
+     * and TYPE_NETWORK_OTHERWISE_CACHE). This listener won't be used to send DataLib's response.
+     * So, the addOnRequestFinishedListener call is still needed.
+     * 
+		[for (param : Parameter | webService.parameters)]
+     * @param [param.name.toLowerFirst()/] [param.description/]
+     * 
+		[/for]
+     * @param options The options added to the request. The list of constants to use in this filed
+     * can be found in {@link DataLibRequest} (ex: {@link DataLibRequest#OPTION_CONSERVE_COOKIE_ENABLED} 
+     * or {@link DataLibRequest#OPTION_DATABASE_CACHE_DISABLED}, ...).
+     * The options can be aggregated thanks to the pipe character '|' (ex: OPTION_CONSERVE_COOKIE_ENABLED |
+     * OPTION_DATABASE_CACHE_DISABLED).
+     * 
+     * @return Returns the request Id if it have been generated by the DataLib. If there is only
+     * a Datacache access, the id returned is the constant {@link DataManager#DATACHACHE_REQUEST}.
+     * In case of treatment error, it returns {@link DataManager#BAD_REQUEST}.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+	[displayLaunchMethod(webService)/]
+        //we prepare the parameters
+        final ParameterMap params = new ParameterMap();
+		[for (parameter : Parameter | webService.parameters)]
+        params.put("[parameter.name/]", [parameter.name.toLowerFirst()/]);
+		[/for]
+        //we prepare the request's url
+        final String url = ServiceHelper.getServiceUrl([aProject.name.toUpperFirst()/]ServiceHelper.URL_[webService.name.toUpper()/], params);
+
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, url, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.name.toUpper()/], [aProject.name.toUpperFirst()/]Service.class);
+
+		//we add the listener subscription for this request
+		if(datacacheListener != null)
+			this.addOnDataListener(requestId, datacacheListener);
+		
+		return requestId;
+    }
+
+	[else]
+	/**
+     * Retrieve the {@link [webService.contentResponse.name.toUpperFirst()/]}
+     * 
+     * @param datacacheListener The listener who will receive the data from the cache.
+     * This parameter is optional butif you want to get the response back you have to subscribe to the
+     * request's response by using the function {@link DataManager#addOnDataListener(int requestId, OnDataListener listener)}.
+     * Since there is no listener for the request, the response is supposed to be stored in a cache. It is then removed once delivered.
+     * 
+		[for (param : Parameter | webService.parameters)]
+     * @param [param.name.toLowerFirst()/] [param.description/]
+     * 
+		[/for]
+     * @param options The options added to the request. The list of constants to use in this filed
+     * can be found in {@link DataLibRequest} (ex: {@link DataLibRequest#OPTION_CONSERVE_COOKIE_ENABLED} 
+     * or {@link DataLibRequest#OPTION_DATABASE_CACHE_DISABLED}, ...).
+     * The options can be aggregated thanks to the pipe character '|' (ex: OPTION_CONSERVE_COOKIE_ENABLED |
+     * OPTION_DATABASE_CACHE_DISABLED).
+     * 
+     * @return Returns the request Id if it have been generated by the DataLib. If there is only
+     * a Datacache access, the id returned is the constant {@link DataManager#DATACHACHE_REQUEST}.
+     * In case of treatment error, it returns {@link DataManager#BAD_REQUEST}.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+	[displayLaunchMethodWebOnly(webService)/]
+        //we prepare the parameters
+        final ParameterMap params = new ParameterMap();
+		[for (parameter : Parameter | webService.parameters)]
+        params.put("[parameter.name/]", [parameter.name.toLowerFirst()/]);
+		[/for]
+        //we prepare the request's url
+        final String url = ServiceHelper.getServiceUrl([aProject.name.toUpperFirst()/]ServiceHelper.URL_[webService.name.toUpper()/], params);
+
+		int requestId = mServiceHelper.launchRequest(options, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.name.toUpper()/], params, [aProject.name.toUpperFirst()/]Service.class, url);
+		
+		//we add the listener subscription for this request
+		if(datacacheListener != null)
+			this.addOnDataListener(requestId, datacacheListener);
+		
+		return requestId;
+    }
+	[/if]
+
+[/for]
+
+}
+[/file]
+[/template]
+
+[template public displayLaunchMethod (webService : WebService) post (trim()) ]
+public synchronized int [if (webService.method=HttpMethod::GET)]get[elseif (webService.method=HttpMethod::DELETE)]delete[elseif (webService.method=HttpMethod::HEAD)]head[elseif (webService.method=HttpMethod::POST)]post[elseif (webService.method=HttpMethod::PUT)]put[/if][webService.name.toUpperFirst()/](final int policy, final OnDataListener datacacheListener, [listParameters(webService)/] final int options) throws UnsupportedEncodingException {
+[/template]
+
+[template public displayLaunchMethodWebOnly (webService : WebService) post (trim()) ]
+public synchronized int [if (webService.method=HttpMethod::GET)]get[elseif (webService.method=HttpMethod::DELETE)]delete[elseif (webService.method=HttpMethod::HEAD)]head[elseif (webService.method=HttpMethod::POST)]post[elseif (webService.method=HttpMethod::PUT)]put[/if][webService.name.toUpperFirst()/](final OnDataListener datacacheListener, [listParameters(webService)/] final int options) throws UnsupportedEncodingException {
+[/template]
+
+
+[template public listParameters (webService: WebService) post (trim()) ]
+[for (param : Parameter | webService.parameters)]final [if (param.type = ParameterType::String)]String[elseif (param.type = ParameterType::int)]int[elseif (param.type = ParameterType::boolean)]boolean[else]float[/if] [param.name.toLowerFirst()/], [/for]
+[/template]
+
+
+[template public defineGetBusinessObjectsFromDatabaseCase (aBusinessObject : BusinessObject, projectName:String, prefix : String) post (trim()) ]
+case [projectName.toUpperFirst()/]Provider.CODE_[prefix/][aBusinessObject.name.toUpper()/]:
+[if (aBusinessObject.childs->size() > 0)]
+	return [projectName.toUpperFirst()/]DataManager.this.retrieveData[getCompleteNameToUpperFirst(aBusinessObject, '')/](where, whereArgs, order, join);
+[else]
+	return [projectName.toUpperFirst()/]DataManager.this.retrieveData[getCompleteNameToUpperFirst(aBusinessObject, '')/](where, whereArgs, order);
+[/if]
+
+[for (businessObject : BusinessObject | aBusinessObject.childs)]
+[defineGetBusinessObjectsFromDatabaseCase(businessObject, projectName, prefix+aBusinessObject.name.toUpper()+'_')/]
+[/for]
+
+[/template]
