@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/fr.eyal.datalib.generator.feature_1.0.1.qualifier.jar" id="fr.eyal.datalib.generator.feature" version="1.0.1.qualifier">
+      <category name="android_datalib"/>
+   </feature>
+   <category-def name="android_datalib" label="Android Datalib"/>
+</site>
