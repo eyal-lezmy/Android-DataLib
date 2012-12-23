@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="main" name="fr.eyal.datalib.generator">
-    <property name="ECLIPSE_HOME" value="../../../../../../../Eclipse Acceleo"/>
+    <property name="ECLIPSE_HOME" value="../../../../../../../../Eclipse Acceleo"/>
     <property name="ECLIPSE_WORKSPACE" value="../../.."/>
 
     <!-- The classpath with only the dependencies used by the project -->
