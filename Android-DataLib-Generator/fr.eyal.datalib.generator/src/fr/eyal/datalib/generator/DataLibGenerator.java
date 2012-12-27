@@ -110,12 +110,6 @@ public class DataLibGenerator {
         }
 
 		
-//		DataLibProject project = createProject(factory, "fr.sfr.hc.datacache.provider", "datalib_cache", "1", "HomeCommand", "fr.sfr.hc.data");
-//		WebService webServiceLogin = createWebServiceLogin(factory, modelFactory);
-//		WebService webServiceSensors = createWebServiceSensors(factory, modelFactory, project);
-//		project.getWebservices().add(webServiceSensors);
-//		project.getWebservices().add(webServiceLogin);
-		
 		System.out.println("Storing for backup");
 
 		// Register the XMI resource factory for the #MODEL_EXTENSION
