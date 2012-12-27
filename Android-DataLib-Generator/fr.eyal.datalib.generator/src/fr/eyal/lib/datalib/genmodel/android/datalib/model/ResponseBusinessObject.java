@@ -8,7 +8,6 @@ package fr.eyal.lib.datalib.genmodel.android.datalib.model;
 
 import org.eclipse.emf.common.util.EList;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Response Business Object</b></em>'.
@@ -27,7 +26,6 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface ResponseBusinessObject extends BusinessObject {
-
 	/**
 	 * Returns the value of the '<em><b>Xml Content Fields</b></em>' containment reference list.
 	 * The list contents are of type {@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field}.
@@ -59,4 +57,5 @@ public interface ResponseBusinessObject extends BusinessObject {
 	 * @generated
 	 */
 	EList<Field> getXmlAttributes();
+
 } // ResponseBusinessObject

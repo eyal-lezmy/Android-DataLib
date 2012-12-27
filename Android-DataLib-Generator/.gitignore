@@ -11,3 +11,7 @@
 # generated files
 /fr.eyal.datalib.generator/bin
 /fr.eyal.datalib.generator.ui/bin
+
+#testing environement folders
+/fr.eyal.datalib.generator/src-gen
+/fr.eyal.datalib.generator/model

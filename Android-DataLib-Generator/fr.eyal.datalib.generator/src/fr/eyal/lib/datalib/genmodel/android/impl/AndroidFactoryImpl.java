@@ -60,7 +60,7 @@ public class AndroidFactoryImpl extends EFactoryImpl implements AndroidFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case AndroidPackage.DUMMY_CLASS: return (EObject)createDummyClass();
+			case AndroidPackage.DUMMY_CLASS: return createDummyClass();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}

@@ -4,7 +4,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="android"
     nsURI="http://www.eyal.fr/android" nsPrefix="android">
   <eClassifiers xsi:type="ecore:EClass" name="DummyClass"/>
-  <eSubpackages name="datalib" nsURI="http://www.eyal.fr/android/dataLib" nsPrefix="datalib">
+  <eSubpackages name="datalib" nsURI="http://www.eyal.fr/android/datalib" nsPrefix="datalib">
     <eClassifiers xsi:type="ecore:EClass" name="WebService">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -69,7 +69,7 @@
         <eLiterals name="boolean" value="3"/>
       </eClassifiers>
     </eSubpackages>
-    <eSubpackages name="model" nsURI="http://www.eyal.fr/datalib/android/model" nsPrefix="model">
+    <eSubpackages name="model" nsURI="http://www.eyal.fr/android/datalib/model" nsPrefix="model">
       <eClassifiers xsi:type="ecore:EClass" name="BusinessObject">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

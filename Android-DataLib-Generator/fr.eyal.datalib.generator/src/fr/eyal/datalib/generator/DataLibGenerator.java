@@ -46,7 +46,7 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.model.ResponseBusinessObject
 public class DataLibGenerator {
 
 	public static final String MODEL_EXTENSION = "xmi";
-	public static final String SCHEMA_LOCATION = "http://www.eyal.fr/android/dataLib datalib.ecore#//datalib http://www.eyal.fr/datalib/android/model datalib.ecore#//datalib/model";
+	public static final String SCHEMA_LOCATION = "http://www.eyal.fr/android/datalib datalib.ecore#//datalib http://www.eyal.fr/datalib/android/model datalib.ecore#//datalib/model";
 	public static final String OPTION_SCHEMA_LOCATION = "SCHEMA_LOCATION";
 
 	/**
@@ -125,6 +125,7 @@ public class DataLibGenerator {
 		
 	    // Obtain a new resource set
 	    ResourceSet resSet = new ResourceSetImpl();
+	    resSet.getPackageRegistry().put("http://www.eyal.fr/android/datalib", DatalibPackage.eINSTANCE);
 	    resSet.getLoadOptions().put(XMIResource.OPTION_SCHEMA_LOCATION, true);
 	    // Create a resource
 	    URI uri = URI.createURI(modelPath);

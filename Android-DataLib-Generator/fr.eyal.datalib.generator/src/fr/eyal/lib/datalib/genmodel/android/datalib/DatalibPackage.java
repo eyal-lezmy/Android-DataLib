@@ -41,7 +41,7 @@ public interface DatalibPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.eyal.fr/android/dataLib";
+	String eNS_URI = "http://www.eyal.fr/android/datalib";
 
 	/**
 	 * The package namespace name.

@@ -41,7 +41,7 @@ public interface ModelPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.eyal.fr/datalib/android/model";
+	String eNS_URI = "http://www.eyal.fr/android/datalib/model";
 
 	/**
 	 * The package namespace name.
@@ -676,7 +676,6 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int FIELD_FEATURE_COUNT = PARAMETER_FEATURE_COUNT + 8;
-
 
 	/**
 	 * The meta object id for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldBusinessObjectImpl <em>Field Business Object</em>}' class.

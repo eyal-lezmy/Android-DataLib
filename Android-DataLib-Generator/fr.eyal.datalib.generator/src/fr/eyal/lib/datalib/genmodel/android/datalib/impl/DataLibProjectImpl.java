@@ -12,6 +12,7 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.WebService;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -19,9 +20,11 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
 
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,7 +44,7 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
  *
  * @generated
  */
-public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject {
+public class DataLibProjectImpl extends EObjectImpl implements DataLibProject {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -51,6 +54,16 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getPackage() <em>Package</em>}' attribute.
@@ -63,6 +76,16 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	protected static final String PACKAGE_EDEFAULT = null;
 
 	/**
+	 * The cached value of the '{@link #getPackage() <em>Package</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPackage()
+	 * @generated
+	 * @ordered
+	 */
+	protected String package_ = PACKAGE_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getAuthority() <em>Authority</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -71,6 +94,16 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @ordered
 	 */
 	protected static final String AUTHORITY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAuthority() <em>Authority</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAuthority()
+	 * @generated
+	 * @ordered
+	 */
+	protected String authority = AUTHORITY_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getDatabaseName() <em>Database Name</em>}' attribute.
@@ -83,6 +116,16 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	protected static final String DATABASE_NAME_EDEFAULT = null;
 
 	/**
+	 * The cached value of the '{@link #getDatabaseName() <em>Database Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDatabaseName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String databaseName = DATABASE_NAME_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getDatabaseVersion() <em>Database Version</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -91,6 +134,26 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @ordered
 	 */
 	protected static final String DATABASE_VERSION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDatabaseVersion() <em>Database Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDatabaseVersion()
+	 * @generated
+	 * @ordered
+	 */
+	protected String databaseVersion = DATABASE_VERSION_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getWebservices() <em>Webservices</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getWebservices()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<WebService> webservices;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -116,18 +179,8 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getName() {
-		return (String)eDynamicGet(DatalibPackage.DATA_LIB_PROJECT__NAME, DatalibPackage.Literals.DATA_LIB_PROJECT__NAME, true, true);
+		return name;
 	}
 
 	/**
@@ -136,7 +189,10 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @generated
 	 */
 	public void setName(String newName) {
-		eDynamicSet(DatalibPackage.DATA_LIB_PROJECT__NAME, DatalibPackage.Literals.DATA_LIB_PROJECT__NAME, newName);
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.DATA_LIB_PROJECT__NAME, oldName, name));
 	}
 
 	/**
@@ -145,7 +201,7 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @generated
 	 */
 	public String getPackage() {
-		return (String)eDynamicGet(DatalibPackage.DATA_LIB_PROJECT__PACKAGE, DatalibPackage.Literals.DATA_LIB_PROJECT__PACKAGE, true, true);
+		return package_;
 	}
 
 	/**
@@ -154,7 +210,10 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @generated
 	 */
 	public void setPackage(String newPackage) {
-		eDynamicSet(DatalibPackage.DATA_LIB_PROJECT__PACKAGE, DatalibPackage.Literals.DATA_LIB_PROJECT__PACKAGE, newPackage);
+		String oldPackage = package_;
+		package_ = newPackage;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.DATA_LIB_PROJECT__PACKAGE, oldPackage, package_));
 	}
 
 	/**
@@ -163,7 +222,7 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @generated
 	 */
 	public String getAuthority() {
-		return (String)eDynamicGet(DatalibPackage.DATA_LIB_PROJECT__AUTHORITY, DatalibPackage.Literals.DATA_LIB_PROJECT__AUTHORITY, true, true);
+		return authority;
 	}
 
 	/**
@@ -172,7 +231,10 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @generated
 	 */
 	public void setAuthority(String newAuthority) {
-		eDynamicSet(DatalibPackage.DATA_LIB_PROJECT__AUTHORITY, DatalibPackage.Literals.DATA_LIB_PROJECT__AUTHORITY, newAuthority);
+		String oldAuthority = authority;
+		authority = newAuthority;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.DATA_LIB_PROJECT__AUTHORITY, oldAuthority, authority));
 	}
 
 	/**
@@ -181,7 +243,7 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @generated
 	 */
 	public String getDatabaseName() {
-		return (String)eDynamicGet(DatalibPackage.DATA_LIB_PROJECT__DATABASE_NAME, DatalibPackage.Literals.DATA_LIB_PROJECT__DATABASE_NAME, true, true);
+		return databaseName;
 	}
 
 	/**
@@ -190,7 +252,10 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @generated
 	 */
 	public void setDatabaseName(String newDatabaseName) {
-		eDynamicSet(DatalibPackage.DATA_LIB_PROJECT__DATABASE_NAME, DatalibPackage.Literals.DATA_LIB_PROJECT__DATABASE_NAME, newDatabaseName);
+		String oldDatabaseName = databaseName;
+		databaseName = newDatabaseName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.DATA_LIB_PROJECT__DATABASE_NAME, oldDatabaseName, databaseName));
 	}
 
 	/**
@@ -199,7 +264,7 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @generated
 	 */
 	public String getDatabaseVersion() {
-		return (String)eDynamicGet(DatalibPackage.DATA_LIB_PROJECT__DATABASE_VERSION, DatalibPackage.Literals.DATA_LIB_PROJECT__DATABASE_VERSION, true, true);
+		return databaseVersion;
 	}
 
 	/**
@@ -208,7 +273,10 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * @generated
 	 */
 	public void setDatabaseVersion(String newDatabaseVersion) {
-		eDynamicSet(DatalibPackage.DATA_LIB_PROJECT__DATABASE_VERSION, DatalibPackage.Literals.DATA_LIB_PROJECT__DATABASE_VERSION, newDatabaseVersion);
+		String oldDatabaseVersion = databaseVersion;
+		databaseVersion = newDatabaseVersion;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.DATA_LIB_PROJECT__DATABASE_VERSION, oldDatabaseVersion, databaseVersion));
 	}
 
 	/**
@@ -216,9 +284,11 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<WebService> getWebservices() {
-		return (EList<WebService>)eDynamicGet(DatalibPackage.DATA_LIB_PROJECT__WEBSERVICES, DatalibPackage.Literals.DATA_LIB_PROJECT__WEBSERVICES, true, true);
+		if (webservices == null) {
+			webservices = new EObjectContainmentEList<WebService>(WebService.class, this, DatalibPackage.DATA_LIB_PROJECT__WEBSERVICES);
+		}
+		return webservices;
 	}
 
 	/**
@@ -330,19 +400,43 @@ public class DataLibProjectImpl extends CDOObjectImpl implements DataLibProject 
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case DatalibPackage.DATA_LIB_PROJECT__NAME:
-				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case DatalibPackage.DATA_LIB_PROJECT__PACKAGE:
-				return PACKAGE_EDEFAULT == null ? getPackage() != null : !PACKAGE_EDEFAULT.equals(getPackage());
+				return PACKAGE_EDEFAULT == null ? package_ != null : !PACKAGE_EDEFAULT.equals(package_);
 			case DatalibPackage.DATA_LIB_PROJECT__AUTHORITY:
-				return AUTHORITY_EDEFAULT == null ? getAuthority() != null : !AUTHORITY_EDEFAULT.equals(getAuthority());
+				return AUTHORITY_EDEFAULT == null ? authority != null : !AUTHORITY_EDEFAULT.equals(authority);
 			case DatalibPackage.DATA_LIB_PROJECT__DATABASE_NAME:
-				return DATABASE_NAME_EDEFAULT == null ? getDatabaseName() != null : !DATABASE_NAME_EDEFAULT.equals(getDatabaseName());
+				return DATABASE_NAME_EDEFAULT == null ? databaseName != null : !DATABASE_NAME_EDEFAULT.equals(databaseName);
 			case DatalibPackage.DATA_LIB_PROJECT__DATABASE_VERSION:
-				return DATABASE_VERSION_EDEFAULT == null ? getDatabaseVersion() != null : !DATABASE_VERSION_EDEFAULT.equals(getDatabaseVersion());
+				return DATABASE_VERSION_EDEFAULT == null ? databaseVersion != null : !DATABASE_VERSION_EDEFAULT.equals(databaseVersion);
 			case DatalibPackage.DATA_LIB_PROJECT__WEBSERVICES:
-				return !getWebservices().isEmpty();
+				return webservices != null && !webservices.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", package: ");
+		result.append(package_);
+		result.append(", authority: ");
+		result.append(authority);
+		result.append(", databaseName: ");
+		result.append(databaseName);
+		result.append(", databaseVersion: ");
+		result.append(databaseVersion);
+		result.append(')');
+		return result.toString();
 	}
 
 } //DataLibProjectImpl

@@ -8,7 +8,7 @@ package fr.eyal.lib.datalib.genmodel.android.datalib.model;
 
 import fr.eyal.lib.datalib.genmodel.android.datalib.content.ParameterType;
 
-import org.eclipse.emf.cdo.CDOObject;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,10 +26,9 @@ import org.eclipse.emf.cdo.CDOObject;
  *
  * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage#getParameter()
  * @model
- * @extends CDOObject
  * @generated
  */
-public interface Parameter extends CDOObject {
+public interface Parameter extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->

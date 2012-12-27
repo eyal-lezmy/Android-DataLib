@@ -8,13 +8,13 @@ package fr.eyal.lib.datalib.genmodel.android.datalib.model.impl;
 
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.Field;
-import fr.eyal.lib.datalib.genmodel.android.datalib.model.FieldBusinessObject;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage;
 
 import java.math.BigInteger;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -22,6 +22,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -56,6 +59,16 @@ public class FieldImpl extends ParameterImpl implements Field {
 	protected static final String DEFAULT_VALUE_EDEFAULT = null;
 
 	/**
+	 * The cached value of the '{@link #getDefaultValue() <em>Default Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDefaultValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected String defaultValue = DEFAULT_VALUE_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getXmlName() <em>Xml Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -66,6 +79,46 @@ public class FieldImpl extends ParameterImpl implements Field {
 	protected static final String XML_NAME_EDEFAULT = null;
 
 	/**
+	 * The cached value of the '{@link #getXmlName() <em>Xml Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getXmlName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String xmlName = XML_NAME_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getXmlAttributes() <em>Xml Attributes</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getXmlAttributes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Field> xmlAttributes;
+
+	/**
+	 * The cached value of the '{@link #getBusinessObject() <em>Business Object</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBusinessObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected BusinessObject businessObject;
+
+	/**
+	 * The cached value of the '{@link #getXmlContentFields() <em>Xml Content Fields</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getXmlContentFields()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Field> xmlContentFields;
+
+	/**
 	 * The default value of the '{@link #getParseId() <em>Parse Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -74,6 +127,36 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @ordered
 	 */
 	protected static final BigInteger PARSE_ID_EDEFAULT = new BigInteger("-1");
+
+	/**
+	 * The cached value of the '{@link #getParseId() <em>Parse Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParseId()
+	 * @generated
+	 * @ordered
+	 */
+	protected BigInteger parseId = PARSE_ID_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getXmlParent() <em>Xml Parent</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getXmlParent()
+	 * @generated
+	 * @ordered
+	 */
+	protected Field xmlParent;
+
+	/**
+	 * The cached value of the '{@link #getRelatedField() <em>Related Field</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRelatedField()
+	 * @generated
+	 * @ordered
+	 */
+	protected Field relatedField;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -100,7 +183,7 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public String getDefaultValue() {
-		return (String)eDynamicGet(ModelPackage.FIELD__DEFAULT_VALUE, ModelPackage.Literals.FIELD__DEFAULT_VALUE, true, true);
+		return defaultValue;
 	}
 
 	/**
@@ -109,7 +192,10 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public void setDefaultValue(String newDefaultValue) {
-		eDynamicSet(ModelPackage.FIELD__DEFAULT_VALUE, ModelPackage.Literals.FIELD__DEFAULT_VALUE, newDefaultValue);
+		String oldDefaultValue = defaultValue;
+		defaultValue = newDefaultValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.FIELD__DEFAULT_VALUE, oldDefaultValue, defaultValue));
 	}
 
 	/**
@@ -118,7 +204,7 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public String getXmlName() {
-		return (String)eDynamicGet(ModelPackage.FIELD__XML_NAME, ModelPackage.Literals.FIELD__XML_NAME, true, true);
+		return xmlName;
 	}
 
 	/**
@@ -127,7 +213,10 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public void setXmlName(String newXmlName) {
-		eDynamicSet(ModelPackage.FIELD__XML_NAME, ModelPackage.Literals.FIELD__XML_NAME, newXmlName);
+		String oldXmlName = xmlName;
+		xmlName = newXmlName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.FIELD__XML_NAME, oldXmlName, xmlName));
 	}
 
 	/**
@@ -135,9 +224,11 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Field> getXmlAttributes() {
-		return (EList<Field>)eDynamicGet(ModelPackage.FIELD__XML_ATTRIBUTES, ModelPackage.Literals.FIELD__XML_ATTRIBUTES, true, true);
+		if (xmlAttributes == null) {
+			xmlAttributes = new EObjectContainmentEList<Field>(Field.class, this, ModelPackage.FIELD__XML_ATTRIBUTES);
+		}
+		return xmlAttributes;
 	}
 
 	/**
@@ -146,7 +237,15 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public BusinessObject getBusinessObject() {
-		return (BusinessObject)eDynamicGet(ModelPackage.FIELD__BUSINESS_OBJECT, ModelPackage.Literals.FIELD__BUSINESS_OBJECT, true, true);
+		if (businessObject != null && businessObject.eIsProxy()) {
+			InternalEObject oldBusinessObject = (InternalEObject)businessObject;
+			businessObject = (BusinessObject)eResolveProxy(oldBusinessObject);
+			if (businessObject != oldBusinessObject) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ModelPackage.FIELD__BUSINESS_OBJECT, oldBusinessObject, businessObject));
+			}
+		}
+		return businessObject;
 	}
 
 	/**
@@ -155,7 +254,7 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public BusinessObject basicGetBusinessObject() {
-		return (BusinessObject)eDynamicGet(ModelPackage.FIELD__BUSINESS_OBJECT, ModelPackage.Literals.FIELD__BUSINESS_OBJECT, false, true);
+		return businessObject;
 	}
 
 	/**
@@ -164,7 +263,10 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public void setBusinessObject(BusinessObject newBusinessObject) {
-		eDynamicSet(ModelPackage.FIELD__BUSINESS_OBJECT, ModelPackage.Literals.FIELD__BUSINESS_OBJECT, newBusinessObject);
+		BusinessObject oldBusinessObject = businessObject;
+		businessObject = newBusinessObject;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.FIELD__BUSINESS_OBJECT, oldBusinessObject, businessObject));
 	}
 
 	/**
@@ -172,9 +274,11 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Field> getXmlContentFields() {
-		return (EList<Field>)eDynamicGet(ModelPackage.FIELD__XML_CONTENT_FIELDS, ModelPackage.Literals.FIELD__XML_CONTENT_FIELDS, true, true);
+		if (xmlContentFields == null) {
+			xmlContentFields = new EObjectContainmentEList<Field>(Field.class, this, ModelPackage.FIELD__XML_CONTENT_FIELDS);
+		}
+		return xmlContentFields;
 	}
 
 	/**
@@ -183,7 +287,7 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public BigInteger getParseId() {
-		return (BigInteger)eDynamicGet(ModelPackage.FIELD__PARSE_ID, ModelPackage.Literals.FIELD__PARSE_ID, true, true);
+		return parseId;
 	}
 
 	/**
@@ -192,7 +296,10 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public void setParseId(BigInteger newParseId) {
-		eDynamicSet(ModelPackage.FIELD__PARSE_ID, ModelPackage.Literals.FIELD__PARSE_ID, newParseId);
+		BigInteger oldParseId = parseId;
+		parseId = newParseId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.FIELD__PARSE_ID, oldParseId, parseId));
 	}
 
 	/**
@@ -201,7 +308,15 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public Field getXmlParent() {
-		return (Field)eDynamicGet(ModelPackage.FIELD__XML_PARENT, ModelPackage.Literals.FIELD__XML_PARENT, true, true);
+		if (xmlParent != null && xmlParent.eIsProxy()) {
+			InternalEObject oldXmlParent = (InternalEObject)xmlParent;
+			xmlParent = (Field)eResolveProxy(oldXmlParent);
+			if (xmlParent != oldXmlParent) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ModelPackage.FIELD__XML_PARENT, oldXmlParent, xmlParent));
+			}
+		}
+		return xmlParent;
 	}
 
 	/**
@@ -210,7 +325,7 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public Field basicGetXmlParent() {
-		return (Field)eDynamicGet(ModelPackage.FIELD__XML_PARENT, ModelPackage.Literals.FIELD__XML_PARENT, false, true);
+		return xmlParent;
 	}
 
 	/**
@@ -219,7 +334,10 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public void setXmlParent(Field newXmlParent) {
-		eDynamicSet(ModelPackage.FIELD__XML_PARENT, ModelPackage.Literals.FIELD__XML_PARENT, newXmlParent);
+		Field oldXmlParent = xmlParent;
+		xmlParent = newXmlParent;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.FIELD__XML_PARENT, oldXmlParent, xmlParent));
 	}
 
 	/**
@@ -228,7 +346,15 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public Field getRelatedField() {
-		return (Field)eDynamicGet(ModelPackage.FIELD__RELATED_FIELD, ModelPackage.Literals.FIELD__RELATED_FIELD, true, true);
+		if (relatedField != null && relatedField.eIsProxy()) {
+			InternalEObject oldRelatedField = (InternalEObject)relatedField;
+			relatedField = (Field)eResolveProxy(oldRelatedField);
+			if (relatedField != oldRelatedField) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ModelPackage.FIELD__RELATED_FIELD, oldRelatedField, relatedField));
+			}
+		}
+		return relatedField;
 	}
 
 	/**
@@ -237,7 +363,7 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public Field basicGetRelatedField() {
-		return (Field)eDynamicGet(ModelPackage.FIELD__RELATED_FIELD, ModelPackage.Literals.FIELD__RELATED_FIELD, false, true);
+		return relatedField;
 	}
 
 	/**
@@ -246,7 +372,10 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @generated
 	 */
 	public void setRelatedField(Field newRelatedField) {
-		eDynamicSet(ModelPackage.FIELD__RELATED_FIELD, ModelPackage.Literals.FIELD__RELATED_FIELD, newRelatedField);
+		Field oldRelatedField = relatedField;
+		relatedField = newRelatedField;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.FIELD__RELATED_FIELD, oldRelatedField, relatedField));
 	}
 
 	/**
@@ -380,23 +509,43 @@ public class FieldImpl extends ParameterImpl implements Field {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case ModelPackage.FIELD__DEFAULT_VALUE:
-				return DEFAULT_VALUE_EDEFAULT == null ? getDefaultValue() != null : !DEFAULT_VALUE_EDEFAULT.equals(getDefaultValue());
+				return DEFAULT_VALUE_EDEFAULT == null ? defaultValue != null : !DEFAULT_VALUE_EDEFAULT.equals(defaultValue);
 			case ModelPackage.FIELD__XML_NAME:
-				return XML_NAME_EDEFAULT == null ? getXmlName() != null : !XML_NAME_EDEFAULT.equals(getXmlName());
+				return XML_NAME_EDEFAULT == null ? xmlName != null : !XML_NAME_EDEFAULT.equals(xmlName);
 			case ModelPackage.FIELD__XML_ATTRIBUTES:
-				return !getXmlAttributes().isEmpty();
+				return xmlAttributes != null && !xmlAttributes.isEmpty();
 			case ModelPackage.FIELD__BUSINESS_OBJECT:
-				return basicGetBusinessObject() != null;
+				return businessObject != null;
 			case ModelPackage.FIELD__XML_CONTENT_FIELDS:
-				return !getXmlContentFields().isEmpty();
+				return xmlContentFields != null && !xmlContentFields.isEmpty();
 			case ModelPackage.FIELD__PARSE_ID:
-				return PARSE_ID_EDEFAULT == null ? getParseId() != null : !PARSE_ID_EDEFAULT.equals(getParseId());
+				return PARSE_ID_EDEFAULT == null ? parseId != null : !PARSE_ID_EDEFAULT.equals(parseId);
 			case ModelPackage.FIELD__XML_PARENT:
-				return basicGetXmlParent() != null;
+				return xmlParent != null;
 			case ModelPackage.FIELD__RELATED_FIELD:
-				return basicGetRelatedField() != null;
+				return relatedField != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (defaultValue: ");
+		result.append(defaultValue);
+		result.append(", xmlName: ");
+		result.append(xmlName);
+		result.append(", parseId: ");
+		result.append(parseId);
+		result.append(')');
+		return result.toString();
 	}
 
 } //FieldImpl

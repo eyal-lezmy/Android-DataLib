@@ -31,7 +31,7 @@ public class DatalibFactoryImpl extends EFactoryImpl implements DatalibFactory {
 	 */
 	public static DatalibFactory init() {
 		try {
-			DatalibFactory theDatalibFactory = (DatalibFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eyal.fr/android/dataLib"); 
+			DatalibFactory theDatalibFactory = (DatalibFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eyal.fr/android/datalib"); 
 			if (theDatalibFactory != null) {
 				return theDatalibFactory;
 			}
@@ -60,8 +60,8 @@ public class DatalibFactoryImpl extends EFactoryImpl implements DatalibFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case DatalibPackage.WEB_SERVICE: return (EObject)createWebService();
-			case DatalibPackage.DATA_LIB_PROJECT: return (EObject)createDataLibProject();
+			case DatalibPackage.WEB_SERVICE: return createWebService();
+			case DatalibPackage.DATA_LIB_PROJECT: return createDataLibProject();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}

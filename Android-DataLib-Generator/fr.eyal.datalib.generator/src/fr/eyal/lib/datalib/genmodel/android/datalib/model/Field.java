@@ -133,7 +133,7 @@ public interface Field extends Parameter {
 	 * The list contents are of type {@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Xml Content Fields</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Xml Content Fields</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->

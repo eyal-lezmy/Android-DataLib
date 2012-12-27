@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module main('http://www.eyal.fr/android/dataLib', 'http://www.eyal.fr/android/datalib/content', 'http://www.eyal.fr/datalib/android/model')/]
+[module main('http://www.eyal.fr/android/datalib', 'http://www.eyal.fr/android/datalib/content', 'http://www.eyal.fr/android/datalib/model')/]
 [import fr::eyal::datalib::generator::acceleo::common::BusinessObject/]
 [import fr::eyal::datalib::generator::acceleo::common::BusinessObjectBase/]
 [import fr::eyal::datalib::generator::acceleo::common::BusinessObjectBaseDAO/]
