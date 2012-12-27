@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datalib:project 
+	xmlns:datalib="http://eyal.fr/"
+    datalib:name="Netflix" 
+    datalib:package="fr.eyal.datalib.sample.netflix.data" 
+    datalib:authority="fr.eyal.datalib.sample.netflix.datacache.provider"
+    datalib:databaseName="datalib_cache"
+    datalib:databaseVersion="1">
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:url="http://api-public.netflix.com/catalog/titles">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+				<datalib:OPTION_DATABASE_CACHE_DISABLED />
+			</datalib:options>
+			<datalib:parameters>
+ 				<max_results datalib:type="int" datalib:description="Maximum number of results expected. If this parameter is not present, the default value is 25."/>
+				<oauth_consumer_key datalib:type="string" datalib:description="The OAuth consumer key of the developer"/>
+ 				<oauth_nonce datalib:type="string" datalib:description="A random string"/>
+				<oauth_signature_method datalib:type="string" datalib:description="The OAuth signature method. Here we use HMAC-SHA1"/>
+				<oauth_timestamp datalib:type="int" datalib:description="The current timestamp"/>
+				<start_index datalib:type="string" datalib:description="Start index of the result (to paginate the results). This value is linked to max_result"/>
+				<term datalib:type="string" datalib:description="The term of the content you are looking for"/>
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<catalog_titles datalib:name="CatalogTitles">
+  <number_of_results>int</number_of_results>
+  <start_index>int</start_index>
+  <results_per_page>int</results_per_page>
+  <catalog_title datalib:multiple="true" datalib:name="CatalogTitle">
+    <id>string</id>
+    <title short="string" regular="string" />
+	<box_art small="string" medium="string" large="string" />
+	<release_year>int</release_year>
+	<category label="string" />
+	<runtime>int</runtime>
+	<average_rating>float</average_rating>
+  </catalog_title>
+</catalog_titles>
+	</datalib:webservice>
+</datalib:project>
