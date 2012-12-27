@@ -6,7 +6,7 @@
  */
 package fr.eyal.lib.datalib.genmodel.android;
 
-import org.eclipse.emf.cdo.CDOObject;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -16,8 +16,7 @@ import org.eclipse.emf.cdo.CDOObject;
  *
  * @see fr.eyal.lib.datalib.genmodel.android.AndroidPackage#getDummyClass()
  * @model
- * @extends CDOObject
  * @generated
  */
-public interface DummyClass extends CDOObject {
+public interface DummyClass extends EObject {
 } // DummyClass

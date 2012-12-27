@@ -11,7 +11,7 @@ import fr.eyal.lib.datalib.genmodel.android.DummyClass;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +22,7 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
  *
  * @generated
  */
-public class DummyClassImpl extends CDOObjectImpl implements DummyClass {
+public class DummyClassImpl extends EObjectImpl implements DummyClass {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -40,16 +40,6 @@ public class DummyClassImpl extends CDOObjectImpl implements DummyClass {
 	@Override
 	protected EClass eStaticClass() {
 		return AndroidPackage.Literals.DUMMY_CLASS;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
 	}
 
 } //DummyClassImpl

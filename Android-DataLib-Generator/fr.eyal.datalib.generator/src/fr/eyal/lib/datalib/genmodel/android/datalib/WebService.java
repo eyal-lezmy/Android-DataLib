@@ -13,9 +13,9 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.content.ParseType;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ResponseBusinessObject;
 
-import org.eclipse.emf.cdo.CDOObject;
-
 import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -39,10 +39,9 @@ import org.eclipse.emf.common.util.EList;
  *
  * @see fr.eyal.lib.datalib.genmodel.android.datalib.DatalibPackage#getWebService()
  * @model
- * @extends CDOObject
  * @generated
  */
-public interface WebService extends CDOObject {
+public interface WebService extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->

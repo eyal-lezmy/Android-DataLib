@@ -7,6 +7,7 @@
 package fr.eyal.lib.datalib.genmodel.android.datalib.model.impl;
 
 import fr.eyal.lib.datalib.genmodel.android.AndroidPackage;
+
 import fr.eyal.lib.datalib.genmodel.android.datalib.DatalibPackage;
 
 import fr.eyal.lib.datalib.genmodel.android.datalib.content.ContentPackage;
@@ -26,6 +27,7 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.model.ResponseBusinessObject
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ResponseBusinessObjectDAO;
 
 import fr.eyal.lib.datalib.genmodel.android.impl.AndroidPackageImpl;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;

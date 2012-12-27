@@ -6,9 +6,9 @@
  */
 package fr.eyal.lib.datalib.genmodel.android.datalib;
 
-import org.eclipse.emf.cdo.CDOObject;
-
 import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,10 +29,9 @@ import org.eclipse.emf.common.util.EList;
  *
  * @see fr.eyal.lib.datalib.genmodel.android.datalib.DatalibPackage#getDataLibProject()
  * @model
- * @extends CDOObject
  * @generated
  */
-public interface DataLibProject extends CDOObject {
+public interface DataLibProject extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->

@@ -11,7 +11,12 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.DataLibProject;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObjectDAO;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage;
 
+import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,6 +32,16 @@ import org.eclipse.emf.ecore.EClass;
  * @generated
  */
 public class BusinessObjectDAOImpl extends BusinessObjectImpl implements BusinessObjectDAO {
+	/**
+	 * The cached value of the '{@link #getProject() <em>Project</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProject()
+	 * @generated
+	 * @ordered
+	 */
+	protected DataLibProject project;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -52,7 +67,15 @@ public class BusinessObjectDAOImpl extends BusinessObjectImpl implements Busines
 	 * @generated
 	 */
 	public DataLibProject getProject() {
-		return (DataLibProject)eDynamicGet(ModelPackage.BUSINESS_OBJECT_DAO__PROJECT, ModelPackage.Literals.BUSINESS_OBJECT_DAO__PROJECT, true, true);
+		if (project != null && project.eIsProxy()) {
+			InternalEObject oldProject = (InternalEObject)project;
+			project = (DataLibProject)eResolveProxy(oldProject);
+			if (project != oldProject) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ModelPackage.BUSINESS_OBJECT_DAO__PROJECT, oldProject, project));
+			}
+		}
+		return project;
 	}
 
 	/**
@@ -61,7 +84,7 @@ public class BusinessObjectDAOImpl extends BusinessObjectImpl implements Busines
 	 * @generated
 	 */
 	public DataLibProject basicGetProject() {
-		return (DataLibProject)eDynamicGet(ModelPackage.BUSINESS_OBJECT_DAO__PROJECT, ModelPackage.Literals.BUSINESS_OBJECT_DAO__PROJECT, false, true);
+		return project;
 	}
 
 	/**
@@ -70,7 +93,10 @@ public class BusinessObjectDAOImpl extends BusinessObjectImpl implements Busines
 	 * @generated
 	 */
 	public void setProject(DataLibProject newProject) {
-		eDynamicSet(ModelPackage.BUSINESS_OBJECT_DAO__PROJECT, ModelPackage.Literals.BUSINESS_OBJECT_DAO__PROJECT, newProject);
+		DataLibProject oldProject = project;
+		project = newProject;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.BUSINESS_OBJECT_DAO__PROJECT, oldProject, project));
 	}
 
 	/**
@@ -127,7 +153,7 @@ public class BusinessObjectDAOImpl extends BusinessObjectImpl implements Busines
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case ModelPackage.BUSINESS_OBJECT_DAO__PROJECT:
-				return basicGetProject() != null;
+				return project != null;
 		}
 		return super.eIsSet(featureID);
 	}

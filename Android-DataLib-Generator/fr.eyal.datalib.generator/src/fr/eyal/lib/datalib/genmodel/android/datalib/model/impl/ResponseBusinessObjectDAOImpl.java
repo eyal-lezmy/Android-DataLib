@@ -12,10 +12,15 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.model.ResponseBusinessObject
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ResponseBusinessObjectDAO;
 
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -33,6 +38,26 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class ResponseBusinessObjectDAOImpl extends BusinessObjectDAOImpl implements ResponseBusinessObjectDAO {
+	/**
+	 * The cached value of the '{@link #getXmlContentFields() <em>Xml Content Fields</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getXmlContentFields()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Field> xmlContentFields;
+
+	/**
+	 * The cached value of the '{@link #getXmlAttributes() <em>Xml Attributes</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getXmlAttributes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Field> xmlAttributes;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -57,9 +82,11 @@ public class ResponseBusinessObjectDAOImpl extends BusinessObjectDAOImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Field> getXmlContentFields() {
-		return (EList<Field>)eDynamicGet(ModelPackage.RESPONSE_BUSINESS_OBJECT_DAO__XML_CONTENT_FIELDS, ModelPackage.Literals.RESPONSE_BUSINESS_OBJECT__XML_CONTENT_FIELDS, true, true);
+		if (xmlContentFields == null) {
+			xmlContentFields = new EObjectContainmentEList<Field>(Field.class, this, ModelPackage.RESPONSE_BUSINESS_OBJECT_DAO__XML_CONTENT_FIELDS);
+		}
+		return xmlContentFields;
 	}
 
 	/**
@@ -67,9 +94,11 @@ public class ResponseBusinessObjectDAOImpl extends BusinessObjectDAOImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Field> getXmlAttributes() {
-		return (EList<Field>)eDynamicGet(ModelPackage.RESPONSE_BUSINESS_OBJECT_DAO__XML_ATTRIBUTES, ModelPackage.Literals.RESPONSE_BUSINESS_OBJECT__XML_ATTRIBUTES, true, true);
+		if (xmlAttributes == null) {
+			xmlAttributes = new EObjectContainmentEList<Field>(Field.class, this, ModelPackage.RESPONSE_BUSINESS_OBJECT_DAO__XML_ATTRIBUTES);
+		}
+		return xmlAttributes;
 	}
 
 	/**
@@ -152,9 +181,9 @@ public class ResponseBusinessObjectDAOImpl extends BusinessObjectDAOImpl impleme
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case ModelPackage.RESPONSE_BUSINESS_OBJECT_DAO__XML_CONTENT_FIELDS:
-				return !getXmlContentFields().isEmpty();
+				return xmlContentFields != null && !xmlContentFields.isEmpty();
 			case ModelPackage.RESPONSE_BUSINESS_OBJECT_DAO__XML_ATTRIBUTES:
-				return !getXmlAttributes().isEmpty();
+				return xmlAttributes != null && !xmlAttributes.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

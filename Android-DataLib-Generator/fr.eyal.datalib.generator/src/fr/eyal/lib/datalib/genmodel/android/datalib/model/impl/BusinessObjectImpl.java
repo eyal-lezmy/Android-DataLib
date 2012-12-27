@@ -15,6 +15,7 @@ import java.math.BigInteger;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -22,9 +23,11 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
 
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -47,7 +50,7 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
  *
  * @generated
  */
-public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject {
+public class BusinessObjectImpl extends EObjectImpl implements BusinessObject {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,6 +60,16 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getPackage() <em>Package</em>}' attribute.
@@ -69,6 +82,56 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	protected static final String PACKAGE_EDEFAULT = null;
 
 	/**
+	 * The cached value of the '{@link #getPackage() <em>Package</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPackage()
+	 * @generated
+	 * @ordered
+	 */
+	protected String package_ = PACKAGE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getAttributes() <em>Attributes</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Field> attributes;
+
+	/**
+	 * The cached value of the '{@link #getContentFields() <em>Content Fields</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContentFields()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Field> contentFields;
+
+	/**
+	 * The cached value of the '{@link #getChilds() <em>Childs</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getChilds()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<BusinessObject> childs;
+
+	/**
+	 * The cached value of the '{@link #getParent() <em>Parent</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParent()
+	 * @generated
+	 * @ordered
+	 */
+	protected BusinessObject parent;
+
+	/**
 	 * The default value of the '{@link #getXmlName() <em>Xml Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -79,6 +142,16 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	protected static final String XML_NAME_EDEFAULT = null;
 
 	/**
+	 * The cached value of the '{@link #getXmlName() <em>Xml Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getXmlName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String xmlName = XML_NAME_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getParseId() <em>Parse Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -87,6 +160,26 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @ordered
 	 */
 	protected static final BigInteger PARSE_ID_EDEFAULT = new BigInteger("-1");
+
+	/**
+	 * The cached value of the '{@link #getParseId() <em>Parse Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParseId()
+	 * @generated
+	 * @ordered
+	 */
+	protected BigInteger parseId = PARSE_ID_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getRelatedField() <em>Related Field</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRelatedField()
+	 * @generated
+	 * @ordered
+	 */
+	protected FieldBusinessObject relatedField;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -112,18 +205,8 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getName() {
-		return (String)eDynamicGet(ModelPackage.BUSINESS_OBJECT__NAME, ModelPackage.Literals.BUSINESS_OBJECT__NAME, true, true);
+		return name;
 	}
 
 	/**
@@ -132,7 +215,10 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public void setName(String newName) {
-		eDynamicSet(ModelPackage.BUSINESS_OBJECT__NAME, ModelPackage.Literals.BUSINESS_OBJECT__NAME, newName);
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.BUSINESS_OBJECT__NAME, oldName, name));
 	}
 
 	/**
@@ -141,7 +227,7 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public String getPackage() {
-		return (String)eDynamicGet(ModelPackage.BUSINESS_OBJECT__PACKAGE, ModelPackage.Literals.BUSINESS_OBJECT__PACKAGE, true, true);
+		return package_;
 	}
 
 	/**
@@ -150,7 +236,10 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public void setPackage(String newPackage) {
-		eDynamicSet(ModelPackage.BUSINESS_OBJECT__PACKAGE, ModelPackage.Literals.BUSINESS_OBJECT__PACKAGE, newPackage);
+		String oldPackage = package_;
+		package_ = newPackage;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.BUSINESS_OBJECT__PACKAGE, oldPackage, package_));
 	}
 
 	/**
@@ -158,9 +247,11 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Field> getAttributes() {
-		return (EList<Field>)eDynamicGet(ModelPackage.BUSINESS_OBJECT__ATTRIBUTES, ModelPackage.Literals.BUSINESS_OBJECT__ATTRIBUTES, true, true);
+		if (attributes == null) {
+			attributes = new EObjectContainmentEList<Field>(Field.class, this, ModelPackage.BUSINESS_OBJECT__ATTRIBUTES);
+		}
+		return attributes;
 	}
 
 	/**
@@ -168,9 +259,11 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Field> getContentFields() {
-		return (EList<Field>)eDynamicGet(ModelPackage.BUSINESS_OBJECT__CONTENT_FIELDS, ModelPackage.Literals.BUSINESS_OBJECT__CONTENT_FIELDS, true, true);
+		if (contentFields == null) {
+			contentFields = new EObjectContainmentEList<Field>(Field.class, this, ModelPackage.BUSINESS_OBJECT__CONTENT_FIELDS);
+		}
+		return contentFields;
 	}
 
 	/**
@@ -178,9 +271,11 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<BusinessObject> getChilds() {
-		return (EList<BusinessObject>)eDynamicGet(ModelPackage.BUSINESS_OBJECT__CHILDS, ModelPackage.Literals.BUSINESS_OBJECT__CHILDS, true, true);
+		if (childs == null) {
+			childs = new EObjectContainmentEList<BusinessObject>(BusinessObject.class, this, ModelPackage.BUSINESS_OBJECT__CHILDS);
+		}
+		return childs;
 	}
 
 	/**
@@ -189,7 +284,15 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public BusinessObject getParent() {
-		return (BusinessObject)eDynamicGet(ModelPackage.BUSINESS_OBJECT__PARENT, ModelPackage.Literals.BUSINESS_OBJECT__PARENT, true, true);
+		if (parent != null && parent.eIsProxy()) {
+			InternalEObject oldParent = (InternalEObject)parent;
+			parent = (BusinessObject)eResolveProxy(oldParent);
+			if (parent != oldParent) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ModelPackage.BUSINESS_OBJECT__PARENT, oldParent, parent));
+			}
+		}
+		return parent;
 	}
 
 	/**
@@ -198,7 +301,7 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public BusinessObject basicGetParent() {
-		return (BusinessObject)eDynamicGet(ModelPackage.BUSINESS_OBJECT__PARENT, ModelPackage.Literals.BUSINESS_OBJECT__PARENT, false, true);
+		return parent;
 	}
 
 	/**
@@ -207,7 +310,10 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public void setParent(BusinessObject newParent) {
-		eDynamicSet(ModelPackage.BUSINESS_OBJECT__PARENT, ModelPackage.Literals.BUSINESS_OBJECT__PARENT, newParent);
+		BusinessObject oldParent = parent;
+		parent = newParent;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.BUSINESS_OBJECT__PARENT, oldParent, parent));
 	}
 
 	/**
@@ -216,7 +322,7 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public String getXmlName() {
-		return (String)eDynamicGet(ModelPackage.BUSINESS_OBJECT__XML_NAME, ModelPackage.Literals.BUSINESS_OBJECT__XML_NAME, true, true);
+		return xmlName;
 	}
 
 	/**
@@ -225,7 +331,10 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public void setXmlName(String newXmlName) {
-		eDynamicSet(ModelPackage.BUSINESS_OBJECT__XML_NAME, ModelPackage.Literals.BUSINESS_OBJECT__XML_NAME, newXmlName);
+		String oldXmlName = xmlName;
+		xmlName = newXmlName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.BUSINESS_OBJECT__XML_NAME, oldXmlName, xmlName));
 	}
 
 	/**
@@ -234,7 +343,7 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public BigInteger getParseId() {
-		return (BigInteger)eDynamicGet(ModelPackage.BUSINESS_OBJECT__PARSE_ID, ModelPackage.Literals.BUSINESS_OBJECT__PARSE_ID, true, true);
+		return parseId;
 	}
 
 	/**
@@ -243,7 +352,10 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public void setParseId(BigInteger newParseId) {
-		eDynamicSet(ModelPackage.BUSINESS_OBJECT__PARSE_ID, ModelPackage.Literals.BUSINESS_OBJECT__PARSE_ID, newParseId);
+		BigInteger oldParseId = parseId;
+		parseId = newParseId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.BUSINESS_OBJECT__PARSE_ID, oldParseId, parseId));
 	}
 
 	/**
@@ -252,7 +364,15 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public FieldBusinessObject getRelatedField() {
-		return (FieldBusinessObject)eDynamicGet(ModelPackage.BUSINESS_OBJECT__RELATED_FIELD, ModelPackage.Literals.BUSINESS_OBJECT__RELATED_FIELD, true, true);
+		if (relatedField != null && relatedField.eIsProxy()) {
+			InternalEObject oldRelatedField = (InternalEObject)relatedField;
+			relatedField = (FieldBusinessObject)eResolveProxy(oldRelatedField);
+			if (relatedField != oldRelatedField) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ModelPackage.BUSINESS_OBJECT__RELATED_FIELD, oldRelatedField, relatedField));
+			}
+		}
+		return relatedField;
 	}
 
 	/**
@@ -261,7 +381,7 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public FieldBusinessObject basicGetRelatedField() {
-		return (FieldBusinessObject)eDynamicGet(ModelPackage.BUSINESS_OBJECT__RELATED_FIELD, ModelPackage.Literals.BUSINESS_OBJECT__RELATED_FIELD, false, true);
+		return relatedField;
 	}
 
 	/**
@@ -270,7 +390,10 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	 * @generated
 	 */
 	public void setRelatedField(FieldBusinessObject newRelatedField) {
-		eDynamicSet(ModelPackage.BUSINESS_OBJECT__RELATED_FIELD, ModelPackage.Literals.BUSINESS_OBJECT__RELATED_FIELD, newRelatedField);
+		FieldBusinessObject oldRelatedField = relatedField;
+		relatedField = newRelatedField;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.BUSINESS_OBJECT__RELATED_FIELD, oldRelatedField, relatedField));
 	}
 
 	/**
@@ -414,25 +537,47 @@ public class BusinessObjectImpl extends CDOObjectImpl implements BusinessObject 
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case ModelPackage.BUSINESS_OBJECT__NAME:
-				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case ModelPackage.BUSINESS_OBJECT__PACKAGE:
-				return PACKAGE_EDEFAULT == null ? getPackage() != null : !PACKAGE_EDEFAULT.equals(getPackage());
+				return PACKAGE_EDEFAULT == null ? package_ != null : !PACKAGE_EDEFAULT.equals(package_);
 			case ModelPackage.BUSINESS_OBJECT__ATTRIBUTES:
-				return !getAttributes().isEmpty();
+				return attributes != null && !attributes.isEmpty();
 			case ModelPackage.BUSINESS_OBJECT__CONTENT_FIELDS:
-				return !getContentFields().isEmpty();
+				return contentFields != null && !contentFields.isEmpty();
 			case ModelPackage.BUSINESS_OBJECT__CHILDS:
-				return !getChilds().isEmpty();
+				return childs != null && !childs.isEmpty();
 			case ModelPackage.BUSINESS_OBJECT__PARENT:
-				return basicGetParent() != null;
+				return parent != null;
 			case ModelPackage.BUSINESS_OBJECT__XML_NAME:
-				return XML_NAME_EDEFAULT == null ? getXmlName() != null : !XML_NAME_EDEFAULT.equals(getXmlName());
+				return XML_NAME_EDEFAULT == null ? xmlName != null : !XML_NAME_EDEFAULT.equals(xmlName);
 			case ModelPackage.BUSINESS_OBJECT__PARSE_ID:
-				return PARSE_ID_EDEFAULT == null ? getParseId() != null : !PARSE_ID_EDEFAULT.equals(getParseId());
+				return PARSE_ID_EDEFAULT == null ? parseId != null : !PARSE_ID_EDEFAULT.equals(parseId);
 			case ModelPackage.BUSINESS_OBJECT__RELATED_FIELD:
-				return basicGetRelatedField() != null;
+				return relatedField != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", package: ");
+		result.append(package_);
+		result.append(", xmlName: ");
+		result.append(xmlName);
+		result.append(", parseId: ");
+		result.append(parseId);
+		result.append(')');
+		return result.toString();
 	}
 
 } //BusinessObjectImpl

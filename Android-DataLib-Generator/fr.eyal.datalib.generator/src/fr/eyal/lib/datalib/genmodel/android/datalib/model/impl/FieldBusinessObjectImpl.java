@@ -10,7 +10,12 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.FieldBusinessObject;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage;
 
+import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,6 +31,16 @@ import org.eclipse.emf.ecore.EClass;
  * @generated
  */
 public class FieldBusinessObjectImpl extends FieldImpl implements FieldBusinessObject {
+	/**
+	 * The cached value of the '{@link #getContent() <em>Content</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContent()
+	 * @generated
+	 * @ordered
+	 */
+	protected BusinessObject content;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -51,7 +66,15 @@ public class FieldBusinessObjectImpl extends FieldImpl implements FieldBusinessO
 	 * @generated
 	 */
 	public BusinessObject getContent() {
-		return (BusinessObject)eDynamicGet(ModelPackage.FIELD_BUSINESS_OBJECT__CONTENT, ModelPackage.Literals.FIELD_BUSINESS_OBJECT__CONTENT, true, true);
+		if (content != null && content.eIsProxy()) {
+			InternalEObject oldContent = (InternalEObject)content;
+			content = (BusinessObject)eResolveProxy(oldContent);
+			if (content != oldContent) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ModelPackage.FIELD_BUSINESS_OBJECT__CONTENT, oldContent, content));
+			}
+		}
+		return content;
 	}
 
 	/**
@@ -60,7 +83,7 @@ public class FieldBusinessObjectImpl extends FieldImpl implements FieldBusinessO
 	 * @generated
 	 */
 	public BusinessObject basicGetContent() {
-		return (BusinessObject)eDynamicGet(ModelPackage.FIELD_BUSINESS_OBJECT__CONTENT, ModelPackage.Literals.FIELD_BUSINESS_OBJECT__CONTENT, false, true);
+		return content;
 	}
 
 	/**
@@ -69,7 +92,10 @@ public class FieldBusinessObjectImpl extends FieldImpl implements FieldBusinessO
 	 * @generated
 	 */
 	public void setContent(BusinessObject newContent) {
-		eDynamicSet(ModelPackage.FIELD_BUSINESS_OBJECT__CONTENT, ModelPackage.Literals.FIELD_BUSINESS_OBJECT__CONTENT, newContent);
+		BusinessObject oldContent = content;
+		content = newContent;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.FIELD_BUSINESS_OBJECT__CONTENT, oldContent, content));
 	}
 
 	/**
@@ -126,7 +152,7 @@ public class FieldBusinessObjectImpl extends FieldImpl implements FieldBusinessO
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case ModelPackage.FIELD_BUSINESS_OBJECT__CONTENT:
-				return basicGetContent() != null;
+				return content != null;
 		}
 		return super.eIsSet(featureID);
 	}

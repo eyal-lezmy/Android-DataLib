@@ -7,6 +7,7 @@
 package fr.eyal.lib.datalib.genmodel.android.datalib.content.impl;
 
 import fr.eyal.lib.datalib.genmodel.android.AndroidPackage;
+
 import fr.eyal.lib.datalib.genmodel.android.datalib.DatalibPackage;
 
 import fr.eyal.lib.datalib.genmodel.android.datalib.content.ContentFactory;
@@ -23,6 +24,7 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.ModelPackageImpl;
 
 import fr.eyal.lib.datalib.genmodel.android.impl.AndroidPackageImpl;
+
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 

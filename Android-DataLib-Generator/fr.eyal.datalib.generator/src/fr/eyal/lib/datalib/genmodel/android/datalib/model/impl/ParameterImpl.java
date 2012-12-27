@@ -11,9 +11,12 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.content.ParameterType;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter;
 
+import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +33,7 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
  *
  * @generated
  */
-public class ParameterImpl extends CDOObjectImpl implements Parameter {
+public class ParameterImpl extends EObjectImpl implements Parameter {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -40,6 +43,16 @@ public class ParameterImpl extends CDOObjectImpl implements Parameter {
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
@@ -52,6 +65,16 @@ public class ParameterImpl extends CDOObjectImpl implements Parameter {
 	protected static final ParameterType TYPE_EDEFAULT = ParameterType.STRING;
 
 	/**
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected ParameterType type = TYPE_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -60,6 +83,16 @@ public class ParameterImpl extends CDOObjectImpl implements Parameter {
 	 * @ordered
 	 */
 	protected static final String DESCRIPTION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -85,18 +118,8 @@ public class ParameterImpl extends CDOObjectImpl implements Parameter {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getName() {
-		return (String)eDynamicGet(ModelPackage.PARAMETER__NAME, ModelPackage.Literals.PARAMETER__NAME, true, true);
+		return name;
 	}
 
 	/**
@@ -105,7 +128,10 @@ public class ParameterImpl extends CDOObjectImpl implements Parameter {
 	 * @generated
 	 */
 	public void setName(String newName) {
-		eDynamicSet(ModelPackage.PARAMETER__NAME, ModelPackage.Literals.PARAMETER__NAME, newName);
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.PARAMETER__NAME, oldName, name));
 	}
 
 	/**
@@ -114,7 +140,7 @@ public class ParameterImpl extends CDOObjectImpl implements Parameter {
 	 * @generated
 	 */
 	public ParameterType getType() {
-		return (ParameterType)eDynamicGet(ModelPackage.PARAMETER__TYPE, ModelPackage.Literals.PARAMETER__TYPE, true, true);
+		return type;
 	}
 
 	/**
@@ -123,7 +149,10 @@ public class ParameterImpl extends CDOObjectImpl implements Parameter {
 	 * @generated
 	 */
 	public void setType(ParameterType newType) {
-		eDynamicSet(ModelPackage.PARAMETER__TYPE, ModelPackage.Literals.PARAMETER__TYPE, newType);
+		ParameterType oldType = type;
+		type = newType == null ? TYPE_EDEFAULT : newType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.PARAMETER__TYPE, oldType, type));
 	}
 
 	/**
@@ -132,7 +161,7 @@ public class ParameterImpl extends CDOObjectImpl implements Parameter {
 	 * @generated
 	 */
 	public String getDescription() {
-		return (String)eDynamicGet(ModelPackage.PARAMETER__DESCRIPTION, ModelPackage.Literals.PARAMETER__DESCRIPTION, true, true);
+		return description;
 	}
 
 	/**
@@ -141,7 +170,10 @@ public class ParameterImpl extends CDOObjectImpl implements Parameter {
 	 * @generated
 	 */
 	public void setDescription(String newDescription) {
-		eDynamicSet(ModelPackage.PARAMETER__DESCRIPTION, ModelPackage.Literals.PARAMETER__DESCRIPTION, newDescription);
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.PARAMETER__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -213,13 +245,33 @@ public class ParameterImpl extends CDOObjectImpl implements Parameter {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case ModelPackage.PARAMETER__NAME:
-				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case ModelPackage.PARAMETER__TYPE:
-				return getType() != TYPE_EDEFAULT;
+				return type != TYPE_EDEFAULT;
 			case ModelPackage.PARAMETER__DESCRIPTION:
-				return DESCRIPTION_EDEFAULT == null ? getDescription() != null : !DESCRIPTION_EDEFAULT.equals(getDescription());
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", type: ");
+		result.append(type);
+		result.append(", description: ");
+		result.append(description);
+		result.append(')');
+		return result.toString();
 	}
 
 } //ParameterImpl

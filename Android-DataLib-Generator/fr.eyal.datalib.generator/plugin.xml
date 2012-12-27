@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eyal.fr/android"
+            class="android.AndroidPackage"
+            genModel="metamodel/datalib.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eyal.fr/android/datalib"
+            class="android.datalib.DatalibPackage"
+            genModel="metamodel/datalib.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eyal.fr/android/datalib/content"
+            class="android.datalib.content.ContentPackage"
+            genModel="metamodel/datalib.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eyal.fr/android/datalib/model"
+            class="android.datalib.model.ModelPackage"
+            genModel="metamodel/datalib.genmodel"/>
+   </extension>
+
+</plugin>

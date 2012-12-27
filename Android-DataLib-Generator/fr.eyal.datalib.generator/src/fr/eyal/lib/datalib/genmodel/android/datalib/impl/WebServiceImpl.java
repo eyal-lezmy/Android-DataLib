@@ -18,6 +18,7 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.model.ResponseBusinessObject
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -25,9 +26,12 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.EObjectImpl;
 
-import org.eclipse.emf.internal.cdo.CDOObjectImpl;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -50,7 +54,7 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
  *
  * @generated
  */
-public class WebServiceImpl extends CDOObjectImpl implements WebService {
+public class WebServiceImpl extends EObjectImpl implements WebService {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -60,6 +64,16 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getPackage() <em>Package</em>}' attribute.
@@ -72,6 +86,36 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	protected static final String PACKAGE_EDEFAULT = null;
 
 	/**
+	 * The cached value of the '{@link #getPackage() <em>Package</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPackage()
+	 * @generated
+	 * @ordered
+	 */
+	protected String package_ = PACKAGE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getMethod() <em>Method</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMethod()
+	 * @generated
+	 * @ordered
+	 */
+	protected HttpMethod method;
+
+	/**
+	 * The cached value of the '{@link #getParseType() <em>Parse Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParseType()
+	 * @generated
+	 * @ordered
+	 */
+	protected ParseType parseType;
+
+	/**
 	 * The default value of the '{@link #getUrl() <em>Url</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -82,6 +126,46 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	protected static final String URL_EDEFAULT = null;
 
 	/**
+	 * The cached value of the '{@link #getUrl() <em>Url</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUrl()
+	 * @generated
+	 * @ordered
+	 */
+	protected String url = URL_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getOptions() <em>Options</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOptions()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<DataLibOption> options;
+
+	/**
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Parameter> parameters;
+
+	/**
+	 * The cached value of the '{@link #getContentResponse() <em>Content Response</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getContentResponse()
+	 * @generated
+	 * @ordered
+	 */
+	protected ResponseBusinessObject contentResponse;
+
+	/**
 	 * The default value of the '{@link #isCached() <em>Cached</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -90,6 +174,16 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @ordered
 	 */
 	protected static final boolean CACHED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isCached() <em>Cached</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isCached()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean cached = CACHED_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -115,18 +209,8 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	protected int eStaticFeatureCount() {
-		return 0;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getName() {
-		return (String)eDynamicGet(DatalibPackage.WEB_SERVICE__NAME, DatalibPackage.Literals.WEB_SERVICE__NAME, true, true);
+		return name;
 	}
 
 	/**
@@ -135,7 +219,10 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public void setName(String newName) {
-		eDynamicSet(DatalibPackage.WEB_SERVICE__NAME, DatalibPackage.Literals.WEB_SERVICE__NAME, newName);
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.WEB_SERVICE__NAME, oldName, name));
 	}
 
 	/**
@@ -144,7 +231,7 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public String getPackage() {
-		return (String)eDynamicGet(DatalibPackage.WEB_SERVICE__PACKAGE, DatalibPackage.Literals.WEB_SERVICE__PACKAGE, true, true);
+		return package_;
 	}
 
 	/**
@@ -153,7 +240,10 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public void setPackage(String newPackage) {
-		eDynamicSet(DatalibPackage.WEB_SERVICE__PACKAGE, DatalibPackage.Literals.WEB_SERVICE__PACKAGE, newPackage);
+		String oldPackage = package_;
+		package_ = newPackage;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.WEB_SERVICE__PACKAGE, oldPackage, package_));
 	}
 
 	/**
@@ -162,7 +252,7 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public HttpMethod getMethod() {
-		return (HttpMethod)eDynamicGet(DatalibPackage.WEB_SERVICE__METHOD, DatalibPackage.Literals.WEB_SERVICE__METHOD, true, true);
+		return method;
 	}
 
 	/**
@@ -171,7 +261,10 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public void setMethod(HttpMethod newMethod) {
-		eDynamicSet(DatalibPackage.WEB_SERVICE__METHOD, DatalibPackage.Literals.WEB_SERVICE__METHOD, newMethod);
+		HttpMethod oldMethod = method;
+		method = newMethod == null ? null : newMethod;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.WEB_SERVICE__METHOD, oldMethod, method));
 	}
 
 	/**
@@ -180,7 +273,7 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public ParseType getParseType() {
-		return (ParseType)eDynamicGet(DatalibPackage.WEB_SERVICE__PARSE_TYPE, DatalibPackage.Literals.WEB_SERVICE__PARSE_TYPE, true, true);
+		return parseType;
 	}
 
 	/**
@@ -189,7 +282,10 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public void setParseType(ParseType newParseType) {
-		eDynamicSet(DatalibPackage.WEB_SERVICE__PARSE_TYPE, DatalibPackage.Literals.WEB_SERVICE__PARSE_TYPE, newParseType);
+		ParseType oldParseType = parseType;
+		parseType = newParseType == null ? null : newParseType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.WEB_SERVICE__PARSE_TYPE, oldParseType, parseType));
 	}
 
 	/**
@@ -198,7 +294,7 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public String getUrl() {
-		return (String)eDynamicGet(DatalibPackage.WEB_SERVICE__URL, DatalibPackage.Literals.WEB_SERVICE__URL, true, true);
+		return url;
 	}
 
 	/**
@@ -207,7 +303,10 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public void setUrl(String newUrl) {
-		eDynamicSet(DatalibPackage.WEB_SERVICE__URL, DatalibPackage.Literals.WEB_SERVICE__URL, newUrl);
+		String oldUrl = url;
+		url = newUrl;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.WEB_SERVICE__URL, oldUrl, url));
 	}
 
 	/**
@@ -215,9 +314,11 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<DataLibOption> getOptions() {
-		return (EList<DataLibOption>)eDynamicGet(DatalibPackage.WEB_SERVICE__OPTIONS, DatalibPackage.Literals.WEB_SERVICE__OPTIONS, true, true);
+		if (options == null) {
+			options = new EDataTypeUniqueEList<DataLibOption>(DataLibOption.class, this, DatalibPackage.WEB_SERVICE__OPTIONS);
+		}
+		return options;
 	}
 
 	/**
@@ -225,9 +326,11 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	public EList<Parameter> getParameters() {
-		return (EList<Parameter>)eDynamicGet(DatalibPackage.WEB_SERVICE__PARAMETERS, DatalibPackage.Literals.WEB_SERVICE__PARAMETERS, true, true);
+		if (parameters == null) {
+			parameters = new EObjectContainmentEList<Parameter>(Parameter.class, this, DatalibPackage.WEB_SERVICE__PARAMETERS);
+		}
+		return parameters;
 	}
 
 	/**
@@ -236,7 +339,7 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public ResponseBusinessObject getContentResponse() {
-		return (ResponseBusinessObject)eDynamicGet(DatalibPackage.WEB_SERVICE__CONTENT_RESPONSE, DatalibPackage.Literals.WEB_SERVICE__CONTENT_RESPONSE, true, true);
+		return contentResponse;
 	}
 
 	/**
@@ -245,7 +348,12 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public NotificationChain basicSetContentResponse(ResponseBusinessObject newContentResponse, NotificationChain msgs) {
-		msgs = eDynamicInverseAdd((InternalEObject)newContentResponse, DatalibPackage.WEB_SERVICE__CONTENT_RESPONSE, msgs);
+		ResponseBusinessObject oldContentResponse = contentResponse;
+		contentResponse = newContentResponse;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DatalibPackage.WEB_SERVICE__CONTENT_RESPONSE, oldContentResponse, newContentResponse);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
 		return msgs;
 	}
 
@@ -255,7 +363,17 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public void setContentResponse(ResponseBusinessObject newContentResponse) {
-		eDynamicSet(DatalibPackage.WEB_SERVICE__CONTENT_RESPONSE, DatalibPackage.Literals.WEB_SERVICE__CONTENT_RESPONSE, newContentResponse);
+		if (newContentResponse != contentResponse) {
+			NotificationChain msgs = null;
+			if (contentResponse != null)
+				msgs = ((InternalEObject)contentResponse).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DatalibPackage.WEB_SERVICE__CONTENT_RESPONSE, null, msgs);
+			if (newContentResponse != null)
+				msgs = ((InternalEObject)newContentResponse).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DatalibPackage.WEB_SERVICE__CONTENT_RESPONSE, null, msgs);
+			msgs = basicSetContentResponse(newContentResponse, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.WEB_SERVICE__CONTENT_RESPONSE, newContentResponse, newContentResponse));
 	}
 
 	/**
@@ -264,7 +382,7 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public boolean isCached() {
-		return (Boolean)eDynamicGet(DatalibPackage.WEB_SERVICE__CACHED, DatalibPackage.Literals.WEB_SERVICE__CACHED, true, true);
+		return cached;
 	}
 
 	/**
@@ -273,7 +391,10 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	 * @generated
 	 */
 	public void setCached(boolean newCached) {
-		eDynamicSet(DatalibPackage.WEB_SERVICE__CACHED, DatalibPackage.Literals.WEB_SERVICE__CACHED, newCached);
+		boolean oldCached = cached;
+		cached = newCached;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DatalibPackage.WEB_SERVICE__CACHED, oldCached, cached));
 	}
 
 	/**
@@ -412,25 +533,53 @@ public class WebServiceImpl extends CDOObjectImpl implements WebService {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case DatalibPackage.WEB_SERVICE__NAME:
-				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case DatalibPackage.WEB_SERVICE__PACKAGE:
-				return PACKAGE_EDEFAULT == null ? getPackage() != null : !PACKAGE_EDEFAULT.equals(getPackage());
+				return PACKAGE_EDEFAULT == null ? package_ != null : !PACKAGE_EDEFAULT.equals(package_);
 			case DatalibPackage.WEB_SERVICE__METHOD:
-				return getMethod() != null;
+				return method != null;
 			case DatalibPackage.WEB_SERVICE__PARSE_TYPE:
-				return getParseType() != null;
+				return parseType != null;
 			case DatalibPackage.WEB_SERVICE__URL:
-				return URL_EDEFAULT == null ? getUrl() != null : !URL_EDEFAULT.equals(getUrl());
+				return URL_EDEFAULT == null ? url != null : !URL_EDEFAULT.equals(url);
 			case DatalibPackage.WEB_SERVICE__OPTIONS:
-				return !getOptions().isEmpty();
+				return options != null && !options.isEmpty();
 			case DatalibPackage.WEB_SERVICE__PARAMETERS:
-				return !getParameters().isEmpty();
+				return parameters != null && !parameters.isEmpty();
 			case DatalibPackage.WEB_SERVICE__CONTENT_RESPONSE:
-				return getContentResponse() != null;
+				return contentResponse != null;
 			case DatalibPackage.WEB_SERVICE__CACHED:
-				return isCached() != CACHED_EDEFAULT;
+				return cached != CACHED_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", package: ");
+		result.append(package_);
+		result.append(", method: ");
+		result.append(method);
+		result.append(", parseType: ");
+		result.append(parseType);
+		result.append(", url: ");
+		result.append(url);
+		result.append(", options: ");
+		result.append(options);
+		result.append(", cached: ");
+		result.append(cached);
+		result.append(')');
+		return result.toString();
 	}
 
 } //WebServiceImpl

@@ -31,7 +31,7 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
 	 */
 	public static ModelFactory init() {
 		try {
-			ModelFactory theModelFactory = (ModelFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eyal.fr/datalib/android/model"); 
+			ModelFactory theModelFactory = (ModelFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eyal.fr/android/datalib/model"); 
 			if (theModelFactory != null) {
 				return theModelFactory;
 			}
@@ -60,13 +60,13 @@ public class ModelFactoryImpl extends EFactoryImpl implements ModelFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case ModelPackage.BUSINESS_OBJECT: return (EObject)createBusinessObject();
-			case ModelPackage.BUSINESS_OBJECT_DAO: return (EObject)createBusinessObjectDAO();
-			case ModelPackage.RESPONSE_BUSINESS_OBJECT: return (EObject)createResponseBusinessObject();
-			case ModelPackage.RESPONSE_BUSINESS_OBJECT_DAO: return (EObject)createResponseBusinessObjectDAO();
-			case ModelPackage.FIELD: return (EObject)createField();
-			case ModelPackage.PARAMETER: return (EObject)createParameter();
-			case ModelPackage.FIELD_BUSINESS_OBJECT: return (EObject)createFieldBusinessObject();
+			case ModelPackage.BUSINESS_OBJECT: return createBusinessObject();
+			case ModelPackage.BUSINESS_OBJECT_DAO: return createBusinessObjectDAO();
+			case ModelPackage.RESPONSE_BUSINESS_OBJECT: return createResponseBusinessObject();
+			case ModelPackage.RESPONSE_BUSINESS_OBJECT_DAO: return createResponseBusinessObjectDAO();
+			case ModelPackage.FIELD: return createField();
+			case ModelPackage.PARAMETER: return createParameter();
+			case ModelPackage.FIELD_BUSINESS_OBJECT: return createFieldBusinessObject();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
