@@ -223,10 +223,10 @@ public static final int CODE_[prefix/][aBusinessObject.javaName.toUpper()/] = [a
 [template public addImports (aProject : DataLibProject) ]
 [for (webService : WebService | aProject.webservices) ]
 [if (webService.cached)]
-import [webService.contentResponse._package/].model.[webService.contentResponse.name.toLower()/].[webService.contentResponse.javaName.toUpperFirst()/];
-	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
+import [webService.contentResponse._package/].model.[webService.contentResponse.name.toLower()/].*;
+	[comment][for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [addImports (businessObject) /]
-	[/for]
+	[/for][/comment]
 [/if]
 [/for]
 [/template]
