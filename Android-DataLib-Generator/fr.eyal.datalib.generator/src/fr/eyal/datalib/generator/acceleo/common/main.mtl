@@ -6,6 +6,7 @@
 [import fr::eyal::datalib::generator::acceleo::common::BusinessObjectDAO/]
 [import fr::eyal::datalib::generator::acceleo::common::DataManager/]
 [import fr::eyal::datalib::generator::acceleo::common::Provider/]
+[import fr::eyal::datalib::generator::acceleo::common::Activity/]
 [import fr::eyal::datalib::generator::acceleo::common::ResponseBusinessObject/]
 [import fr::eyal::datalib::generator::acceleo::common::ResponseBusinessObjectBase/]
 [import fr::eyal::datalib::generator::acceleo::common::ResponseBusinessObjectBaseDAO/]
@@ -22,6 +23,7 @@
 	[aDataLibProject.Provider()/]
 	[aDataLibProject.service()/]
 	[aDataLibProject.serviceHelper()/]
+	[aDataLibProject.activity()/]
 
 	[for (aWebService : WebService | aDataLibProject.webservices)]
 		[mainWebService(aWebService)/]
