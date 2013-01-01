@@ -24,10 +24,12 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import fr.eyal.datalib.generator.acceleo.common.Main;
+import fr.eyal.lib.datalib.genmodel.android.AndroidPackage;
 import fr.eyal.lib.datalib.genmodel.android.datalib.DataLibProject;
 import fr.eyal.lib.datalib.genmodel.android.datalib.DatalibFactory;
 import fr.eyal.lib.datalib.genmodel.android.datalib.DatalibPackage;
 import fr.eyal.lib.datalib.genmodel.android.datalib.WebService;
+import fr.eyal.lib.datalib.genmodel.android.datalib.content.ContentPackage;
 import fr.eyal.lib.datalib.genmodel.android.datalib.content.DataLibOption;
 import fr.eyal.lib.datalib.genmodel.android.datalib.content.HttpMethod;
 import fr.eyal.lib.datalib.genmodel.android.datalib.content.ParameterType;
@@ -119,7 +121,6 @@ public class DataLibGenerator {
 		
 	    // Obtain a new resource set
 	    ResourceSet resSet = new ResourceSetImpl();
-	    resSet.getPackageRegistry().put("http://www.eyal.fr/android/datalib", DatalibPackage.eINSTANCE);
 	    resSet.getLoadOptions().put(XMIResource.OPTION_SCHEMA_LOCATION, true);
 	    // Create a resource
 	    URI uri = URI.createURI(modelPath);
@@ -158,11 +159,11 @@ public class DataLibGenerator {
 	 * 
 	 * @return the BusinessObject
 	 */
-	public static ResponseBusinessObject createResponseBusinessObject(ModelFactory modelFactory, String name, String packageName, BigInteger parseId, String xmlName, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields) {
+	public static ResponseBusinessObject createResponseBusinessObject(ModelFactory modelFactory, String name, String packageName, BigInteger parseId, String xmlName, String javaName, String javaTag, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields) {
 		ResponseBusinessObject responseBusinessObject = modelFactory.createResponseBusinessObject();
 
 		//we fill the BusinessObject
-		fillBusinessObject(responseBusinessObject, name, packageName, parseId, xmlName, parent, childs, attributes, contentFields);
+		fillBusinessObject(responseBusinessObject, name, packageName, parseId, xmlName, javaName, javaTag, parent, childs, attributes, contentFields);
 		
 		return responseBusinessObject;
 	}
@@ -170,11 +171,11 @@ public class DataLibGenerator {
 	/**
 	 * @param modelFactory
 	 */
-	public static BusinessObject createBusinessObject(ModelFactory modelFactory, String name, String packageName, BigInteger parseId, String xmlName, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields) {
+	public static BusinessObject createBusinessObject(ModelFactory modelFactory, String name, String packageName, BigInteger parseId, String xmlName, String javaName, String javaTag, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields) {
 		BusinessObject businessObject = modelFactory.createBusinessObject();
 
 		//we fill the BusinessObject
-		fillBusinessObject(businessObject, name, packageName, parseId, xmlName, parent, childs, attributes, contentFields);
+		fillBusinessObject(businessObject, name, packageName, parseId, xmlName, javaName, javaTag, parent, childs, attributes, contentFields);
 		
 		return businessObject;
 	}
@@ -182,11 +183,11 @@ public class DataLibGenerator {
 	/**
 	 * @param modelFactory
 	 */
-	public static BusinessObjectDAO createBusinessObjectDAO(ModelFactory modelFactory, String name, String packageName, BigInteger parseId, String xmlName, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields, DataLibProject project) {
+	public static BusinessObjectDAO createBusinessObjectDAO(ModelFactory modelFactory, String name, String packageName, BigInteger parseId, String xmlName, String javaName, String javaTag, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields, DataLibProject project) {
 		BusinessObjectDAO businessObject = modelFactory.createBusinessObjectDAO();
 
 		//we fill the BusinessObject
-		fillBusinessObjectDAO(businessObject, name, packageName, parseId, xmlName, parent, childs, attributes, contentFields, project);
+		fillBusinessObjectDAO(businessObject, name, packageName, parseId, xmlName, javaName, javaTag, parent, childs, attributes, contentFields, project);
 		
 		return businessObject;
 	}
@@ -195,11 +196,11 @@ public class DataLibGenerator {
 	/**
 	 * @param modelFactory
 	 */
-	public static ResponseBusinessObjectDAO createResponseBusinessObjectDAO(ModelFactory modelFactory, String name, String packageName, BigInteger parseId, String xmlName, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields, DataLibProject project) {
+	public static ResponseBusinessObjectDAO createResponseBusinessObjectDAO(ModelFactory modelFactory, String name, String packageName, BigInteger parseId, String xmlName, String javaName, String javaTag, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields, DataLibProject project) {
 		ResponseBusinessObjectDAO businessObject = modelFactory.createResponseBusinessObjectDAO();
 
 		//we fill the BusinessObject
-		fillBusinessObjectDAO(businessObject, name, packageName, parseId, xmlName, parent, childs, attributes, contentFields, project);
+		fillBusinessObjectDAO(businessObject, name, packageName, parseId, xmlName, javaName, javaTag, parent, childs, attributes, contentFields, project);
 		
 		return businessObject;
 	}
@@ -218,9 +219,9 @@ public class DataLibGenerator {
 	 * @param contentFields
 	 * @param project
 	 */
-	public static void fillBusinessObjectDAO(BusinessObjectDAO businessObject, String name, String packageName, BigInteger parseId, String xmlName, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields, DataLibProject project) {
+	public static void fillBusinessObjectDAO(BusinessObjectDAO businessObject, String name, String packageName, BigInteger parseId, String xmlName, String javaName, String javaTag, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields, DataLibProject project) {
 
-		fillBusinessObject(businessObject, name, packageName, parseId, xmlName, parent, childs, attributes, contentFields);
+		fillBusinessObject(businessObject, name, packageName, parseId, xmlName, javaName, javaTag, parent, childs, attributes, contentFields);
 		businessObject.setProject(project);
 	}
 
@@ -237,13 +238,15 @@ public class DataLibGenerator {
 	 * @param attributes
 	 * @param contentFields
 	 */
-	public static void fillBusinessObject(BusinessObject businessObject, String name, String packageName, BigInteger parseId, String xmlName, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields) {
+	public static void fillBusinessObject(BusinessObject businessObject, String name, String packageName, BigInteger parseId, String xmlName, String javaName, String javaTag, BusinessObject parent, ArrayList<BusinessObject> childs, ArrayList<Field> attributes, ArrayList<Field> contentFields) {
 
 		businessObject.setName(name);
 		businessObject.setPackage(packageName);
 		businessObject.setParseId(parseId);
 		businessObject.setXmlName(xmlName);
-		
+		businessObject.setJavaName(javaName);
+		businessObject.setJavaTag(javaTag);
+				
 		businessObject.setParent(parent);
 		if(childs != null) businessObject.getChilds().addAll(childs);
 		if(attributes != null) businessObject.getAttributes().addAll(attributes);
@@ -272,11 +275,13 @@ public class DataLibGenerator {
 	 * @param description
 	 * @return
 	 */
-	public static Field createField(ModelFactory modelFactory, String name, ParameterType type, String description, String defaultValue, String xmlName, BigInteger parseId, ArrayList<Field> xmlAttributes, BusinessObject businessObject, ArrayList<Field> xmlContentFields){
+	public static Field createField(ModelFactory modelFactory, String name, ParameterType type, String description, String defaultValue, String xmlName, String javaName, String javaTag, BigInteger parseId, ArrayList<Field> xmlAttributes, BusinessObject businessObject, ArrayList<Field> xmlContentFields){
 		Field field = modelFactory.createField();
 		fillParameter(field, name, type, description);
 		field.setDefaultValue(defaultValue);
 		field.setXmlName(xmlName);
+		field.setJavaName(javaName);
+		field.setJavaTag(javaTag);
 		field.setParseId(parseId);
 		field.setBusinessObject(businessObject);
 		if(xmlAttributes != null) field.getXmlAttributes().addAll(xmlAttributes);
@@ -301,7 +306,7 @@ public class DataLibGenerator {
 	 * @param content
 	 * @return
 	 */
-	public static FieldBusinessObject createFieldBusinessObject(ModelFactory modelFactory, String name, ParameterType type, String description, String defaultValue, String xmlName, BigInteger parseId, ArrayList<Field> xmlAttributes, BusinessObject businessObject, ArrayList<Field> xmlContentFields, BusinessObject content, Field xmlParent){
+	public static FieldBusinessObject createFieldBusinessObject(ModelFactory modelFactory, String name, ParameterType type, String description, String defaultValue, String xmlName, String javaName, String javaTag, BigInteger parseId, ArrayList<Field> xmlAttributes, BusinessObject businessObject, ArrayList<Field> xmlContentFields, BusinessObject content, Field xmlParent){
 		
 		FieldBusinessObject field = modelFactory.createFieldBusinessObject();
 		fillParameter(field, name, type, description);
@@ -309,6 +314,9 @@ public class DataLibGenerator {
 		field.setXmlName(xmlName);
 		field.setParseId(parseId);
 		field.setBusinessObject(businessObject);
+		field.setJavaName(javaName);
+		field.setJavaTag(javaTag);
+		
 		if(xmlAttributes != null) field.getXmlAttributes().addAll(xmlAttributes);
 		if(xmlContentFields != null) field.getXmlContentFields().addAll(xmlContentFields);
 

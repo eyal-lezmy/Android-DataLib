@@ -42,6 +42,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldImpl#getParseId <em>Parse Id</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldImpl#getXmlParent <em>Xml Parent</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldImpl#getRelatedField <em>Related Field</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldImpl#getJavaName <em>Java Name</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldImpl#getJavaTag <em>Java Tag</em>}</li>
  * </ul>
  * </p>
  *
@@ -157,6 +159,46 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * @ordered
 	 */
 	protected Field relatedField;
+
+	/**
+	 * The default value of the '{@link #getJavaName() <em>Java Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJavaName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String JAVA_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getJavaName() <em>Java Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJavaName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String javaName = JAVA_NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getJavaTag() <em>Java Tag</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJavaTag()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String JAVA_TAG_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getJavaTag() <em>Java Tag</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJavaTag()
+	 * @generated
+	 * @ordered
+	 */
+	protected String javaTag = JAVA_TAG_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -383,6 +425,48 @@ public class FieldImpl extends ParameterImpl implements Field {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getJavaName() {
+		return javaName;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setJavaName(String newJavaName) {
+		String oldJavaName = javaName;
+		javaName = newJavaName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.FIELD__JAVA_NAME, oldJavaName, javaName));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getJavaTag() {
+		return javaTag;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setJavaTag(String newJavaTag) {
+		String oldJavaTag = javaTag;
+		javaTag = newJavaTag;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.FIELD__JAVA_TAG, oldJavaTag, javaTag));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -421,6 +505,10 @@ public class FieldImpl extends ParameterImpl implements Field {
 			case ModelPackage.FIELD__RELATED_FIELD:
 				if (resolve) return getRelatedField();
 				return basicGetRelatedField();
+			case ModelPackage.FIELD__JAVA_NAME:
+				return getJavaName();
+			case ModelPackage.FIELD__JAVA_TAG:
+				return getJavaTag();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -460,6 +548,12 @@ public class FieldImpl extends ParameterImpl implements Field {
 			case ModelPackage.FIELD__RELATED_FIELD:
 				setRelatedField((Field)newValue);
 				return;
+			case ModelPackage.FIELD__JAVA_NAME:
+				setJavaName((String)newValue);
+				return;
+			case ModelPackage.FIELD__JAVA_TAG:
+				setJavaTag((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -496,6 +590,12 @@ public class FieldImpl extends ParameterImpl implements Field {
 			case ModelPackage.FIELD__RELATED_FIELD:
 				setRelatedField((Field)null);
 				return;
+			case ModelPackage.FIELD__JAVA_NAME:
+				setJavaName(JAVA_NAME_EDEFAULT);
+				return;
+			case ModelPackage.FIELD__JAVA_TAG:
+				setJavaTag(JAVA_TAG_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -524,6 +624,10 @@ public class FieldImpl extends ParameterImpl implements Field {
 				return xmlParent != null;
 			case ModelPackage.FIELD__RELATED_FIELD:
 				return relatedField != null;
+			case ModelPackage.FIELD__JAVA_NAME:
+				return JAVA_NAME_EDEFAULT == null ? javaName != null : !JAVA_NAME_EDEFAULT.equals(javaName);
+			case ModelPackage.FIELD__JAVA_TAG:
+				return JAVA_TAG_EDEFAULT == null ? javaTag != null : !JAVA_TAG_EDEFAULT.equals(javaTag);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -544,6 +648,10 @@ public class FieldImpl extends ParameterImpl implements Field {
 		result.append(xmlName);
 		result.append(", parseId: ");
 		result.append(parseId);
+		result.append(", javaName: ");
+		result.append(javaName);
+		result.append(", javaTag: ");
+		result.append(javaTag);
 		result.append(')');
 		return result.toString();
 	}

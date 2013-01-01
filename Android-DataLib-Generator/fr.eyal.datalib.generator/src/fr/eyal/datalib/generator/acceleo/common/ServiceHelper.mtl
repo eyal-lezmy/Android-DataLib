@@ -76,8 +76,12 @@ public class [aProject.name.toUpperFirst()/]ServiceHelper extends ServiceHelper 
 		//we prepare the parameters
         final ParameterMap params = new ParameterMap();
 		[for (parameter : Parameter | webService.parameters)]
-		if ([parameter.name.toLowerFirst()/] != null)
+		[if (parameter.type = ParameterType::String)]
+        if ([parameter.name.toLowerFirst()/] != null)
         	params.put("[parameter.name/]", [parameter.name.toLowerFirst()/]);
+		[else]
+		params.put("[parameter.name/]", String.valueOf([parameter.name.toLowerFirst()/]));
+		[/if]
 		[/for]
         
         return launchRequest(options, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.contentResponse.name.toUpper()/], params, [aProject.name.toUpperFirst()/]Service.class, URL_[webService.contentResponse.name.toUpper()/]);

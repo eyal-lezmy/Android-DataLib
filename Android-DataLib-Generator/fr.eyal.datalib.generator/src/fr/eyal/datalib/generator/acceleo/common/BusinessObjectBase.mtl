@@ -6,22 +6,23 @@
 [template public businessObjectBase(aBusinessObject : BusinessObject){
 _package:String = aBusinessObject._package+'.model.'+getPackage(aBusinessObject);
 _directory:String = getDirectoryFromPackage(_package);
+_class:String = aBusinessObject.javaName.toUpperFirst();
 }]
-[file (_directory + getCompleteNameToUpperFirst(aBusinessObject, '') + 'Base.java', false, 'UTF-8')]
+[file (_directory + _class + 'Base.java', false, 'UTF-8')]
 package [_package/];
 
-[comment TODO add the ArrayList import /]
+import java.util.ArrayList;
 import android.os.Parcel;
 import android.os.Parcelable;
 import fr.eyal.lib.data.model.BusinessObject;
 
-public class [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base implements BusinessObject {
+public class [_class/]Base implements BusinessObject {
 
-    private static final String TAG = [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base.class.getSimpleName();
+    private static final String TAG = [_class/]Base.class.getSimpleName();
 
 	[declareFields(aBusinessObject)/]
 
-    public [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base() {
+    public [_class/]Base() {
         super();
     }
 

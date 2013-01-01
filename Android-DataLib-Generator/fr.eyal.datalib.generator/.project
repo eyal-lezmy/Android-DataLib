@@ -25,7 +25,7 @@
 			<arguments>
 				<dictionary>
 					<key>compilation.kind</key>
-					<value>compilation.platform.resource</value>
+					<value>compilation.absolute.path</value>
 				</dictionary>
 				<dictionary>
 					<key>compliance</key>
@@ -33,7 +33,7 @@
 				</dictionary>
 				<dictionary>
 					<key>resource.kind</key>
-					<value>binary</value>
+					<value>xmi</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>

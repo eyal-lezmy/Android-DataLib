@@ -1,5 +1,5 @@
 [comment encoding = UTF-8 /]
-[module BusinessObjectTool('http://www.eyal.fr/android')]
+[module BusinessObjectTool('http://www.eyal.fr/android/datalib')]
 
 [template public declareFields (aBusinessObject : BusinessObject) post (trim()) ]
 [if (aBusinessObject.attributes->size() > 0)]
@@ -23,7 +23,7 @@
 
 [template public declareChilds (aBusinessObject : BusinessObject) post (trim())]
 [for (child : BusinessObject | aBusinessObject.childs)]
-public ArrayList<[getCompleteNameToUpperFirst(child, '')/]> [getCompleteNameToLowerFirst(child, '')/];
+public ArrayList<[child.javaName.toUpperFirst()/]> [child.javaName.toLowerFirst()/];
 [/for]
 [/template]
 
@@ -32,15 +32,15 @@ public ArrayList<[getCompleteNameToUpperFirst(child, '')/]> [getCompleteNameToLo
 [comment]we check if a default value has been set[/comment]
 [if (field.defaultValue <> null)]
 [if (field.type = ParameterType::String)]
-public String [field.name.toLowerFirst()/] = "[field.defaultValue/]";
+public String [field.javaName.toLowerFirst()/] = "[field.defaultValue/]";
 [else]
-public [field.type/] [field.name.toLowerFirst()/] = [field.defaultValue/];
+public [field.type/] [field.javaName.toLowerFirst()/] = [field.defaultValue/];
 [/if]
 [else]
 [if (field.type = ParameterType::String)]
-public String [field.name.toLowerFirst()/];
+public String [field.javaName.toLowerFirst()/];
 [else]
-public [field.type/] [field.name.toLowerFirst()/];
+public [field.type/] [field.javaName.toLowerFirst()/];
 [/if]
 [/if]
 [/for]
@@ -53,15 +53,15 @@ public [field.type/] [field.name.toLowerFirst()/];
 	[if (field.type = ParameterType::String)]
 public String attr[field.name.toUpperFirst()/] = "[field.defaultValue/]";
 	[elseif (field.defaultValue <> '')]
-public [field.type/] attr[field.name.toUpperFirst()/] = [field.defaultValue/];
+public [field.type/] attr[field.javaName.toUpperFirst()/] = [field.defaultValue/];
 	[else]
-public [field.type/] attr[field.name.toUpperFirst()/];
+public [field.type/] attr[field.javaName.toUpperFirst()/];
 	[/if]
 [else]
 	[if (field.type = ParameterType::String)]
-public String [field.name.toLowerFirst()/];
+public String [field.javaName.toLowerFirst()/];
 	[else]
-public [field.type/] [field.name.toLowerFirst()/];
+public [field.type/] [field.javaName.toLowerFirst()/];
 	[/if]
 [/if]
 [/for]
@@ -77,7 +77,7 @@ endif/]
 [/template]
 
 [template public readParcel (aBusinessObject : BusinessObject, isDao : Boolean, isResponse : Boolean) post (trim())]
-public [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base(final Parcel in) {
+public [aBusinessObject.javaName.toUpperFirst()/]Base(final Parcel in) {
 	[if (isDao)]
 	[if (isResponse)]
 	// ResponseBusinessObject DAO
@@ -102,13 +102,13 @@ public [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base(final Parcel in) 
 	
 	[/if]
 	[if (aBusinessObject.childs->size() > 0)]
-	//list of childs
-	final Parcelable['['/]] items;
+	//list of children
+	Parcelable['['/]] items;[comment]No final qualification here because if there is several childs the items variable is reasigned[/comment] 
 	[for (child : BusinessObject | aBusinessObject.childs)]
-	items = in.readParcelableArray([getCompleteNameToUpperFirst(child, '')/].class.getClassLoader());
-	[getCompleteNameToLowerFirst(child, '')/] = new ArrayList<[getCompleteNameToUpperFirst(child, '')/]>();
+	items = in.readParcelableArray([child.javaName.toUpperFirst()/].class.getClassLoader());
+	[child.javaName.toLowerFirst()/] = new ArrayList<[child.javaName.toUpperFirst()/]>();
 	for (final Parcelable parcelable : items) {
-	    [getCompleteNameToLowerFirst(child, '')/].add(([getCompleteNameToUpperFirst(child, '')/]) parcelable);
+	    [child.javaName.toLowerFirst()/].add(([child.javaName.toUpperFirst()/]) parcelable);
 	}
 	[/for]
 	[/if]
@@ -119,15 +119,15 @@ public [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base(final Parcel in) 
 [template public readParcelData (fields : OrderedSet(Field)) post (trim())]
 [for (field : Field | fields)]
 	[if (field.type = ParameterType::String)]
-[field.name.toLowerFirst()/] = in.readString();
+[field.javaName.toLowerFirst()/] = in.readString();
 	[elseif (field.type = ParameterType::int)]
-[field.name.toLowerFirst()/] = in.readInt();
+[field.javaName.toLowerFirst()/] = in.readInt();
 	[elseif (field.type = ParameterType::float)]
-[field.name.toLowerFirst()/] = in.readFloat();
+[field.javaName.toLowerFirst()/] = in.readFloat();
 	[elseif (field.type = ParameterType::boolean)]
-[field.name.toLowerFirst()/] = in.readInt() == 1;
+[field.javaName.toLowerFirst()/] = in.readInt() == 1;
 	[else]
-//unknown type [field.type/] for attribute [field.name.toLowerFirst()/]
+//unknown type [field.type/] for attribute [field.javaName.toLowerFirst()/]
 	[/if]
 [/for]
 [/template]
@@ -135,15 +135,15 @@ public [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base(final Parcel in) 
 [template public readParcelAttribute (fields : OrderedSet(Field)) post (trim())]
 [for (field : Field | fields)]
 	[if (field.type = ParameterType::String)]
-attr[field.name.toUpperFirst()/] = in.readString();
+attr[field.javaName.toUpperFirst()/] = in.readString();
 	[elseif (field.type = ParameterType::int)]
-attr[field.name.toUpperFirst()/] = in.readInt();
+attr[field.javaName.toUpperFirst()/] = in.readInt();
 	[elseif (field.type = ParameterType::float)]
-attr[field.name.toUpperFirst()/] = in.readFloat();
+attr[field.javaName.toUpperFirst()/] = in.readFloat();
 	[elseif (field.type = ParameterType::boolean)]
-attr[field.name.toUpperFirst()/] = in.readInt() == 1;
+attr[field.javaName.toUpperFirst()/] = in.readInt() == 1;
 	[else]
-//unknown type [field.type/] for attribute attr[field.name.toUpperFirst()/]
+//unknown type [field.type/] for attribute attr[field.javaName.toUpperFirst()/]
 	[/if]
 [/for]
 [/template]
@@ -204,22 +204,22 @@ public void writeToParcel(final Parcel dest, final int flags) {
 	[if (aBusinessObject.childs->size() > 0)]
 	//list of childs
 	[for (child : BusinessObject | aBusinessObject.childs)]
-	dest.writeParcelableArray([getCompleteNameToLowerFirst(child, '')/].toArray(new [getCompleteNameToUpperFirst(child, '')/]['['/][getCompleteNameToLowerFirst(child, '')/].size()]), 0);
+	dest.writeParcelableArray([child.javaName.toLowerFirst()/].toArray(new [child.javaName.toUpperFirst()/]['['/][child.javaName.toLowerFirst()/].size()]), 0);
 	[/for]
 	[/if]
 }
 [/template]
 
 [template public declareParcelableCreator (aBusinessObject : BusinessObject) post (trim())]
-public static final Parcelable.Creator<[getCompleteNameToUpperFirst(aBusinessObject, '')/]Base> CREATOR = new Parcelable.Creator<[getCompleteNameToUpperFirst(aBusinessObject, '')/]Base>() {
+public static final Parcelable.Creator<[aBusinessObject.javaName.toUpperFirst()/]Base> CREATOR = new Parcelable.Creator<[aBusinessObject.javaName.toUpperFirst()/]Base>() {
     @Override
-    public [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base createFromParcel(final Parcel in) {
-        return new [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base(in);
+    public [aBusinessObject.javaName.toUpperFirst()/]Base createFromParcel(final Parcel in) {
+        return new [aBusinessObject.javaName.toUpperFirst()/]Base(in);
     }
 
     @Override
-    public [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base['['/]] newArray(final int size) {
-        return new [getCompleteNameToUpperFirst(aBusinessObject, '')/]Base['['/]size];
+    public [aBusinessObject.javaName.toUpperFirst()/]Base['['/]] newArray(final int size) {
+        return new [aBusinessObject.javaName.toUpperFirst()/]Base['['/]size];
     }
 };
 
@@ -230,17 +230,17 @@ public int describeContents() {
 [/template]
 
 [template public getCompleteNameToLower (aBusinessObject : BusinessObject, separator : String) post (trim())]
-[if (aBusinessObject.parent <> null)][getCompleteNameToLower (aBusinessObject.parent, separator)/][/if][separator/][aBusinessObject.name.toLower()/]
+[if (aBusinessObject.parent <> null)][getCompleteNameToLower (aBusinessObject.parent, separator)/][/if][separator/][aBusinessObject.javaName.toLower()/]
 [/template]
 
 [template public getCompleteNameToUpper (aBusinessObject : BusinessObject, separator : String) post (trim())]
-[if (aBusinessObject.parent <> null)][getCompleteNameToUpper (aBusinessObject.parent, separator)/][/if][separator/][aBusinessObject.name.toUpper()/]
+[if (aBusinessObject.parent <> null)][getCompleteNameToUpper (aBusinessObject.parent, separator)/][/if][separator/][aBusinessObject.javaName.toUpper()/]
 [/template]
 
 [template public getCompleteNameToUpperFirst (aBusinessObject : BusinessObject, separator : String) post (trim())]
-[if (aBusinessObject.parent <> null)][getCompleteNameToUpperFirst (aBusinessObject.parent, separator)/][/if][separator/][aBusinessObject.name.toUpperFirst()/]
+[if (aBusinessObject.parent <> null)][getCompleteNameToUpperFirst (aBusinessObject.parent, separator)/][/if][separator/][aBusinessObject.javaName.toUpperFirst()/]
 [/template]
 
 [template public getCompleteNameToLowerFirst (aBusinessObject : BusinessObject, separator : String) post (trim())]
-[if (aBusinessObject.parent <> null)][getCompleteNameToLowerFirst (aBusinessObject.parent, separator)/][/if][separator/][aBusinessObject.name.toLowerFirst()/]
+[if (aBusinessObject.parent <> null)][getCompleteNameToLowerFirst (aBusinessObject.parent, separator)/][/if][separator/][aBusinessObject.javaName.toLowerFirst()/]
 [/template]

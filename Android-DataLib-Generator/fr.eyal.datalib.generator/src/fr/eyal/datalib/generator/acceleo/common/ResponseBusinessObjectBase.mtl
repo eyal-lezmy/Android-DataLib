@@ -6,8 +6,9 @@
 [template public responseBusinessObjectBase(aBusinessObject : ResponseBusinessObject){
 _package:String = aBusinessObject._package+'.model.'+getPackage(aBusinessObject);
 _directory:String = getDirectoryFromPackage(_package);
+_class:String = aBusinessObject.javaName.toUpperFirst();
 }]
-[file (_directory + aBusinessObject.name + 'Base.java', false, 'UTF-8')]
+[file (_directory + _class + 'Base.java', false, 'UTF-8')]
 package [_package/];
 
 [comment TODO add the ArrayList import /]
@@ -19,13 +20,13 @@ import android.os.RemoteException;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.service.model.DataLibRequest;
 
-public class [aBusinessObject.name.toUpperFirst()/]Base implements ResponseBusinessObject {
+public class [_class/]Base implements ResponseBusinessObject {
 
-    private static final String TAG = [aBusinessObject.name.toUpperFirst()/]Base.class.getSimpleName();
+    private static final String TAG = [_class/]Base.class.getSimpleName();
 
 	[declareFields(aBusinessObject)/]
 
-    public [aBusinessObject.name.toUpperFirst()/]Base() {
+    public [_class/]Base() {
         super();
     }
 

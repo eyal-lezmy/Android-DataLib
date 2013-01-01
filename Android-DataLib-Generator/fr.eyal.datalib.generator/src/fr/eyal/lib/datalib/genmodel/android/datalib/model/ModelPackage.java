@@ -151,13 +151,31 @@ public interface ModelPackage extends EPackage {
 	int BUSINESS_OBJECT__RELATED_FIELD = 8;
 
 	/**
+	 * The feature id for the '<em><b>Java Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BUSINESS_OBJECT__JAVA_NAME = 9;
+
+	/**
+	 * The feature id for the '<em><b>Java Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BUSINESS_OBJECT__JAVA_TAG = 10;
+
+	/**
 	 * The number of structural features of the '<em>Business Object</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BUSINESS_OBJECT_FEATURE_COUNT = 9;
+	int BUSINESS_OBJECT_FEATURE_COUNT = 11;
 
 	/**
 	 * The meta object id for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.BusinessObjectDAOImpl <em>Business Object DAO</em>}' class.
@@ -249,6 +267,24 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int BUSINESS_OBJECT_DAO__RELATED_FIELD = BUSINESS_OBJECT__RELATED_FIELD;
+
+	/**
+	 * The feature id for the '<em><b>Java Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BUSINESS_OBJECT_DAO__JAVA_NAME = BUSINESS_OBJECT__JAVA_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Java Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BUSINESS_OBJECT_DAO__JAVA_TAG = BUSINESS_OBJECT__JAVA_TAG;
 
 	/**
 	 * The feature id for the '<em><b>Project</b></em>' reference.
@@ -358,6 +394,24 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int RESPONSE_BUSINESS_OBJECT__RELATED_FIELD = BUSINESS_OBJECT__RELATED_FIELD;
+
+	/**
+	 * The feature id for the '<em><b>Java Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESPONSE_BUSINESS_OBJECT__JAVA_NAME = BUSINESS_OBJECT__JAVA_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Java Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESPONSE_BUSINESS_OBJECT__JAVA_TAG = BUSINESS_OBJECT__JAVA_TAG;
 
 	/**
 	 * The feature id for the '<em><b>Xml Content Fields</b></em>' containment reference list.
@@ -476,6 +530,24 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int RESPONSE_BUSINESS_OBJECT_DAO__RELATED_FIELD = BUSINESS_OBJECT_DAO__RELATED_FIELD;
+
+	/**
+	 * The feature id for the '<em><b>Java Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESPONSE_BUSINESS_OBJECT_DAO__JAVA_NAME = BUSINESS_OBJECT_DAO__JAVA_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Java Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESPONSE_BUSINESS_OBJECT_DAO__JAVA_TAG = BUSINESS_OBJECT_DAO__JAVA_TAG;
 
 	/**
 	 * The feature id for the '<em><b>Project</b></em>' reference.
@@ -669,13 +741,31 @@ public interface ModelPackage extends EPackage {
 	int FIELD__RELATED_FIELD = PARAMETER_FEATURE_COUNT + 7;
 
 	/**
+	 * The feature id for the '<em><b>Java Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD__JAVA_NAME = PARAMETER_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Java Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD__JAVA_TAG = PARAMETER_FEATURE_COUNT + 9;
+
+	/**
 	 * The number of structural features of the '<em>Field</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FIELD_FEATURE_COUNT = PARAMETER_FEATURE_COUNT + 8;
+	int FIELD_FEATURE_COUNT = PARAMETER_FEATURE_COUNT + 10;
 
 	/**
 	 * The meta object id for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldBusinessObjectImpl <em>Field Business Object</em>}' class.
@@ -785,6 +875,24 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int FIELD_BUSINESS_OBJECT__RELATED_FIELD = FIELD__RELATED_FIELD;
+
+	/**
+	 * The feature id for the '<em><b>Java Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD_BUSINESS_OBJECT__JAVA_NAME = FIELD__JAVA_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Java Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD_BUSINESS_OBJECT__JAVA_TAG = FIELD__JAVA_TAG;
 
 	/**
 	 * The feature id for the '<em><b>Content</b></em>' reference.
@@ -913,6 +1021,28 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getBusinessObject_RelatedField();
+
+	/**
+	 * Returns the meta object for the attribute '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getJavaName <em>Java Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Java Name</em>'.
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getJavaName()
+	 * @see #getBusinessObject()
+	 * @generated
+	 */
+	EAttribute getBusinessObject_JavaName();
+
+	/**
+	 * Returns the meta object for the attribute '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getJavaTag <em>Java Tag</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Java Tag</em>'.
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getJavaTag()
+	 * @see #getBusinessObject()
+	 * @generated
+	 */
+	EAttribute getBusinessObject_JavaTag();
 
 	/**
 	 * Returns the meta object for class '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObjectDAO <em>Business Object DAO</em>}'.
@@ -1074,6 +1204,28 @@ public interface ModelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getField_RelatedField();
+
+	/**
+	 * Returns the meta object for the attribute '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getJavaName <em>Java Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Java Name</em>'.
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getJavaName()
+	 * @see #getField()
+	 * @generated
+	 */
+	EAttribute getField_JavaName();
+
+	/**
+	 * Returns the meta object for the attribute '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getJavaTag <em>Java Tag</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Java Tag</em>'.
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getJavaTag()
+	 * @see #getField()
+	 * @generated
+	 */
+	EAttribute getField_JavaTag();
 
 	/**
 	 * Returns the meta object for class '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter <em>Parameter</em>}'.
@@ -1244,6 +1396,22 @@ public interface ModelPackage extends EPackage {
 		EReference BUSINESS_OBJECT__RELATED_FIELD = eINSTANCE.getBusinessObject_RelatedField();
 
 		/**
+		 * The meta object literal for the '<em><b>Java Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BUSINESS_OBJECT__JAVA_NAME = eINSTANCE.getBusinessObject_JavaName();
+
+		/**
+		 * The meta object literal for the '<em><b>Java Tag</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BUSINESS_OBJECT__JAVA_TAG = eINSTANCE.getBusinessObject_JavaTag();
+
+		/**
 		 * The meta object literal for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.BusinessObjectDAOImpl <em>Business Object DAO</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1370,6 +1538,22 @@ public interface ModelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference FIELD__RELATED_FIELD = eINSTANCE.getField_RelatedField();
+
+		/**
+		 * The meta object literal for the '<em><b>Java Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FIELD__JAVA_NAME = eINSTANCE.getField_JavaName();
+
+		/**
+		 * The meta object literal for the '<em><b>Java Tag</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FIELD__JAVA_TAG = eINSTANCE.getField_JavaTag();
 
 		/**
 		 * The meta object literal for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.ParameterImpl <em>Parameter</em>}' class.

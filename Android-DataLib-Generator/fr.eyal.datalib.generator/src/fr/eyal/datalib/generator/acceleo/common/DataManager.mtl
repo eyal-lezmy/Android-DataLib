@@ -182,7 +182,7 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
     	return startDatabaseAsyncAccess([aProject.name.toUpperFirst()/]Provider.CODE_[webService.contentResponse.name.toUpper()/], where, whereArgs, order, join, listener);
     }
 
-	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
+	[for (businessObject : BusinessObject | webService.contentResponse.childs) {boClass:String = businessObject.javaName.toUpperFirst();}]
     /**
      * Get {@link [businessObject.name.toUpperFirst()/]} objects from the database thanks to standard SQL selectors.
      * 
@@ -197,36 +197,36 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
      * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
      * 
 [if (businessObject.childs->size() > 0)]
-     * @param join Tells if the {@link [businessObject.name.toUpperFirst()/]} objects returned have to get his children's
+     * @param join Tells if the {@link [boClass/]} objects returned have to get his children's
      * arrays filled thanks to the database.
 [/if]
      * 
      * 
-     * @return An {@link ArrayList} of the {@link [businessObject.name.toUpperFirst()/]} objects fetch in the database,
+     * @return An {@link ArrayList} of the {@link [boClass/]} objects fetch in the database,
      * corresponding to the sent request.
      */
 	@SuppressWarnings("unchecked")
 [if (businessObject.childs->size() > 0)]
-    private ArrayList<[getCompleteNameToUpperFirst(businessObject, '')/]> retrieveData[getCompleteNameToUpperFirst(businessObject, '')/](final String where, final String['['/]] whereArgs, final String order, final boolean join) {
+    private ArrayList<[boClass/]> retrieveData[boClass/](final String where, final String['['/]] whereArgs, final String order, final boolean join) {
 [else]
-	private ArrayList<[getCompleteNameToUpperFirst(businessObject, '')/]> retrieveData[getCompleteNameToUpperFirst(businessObject, '')/](final String where, final String['['/]] whereArgs, final String order) {
+	private ArrayList<[boClass/]> retrieveData[boClass/](final String where, final String['['/]] whereArgs, final String order) {
 [/if]
-    	final Cursor c = this.mContentResolver.query([getCompleteNameToUpperFirst(businessObject, '')/].CONTENT_URI,
-    			[getCompleteNameToUpperFirst(businessObject, '')/].DATABASE_TABLE_FIELDS_NAMES,
+    	final Cursor c = this.mContentResolver.query([boClass/].CONTENT_URI,
+    			[boClass/].DATABASE_TABLE_FIELDS_NAMES,
     			where,
     			whereArgs,
     			order);
 
 [if (businessObject.childs->size() > 0)]
-    	return (ArrayList<[getCompleteNameToUpperFirst(businessObject, '')/]>) [getCompleteNameToUpperFirst(businessObject, '')/].buildArrayFromCursor(c, join);
+    	return (ArrayList<[boClass/]>) [boClass/].buildArrayFromCursor(c, join);
 [else]
-    	return (ArrayList<[getCompleteNameToUpperFirst(businessObject, '')/]>) [getCompleteNameToUpperFirst(businessObject, '')/].buildArrayFromCursor(c, false);
+    	return (ArrayList<[boClass/]>) [boClass/].buildArrayFromCursor(c, false);
 [/if]
 
     }
 
     /**
-     * Get {@link [businessObject.name.toUpperFirst()/]} objects from the database asynchronously thanks to standard
+     * Get {@link [boClass/]} objects from the database asynchronously thanks to standard
      * SQL selectors.
      * 
      * @param where A filter declaring which rows to return, formatted as an SQL WHERE
@@ -240,7 +240,7 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
      * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
      * 
 [if (businessObject.childs->size() > 0)]
-     * @param join Tells if the {@link [businessObject.name.toUpperFirst()/]} objects returned have to get his children's
+     * @param join Tells if the {@link [boClass/]} objects returned have to get his children's
      * arrays filled thanks to the database.
 [/if]
      * 
@@ -252,11 +252,11 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
      * @see cancelRequest() To cancel this request before the response come.
      */
 [if (businessObject.childs->size() > 0)]
-    public synchronized int retrieveData[getCompleteNameToUpperFirst(businessObject, '')/]Async(final String where, final String['['/]] whereArgs, final String order, final boolean join, final OnDataListener listener){
+    public synchronized int retrieveData[boClass/]Async(final String where, final String['['/]] whereArgs, final String order, final boolean join, final OnDataListener listener){
     	return startDatabaseAsyncAccess([aProject.name.toUpperFirst()/]Provider.CODE[getCompleteNameToUpper(businessObject, '_')/],
     			where, whereArgs, order, join, listener);
 [else]
-    public synchronized int retrieveData[getCompleteNameToUpperFirst(businessObject, '')/]Async(final String where, final String['['/]] whereArgs, final String order, final boolean join, final OnDataListener listener){
+    public synchronized int retrieveData[boClass/]Async(final String where, final String['['/]] whereArgs, final String order, final boolean join, final OnDataListener listener){
     	return startDatabaseAsyncAccess([aProject.name.toUpperFirst()/]Provider.CODE[getCompleteNameToUpper(businessObject, '_')/],
     			where, whereArgs, order, false, listener);
 [/if]
@@ -300,7 +300,11 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
         //we prepare the parameters
         final ParameterMap params = new ParameterMap();
 		[for (parameter : Parameter | webService.parameters)]
+		[if (parameter.type = ParameterType::String)]
         params.put("[parameter.name/]", [parameter.name.toLowerFirst()/]);
+        [else]
+		params.put("[parameter.name/]", String.valueOf([parameter.name.toLowerFirst()/]));
+		[/if]
 		[/for]
         //we prepare the request's url
         final String url = ServiceHelper.getServiceUrl([aProject.name.toUpperFirst()/]ServiceHelper.URL_[webService.name.toUpper()/], params);
@@ -343,7 +347,11 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
         //we prepare the parameters
         final ParameterMap params = new ParameterMap();
 		[for (parameter : Parameter | webService.parameters)]
+		[if (parameter.type = ParameterType::String)]
         params.put("[parameter.name/]", [parameter.name.toLowerFirst()/]);
+        [else]
+		params.put("[parameter.name/]", String.valueOf([parameter.name.toLowerFirst()/]));
+		[/if]
 		[/for]
         //we prepare the request's url
         final String url = ServiceHelper.getServiceUrl([aProject.name.toUpperFirst()/]ServiceHelper.URL_[webService.name.toUpper()/], params);
@@ -379,15 +387,15 @@ public synchronized int [if (webService.method=HttpMethod::GET)]get[elseif (webS
 
 
 [template public defineGetBusinessObjectsFromDatabaseCase (aBusinessObject : BusinessObject, projectName:String, prefix : String) post (trim()) ]
-case [projectName.toUpperFirst()/]Provider.CODE_[prefix/][aBusinessObject.name.toUpper()/]:
+case [projectName.toUpperFirst()/]Provider.CODE_[prefix/][aBusinessObject.javaName.toUpper()/]:
 [if (aBusinessObject.childs->size() > 0)]
-	return [projectName.toUpperFirst()/]DataManager.this.retrieveData[getCompleteNameToUpperFirst(aBusinessObject, '')/](where, whereArgs, order, join);
+	return [projectName.toUpperFirst()/]DataManager.this.retrieveData[aBusinessObject.javaName.toUpperFirst()/](where, whereArgs, order, join);
 [else]
-	return [projectName.toUpperFirst()/]DataManager.this.retrieveData[getCompleteNameToUpperFirst(aBusinessObject, '')/](where, whereArgs, order);
+	return [projectName.toUpperFirst()/]DataManager.this.retrieveData[aBusinessObject.javaName.toUpperFirst()/](where, whereArgs, order);
 [/if]
 
 [for (businessObject : BusinessObject | aBusinessObject.childs)]
-[defineGetBusinessObjectsFromDatabaseCase(businessObject, projectName, prefix+aBusinessObject.name.toUpper()+'_')/]
+[defineGetBusinessObjectsFromDatabaseCase(businessObject, projectName, prefix+aBusinessObject.javaName.toUpper()+'_')/]
 [/for]
 
 [/template]

@@ -61,19 +61,19 @@ public class [aProject.name.toUpperFirst()/]Service extends DataLibService {
 
 [template public importParsers(aProject : DataLibProject) post (trim()) ]
 [for (webService : WebService | aProject.webservices)]
-import [aProject._package/].parser.[webService.contentResponse.name.toUpperFirst()/]Parser;
+import [aProject._package/].parser.[webService.contentResponse.javaName.toUpperFirst()/]Parser;
 [/for]
 [/template]
 
 [template public importWebConfigs(aProject : DataLibProject) post (trim()) ]
 [for (webService : WebService | aProject.webservices)]
-import [aProject._package/].config.[webService.contentResponse.name.toUpperFirst()/]WebConfig;
+import [aProject._package/].config.[webService.contentResponse.javaName.toUpperFirst()/]WebConfig;
 [/for]
 [/template]
 
 [template public declareWebServices (aProject : DataLibProject) post (trim()) ]
 [for (webService : WebService | aProject.webservices)]
-public static final int WEBSERVICE_[webService.contentResponse.name.toUpper()/] = [i/]; [comment][webService.contentResponse.parseId/][/comment]
+public static final int WEBSERVICE_[webService.contentResponse.javaName.toUpper()/] = [i/]; [comment][webService.contentResponse.parseId/][/comment]
 [comment][for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [declareWebServices (businessObject, 1) /]
 [/for][/comment]
@@ -81,7 +81,7 @@ public static final int WEBSERVICE_[webService.contentResponse.name.toUpper()/] 
 [/template]
 
 [template public declareWebServices (aBusinessObject : BusinessObject, counter:Integer) post (trim()) ]
-public static final int WEBSERVICE_[aBusinessObject.name.toUpper()/] = [counter/];
+public static final int WEBSERVICE_[aBusinessObject.javaName.toUpper()/] = [counter/];
 [for (businessObject : BusinessObject | aBusinessObject.childs)]
 [declareWebServices (businessObject, counter+i) /]
 [/for]
@@ -90,22 +90,21 @@ public static final int WEBSERVICE_[aBusinessObject.name.toUpper()/] = [counter/
 
 [template public launchProcessorCases (aProject : DataLibProject) post (trim()) ]
 [for (webService : WebService | aProject.webservices) ]
-case WEBSERVICE_[webService.contentResponse.name.toUpper()/]:
-    [webService.contentResponse.name.toUpperFirst()/]WebConfig.applyToRequest(request, [webService.contentResponse.name.toUpperFirst()/]WebConfig.getInstance());
-    handler = new [webService.contentResponse.name.toUpperFirst()/]Parser();
+case WEBSERVICE_[webService.contentResponse.javaName.toUpper()/]:
+    [webService.contentResponse.javaName.toUpperFirst()/]WebConfig.applyToRequest(request, [webService.contentResponse.javaName.toUpperFirst()/]WebConfig.getInstance());
+    handler = new [webService.contentResponse.javaName.toUpperFirst()/]Parser();
     break;
-[comment][for (businessObject : BusinessObject | webService.contentResponse.childs)]
-[launchProcessorCases (businessObject) /]
-[/for][/comment]
 [/for]
 [/template]
 
+[comment] Not Used
 [template public launchProcessorCases (aBusinessObject : BusinessObject) post (trim()) ]
-case WEBSERVICE_[aBusinessObject.name.toUpper()/]:
-    [aBusinessObject.name.toUpperFirst()/]WebConfig.applyToRequest(request, [aBusinessObject.name.toUpperFirst()/]WebConfig.getInstance());
-    handler = new [aBusinessObject.name.toUpperFirst()/]Parser();
+case WEBSERVICE_[aBusinessObject.javaName.toUpper()/]:
+    [aBusinessObject.javaName.toUpperFirst()/]WebConfig.applyToRequest(request, [aBusinessObject.javaName.toUpperFirst()/]WebConfig.getInstance());
+    handler = new [aBusinessObject.javaName.toUpperFirst()/]Parser();
     break;
 [for (businessObject : BusinessObject | aBusinessObject.childs)]
 [launchProcessorCases (businessObject) /]
 [/for]
 [/template]
+[/comment]

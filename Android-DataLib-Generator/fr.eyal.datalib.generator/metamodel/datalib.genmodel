@@ -8,7 +8,8 @@
   <genPackages prefix="Android" basePackage="fr.eyal.lib.datalib.genmodel" disposableProviderFactory="true"
       ecorePackage="datalib.ecore#/">
     <genClasses ecoreClass="datalib.ecore#//DummyClass"/>
-    <nestedGenPackages prefix="Datalib" disposableProviderFactory="true" ecorePackage="datalib.ecore#//datalib">
+    <nestedGenPackages prefix="Datalib" basePackage="fr.eyal.lib.datalib.genmodel.android"
+        disposableProviderFactory="true" ecorePackage="datalib.ecore#//datalib">
       <genClasses ecoreClass="datalib.ecore#//datalib/WebService">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/WebService/name"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/WebService/package"/>
@@ -28,7 +29,8 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/DataLibProject/databaseVersion"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference datalib.ecore#//datalib/DataLibProject/webservices"/>
       </genClasses>
-      <nestedGenPackages prefix="Content" disposableProviderFactory="true" ecorePackage="datalib.ecore#//datalib/content">
+      <nestedGenPackages prefix="Content" basePackage="fr.eyal.lib.datalib.genmodel.android.datalib"
+          disposableProviderFactory="true" ecorePackage="datalib.ecore#//datalib/content">
         <genEnums typeSafeEnumCompatible="false" ecoreEnum="datalib.ecore#//datalib/content/ParseType">
           <genEnumLiterals ecoreEnumLiteral="datalib.ecore#//datalib/content/ParseType/SAX"/>
           <genEnumLiterals ecoreEnumLiteral="datalib.ecore#//datalib/content/ParseType/JSON"/>
@@ -58,7 +60,8 @@
           <genEnumLiterals ecoreEnumLiteral="datalib.ecore#//datalib/content/ParameterType/boolean"/>
         </genEnums>
       </nestedGenPackages>
-      <nestedGenPackages prefix="Model" disposableProviderFactory="true" ecorePackage="datalib.ecore#//datalib/model">
+      <nestedGenPackages prefix="Model" basePackage="fr.eyal.lib.datalib.genmodel.android.datalib"
+          disposableProviderFactory="true" ecorePackage="datalib.ecore#//datalib/model">
         <genClasses ecoreClass="datalib.ecore#//datalib/model/BusinessObject">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/BusinessObject/name"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/BusinessObject/package"/>
@@ -71,6 +74,8 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/BusinessObject/parseId"/>
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference datalib.ecore#//datalib/model/BusinessObject/relatedField"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/BusinessObject/javaName"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/BusinessObject/javaTag"/>
         </genClasses>
         <genClasses ecoreClass="datalib.ecore#//datalib/model/BusinessObjectDAO">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -93,6 +98,8 @@
               ecoreFeature="ecore:EReference datalib.ecore#//datalib/model/Field/xmlParent"/>
           <genFeatures notify="false" createChild="false" propertySortChoices="true"
               ecoreFeature="ecore:EReference datalib.ecore#//datalib/model/Field/relatedField"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/Field/javaName"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/Field/javaTag"/>
         </genClasses>
         <genClasses ecoreClass="datalib.ecore#//datalib/model/Parameter">
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/Parameter/name"/>

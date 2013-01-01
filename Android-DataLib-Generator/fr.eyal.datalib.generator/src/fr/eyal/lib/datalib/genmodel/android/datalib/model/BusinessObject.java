@@ -29,6 +29,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getXmlName <em>Xml Name</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getParseId <em>Parse Id</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getRelatedField <em>Related Field</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getJavaName <em>Java Name</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getJavaTag <em>Java Tag</em>}</li>
  * </ul>
  * </p>
  *
@@ -241,5 +243,57 @@ public interface BusinessObject extends EObject {
 	 * @generated
 	 */
 	void setRelatedField(FieldBusinessObject value);
+
+	/**
+	 * Returns the value of the '<em><b>Java Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Java Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Java Name</em>' attribute.
+	 * @see #setJavaName(String)
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage#getBusinessObject_JavaName()
+	 * @model
+	 * @generated
+	 */
+	String getJavaName();
+
+	/**
+	 * Sets the value of the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getJavaName <em>Java Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Java Name</em>' attribute.
+	 * @see #getJavaName()
+	 * @generated
+	 */
+	void setJavaName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Java Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Java Tag</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Java Tag</em>' attribute.
+	 * @see #setJavaTag(String)
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage#getBusinessObject_JavaTag()
+	 * @model
+	 * @generated
+	 */
+	String getJavaTag();
+
+	/**
+	 * Sets the value of the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.BusinessObject#getJavaTag <em>Java Tag</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Java Tag</em>' attribute.
+	 * @see #getJavaTag()
+	 * @generated
+	 */
+	void setJavaTag(String value);
 
 } // BusinessObject

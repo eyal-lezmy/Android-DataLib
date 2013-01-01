@@ -26,6 +26,8 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getParseId <em>Parse Id</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getXmlParent <em>Xml Parent</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getRelatedField <em>Related Field</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getJavaName <em>Java Name</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getJavaTag <em>Java Tag</em>}</li>
  * </ul>
  * </p>
  *
@@ -222,5 +224,57 @@ public interface Field extends Parameter {
 	 * @generated
 	 */
 	void setRelatedField(Field value);
+
+	/**
+	 * Returns the value of the '<em><b>Java Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Java Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Java Name</em>' attribute.
+	 * @see #setJavaName(String)
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage#getField_JavaName()
+	 * @model
+	 * @generated
+	 */
+	String getJavaName();
+
+	/**
+	 * Sets the value of the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getJavaName <em>Java Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Java Name</em>' attribute.
+	 * @see #getJavaName()
+	 * @generated
+	 */
+	void setJavaName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Java Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Java Tag</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Java Tag</em>' attribute.
+	 * @see #setJavaTag(String)
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage#getField_JavaTag()
+	 * @model
+	 * @generated
+	 */
+	String getJavaTag();
+
+	/**
+	 * Sets the value of the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Field#getJavaTag <em>Java Tag</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Java Tag</em>' attribute.
+	 * @see #getJavaTag()
+	 * @generated
+	 */
+	void setJavaTag(String value);
 
 } // Field

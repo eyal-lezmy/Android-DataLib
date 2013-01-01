@@ -7,8 +7,9 @@
 project:DataLibProject = aBusinessObject.project;
 _package:String = aBusinessObject._package+'.model.'+getPackage(aBusinessObject);
 _directory:String = getDirectoryFromPackage(_package);
+_class:String = aBusinessObject.javaName.toUpperFirst();
 } ]
-[file (_directory + aBusinessObject.name + 'Base.java', false, 'UTF-8')]
+[file (_directory + _class + 'Base.java', false, 'UTF-8')]
 package [_package/];
 
 import java.util.ArrayList;
@@ -31,21 +32,21 @@ import fr.eyal.lib.util.Out;
 [comment we include the provider/]
 import [getProviderPackage(project)/].[getProviderClassName(project)/];
 
-public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusinessObjectDAO {
+public class [_class/]Base extends ResponseBusinessObjectDAO {
 
-    private static final String TAG = [aBusinessObject.name.toUpperFirst()/]Base.class.getSimpleName();
+    private static final String TAG = [_class/]Base.class.getSimpleName();
 
 	[declareFields(aBusinessObject)/]
 
-    public [aBusinessObject.name.toUpperFirst()/]Base() {
+    public [_class/]Base() {
         super();
     }
 
-    public [aBusinessObject.name.toUpperFirst()/]Base(final long id) {
+    public [_class/]Base(final long id) {
         super(id);
     }
 
-    public [aBusinessObject.name.toUpperFirst()/]Base(final String url) {
+    public [_class/]Base(final String url) {
         super(url);
     }
 
@@ -56,14 +57,14 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
     /**
      * Constants used with a ContentProvider's access
      */
-    public static final String CONTENT_PATH = "[aBusinessObject.name.toLower()/]";
+    public static final String CONTENT_PATH = "[aBusinessObject.javaName.toLower()/]";
     public static final String CONTENT_URL = [getProviderClassName(project)/].PROVIDER_PREFIX + [getProviderClassName(project)/].AUTHORITY + "/" + CONTENT_PATH;
     public static final Uri CONTENT_URI = Uri.parse(CONTENT_URL);
 
     /**
      * SQL databases table's name
      */
-    public static String DATABASE_TABLE_NAME = "[aBusinessObject.name.toLower()/]";
+    public static String DATABASE_TABLE_NAME = "[aBusinessObject.javaName.toLower()/]";
 
     /**
      * SQL database table's fields names
@@ -75,14 +76,14 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
 	[if (aBusinessObject.attributes->size() > 0)]
 	//list of attributes
 	[for (field : Field | aBusinessObject.attributes)]
-    public static final String FIELD_ATTR_[field.name.toUpper()/] = "ATTR_[field.name.toLowerFirst()/]";
+    public static final String FIELD_ATTR_[field.javaName.toUpper()/] = "ATTR_[field.javaName.toLowerFirst()/]";
 	[/for]
 
 	[/if]
     [if (aBusinessObject.contentFields->size() > 0)]
     //list of content
 	[for (field : Field | aBusinessObject.contentFields)]
-    public static final String FIELD_[field.name.toUpper()/] = "[field.name.toLowerFirst()/]";
+    public static final String FIELD_[field.javaName.toUpper()/] = "[field.javaName.toLowerFirst()/]";
 	[/for]
 
 	[/if]
@@ -99,14 +100,14 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
 			[if (aBusinessObject.attributes->size() > 0)]
             //list of attributes
 			[for (field : Field | aBusinessObject.attributes)]
-		    FIELD_ATTR_[field.name.toUpper()/], //[field.name.toLowerFirst()/]";
+		    FIELD_ATTR_[field.javaName.toUpper()/], //[field.javaName.toLowerFirst()/]";
 			[/for]
 
 			[/if]
 			[if (aBusinessObject.contentFields->size() > 0)]
 		    //list of content
 			[for (field : Field | aBusinessObject.contentFields)]
-		    FIELD_[field.name.toUpper()/], //[field.name.toLowerFirst()/]";
+		    FIELD_[field.javaName.toUpper()/], //[field.javaName.toLowerFirst()/]";
 			[/for]
 			[/if]
    };
@@ -211,14 +212,14 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
 		[if (aBusinessObject.attributes->size() > 0)]
 		//list of attributes
 		[for (field : Field | aBusinessObject.attributes)]
-	    values.put(FIELD_ATTR_[field.name.toUpper()/], attr[field.name.toUpperFirst()/]);
+	    values.put(FIELD_ATTR_[field.javaName.toUpper()/], attr[field.javaName.toUpperFirst()/]);
 		[/for]
 		[/if]
 	
 		[if (aBusinessObject.contentFields->size() > 0)]
 	    //list of content
 		[for (field : Field | aBusinessObject.contentFields)]
-	    values.put(FIELD_[field.name.toUpper()/], [field.name.toLowerFirst()/]);
+	    values.put(FIELD_[field.javaName.toUpper()/], [field.javaName.toLowerFirst()/]);
 		[/for]
 		[/if]
 		
@@ -293,7 +294,7 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
 		[if (aBusinessObject.childs->size() > 0)]
 		// we initialize the childs tabs
 		[for (child : BusinessObject | aBusinessObject.childs)]
-        	[getCompleteNameToLowerFirst(child, '')/] = new ArrayList<[getCompleteNameToUpperFirst(child, '')/]>();
+        	[child.javaName.toLowerFirst()/] = new ArrayList<[child.javaName.toUpperFirst()/]>();
 		[/for]
 		[/if]
 
@@ -313,13 +314,13 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
 			//list of attributes
 			[for (field : Field | aBusinessObject.attributes)]
 				[if (field.type = ParameterType::String)]
-			attr[field.name.toUpperFirst()/] = cursor.getString(i++);
+			attr[field.javaName.toUpperFirst()/] = cursor.getString(i++);
 				[elseif (field.type = ParameterType::int)]
-			attr[field.name.toUpperFirst()/] = cursor.getInt(i++);
+			attr[field.javaName.toUpperFirst()/] = cursor.getInt(i++);
 				[elseif (field.type = ParameterType::float)]
-			attr[field.name.toUpperFirst()/] = cursor.getFloat(i++);
+			attr[field.javaName.toUpperFirst()/] = cursor.getFloat(i++);
 				[elseif (field.type = ParameterType::boolean)]
-			attr[field.name.toUpperFirst()/] = cursor.getShort(i++)==1;
+			attr[field.javaName.toUpperFirst()/] = cursor.getShort(i++)==1;
 				[else]
 			//[field.type/] unknonwn
 				[/if]
@@ -330,13 +331,13 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
 		    //list of content
 			[for (field : Field | aBusinessObject.contentFields)]
 				[if (field.type = ParameterType::String)]
-			[field.name.toLowerFirst()/] = cursor.getString(i++);
+			[field.javaName.toLowerFirst()/] = cursor.getString(i++);
 				[elseif (field.type = ParameterType::int)]
-			[field.name.toLowerFirst()/] = cursor.getInt(i++);
+			[field.javaName.toLowerFirst()/] = cursor.getInt(i++);
 				[elseif (field.type = ParameterType::float)]
-			[field.name.toLowerFirst()/] = cursor.getFloat(i++);
+			[field.javaName.toLowerFirst()/] = cursor.getFloat(i++);
 				[elseif (field.type = ParameterType::boolean)]
-			[field.name.toLowerFirst()/] = cursor.getShort(i++)==1;
+			[field.javaName.toLowerFirst()/] = cursor.getShort(i++)==1;
 				[else]
 			//[field.type/] type unknonwn
 				[/if]
@@ -372,7 +373,7 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
 	protected int updateChildrenId(long['['/]] ids, int index, int parentIndex) {
 		[if (aBusinessObject.childs->size() > 0)]
 			[for (child : BusinessObject | aBusinessObject.childs)]
-        for (final [getCompleteNameToUpperFirst(child, '')/] item : [getCompleteNameToLowerFirst(child, '')/]) {
+        for (final [child.javaName.toUpperFirst()/] item : [child.javaName.toLowerFirst()/]) {
             index = item.updateId(ids, index, parentIndex);
         }
 
@@ -414,8 +415,8 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
         [if (aBusinessObject.childs->size() > 0)]
 			[for (child : BusinessObject | aBusinessObject.childs)]
-		for (final [getCompleteNameToUpperFirst(child, '')/] item : [getCompleteNameToLowerFirst(child, '')/]) {
-            item.addIntoDatabase(batch, [getCompleteNameToUpperFirst(child, '')/].CONTENT_URI, [getCompleteNameToUpperFirst(child, '')/].FIELD__PARENT_ID, previousResult);
+		for (final [child.javaName.toUpperFirst()/] item : [child.javaName.toLowerFirst()/]) {
+            item.addIntoDatabase(batch, [child.javaName.toUpperFirst()/].CONTENT_URI, [child.javaName.toUpperFirst()/].FIELD__PARENT_ID, previousResult);
         }
 			[/for]
 		[else]
@@ -427,9 +428,9 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
         [if (aBusinessObject.childs->size() > 0)]
 			[for (child : BusinessObject | aBusinessObject.childs)]
-		for (final [getCompleteNameToUpperFirst(child, '')/] item : [getCompleteNameToLowerFirst(child, '')/]) {
+		for (final [child.javaName.toUpperFirst()/] item : [child.javaName.toLowerFirst()/]) {
             item._parentId = _id;
-            item.addIntoDatabase(batch, [getCompleteNameToUpperFirst(child, '')/].CONTENT_URI);
+            item.addIntoDatabase(batch, [child.javaName.toUpperFirst()/].CONTENT_URI);
         }
 			[/for]
 		[else]
@@ -443,7 +444,7 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
         Out.d(TAG, "deleting childs of " + _id);
 			[for (child : BusinessObject | aBusinessObject.childs)]
         // we first remove all the childs of the childs of the object
-        for (final [getCompleteNameToUpperFirst(child, '')/] item : [getCompleteNameToLowerFirst(child, '')/]) {
+        for (final [child.javaName.toUpperFirst()/] item : [child.javaName.toLowerFirst()/]) {
             item.deleteChildsFromDatabase(batch);
         }
 			[/for]
@@ -454,8 +455,8 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
         	[if (aBusinessObject.childs->size() > 0)]
         // we delete all the child entries
 				[for (child : BusinessObject | aBusinessObject.childs)]
-        whereClause = [getCompleteNameToUpperFirst(child, '')/].FIELD__PARENT_ID + "=?"; // [getCompleteNameToLower(child, '')/]_id=?
-        batch.add(ContentProviderOperation.newDelete([getCompleteNameToUpperFirst(child, '')/].CONTENT_URI)
+        whereClause = [child.javaName.toUpperFirst()/].FIELD__PARENT_ID + "=?"; // [child.javaName.toLower()/]_id=?
+        batch.add(ContentProviderOperation.newDelete([child.javaName.toUpperFirst()/].CONTENT_URI)
                 .withSelection(whereClause, argsClause)
                 .build());
 
@@ -478,19 +479,19 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
 
 			[for (child : BusinessObject | aBusinessObject.childs)]
         // we define the access conditions to the objects
-        columns = new String['['/][getCompleteNameToUpperFirst(child, '')/].DATABASE_TABLE_FIELDS_NAMES.length];
-        for (int i = 0; i < [getCompleteNameToUpperFirst(child, '')/].DATABASE_TABLE_FIELDS_NAMES.length; i++) {
-            columns['['/]i] = [getCompleteNameToUpperFirst(child, '')/].DATABASE_TABLE_FIELDS_NAMES['['/]i];
+        columns = new String['['/][child.javaName.toUpperFirst()/].DATABASE_TABLE_FIELDS_NAMES.length];
+        for (int i = 0; i < [child.javaName.toUpperFirst()/].DATABASE_TABLE_FIELDS_NAMES.length; i++) {
+            columns['['/]i] = [child.javaName.toUpperFirst()/].DATABASE_TABLE_FIELDS_NAMES['['/]i];
         }
 
-        where = [getCompleteNameToUpperFirst(child, '')/].FIELD__PARENT_ID + "=?";
+        where = [child.javaName.toUpperFirst()/].FIELD__PARENT_ID + "=?";
         args = new String['['/]1];
         args['['/]0] = _id + "";
 
         // we check the existence of the entry inside the database
-        cursor = mResolver.query([getCompleteNameToUpperFirst(child, '')/].CONTENT_URI,
+        cursor = mResolver.query([child.javaName.toUpperFirst()/].CONTENT_URI,
                 columns, // all the columns of the object
-                where, // [getCompleteNameToLower(child, '')/]_id=?
+                where, // [child.javaName.toLower()/]_id=?
                 args, // id of the object
                 null);
 
@@ -501,9 +502,9 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
 
             do {
                 // we create and then fill the item with the Cursor
-                final [getCompleteNameToUpperFirst(child, '')/] item[getCompleteNameToUpperFirst(child, '')/] = new [getCompleteNameToUpperFirst(child, '')/]();
-                item[getCompleteNameToUpperFirst(child, '')/].fillObjectFromCursor(cursor);
-                [getCompleteNameToLowerFirst(child, '')/].add(item[getCompleteNameToUpperFirst(child, '')/]); // we add a new object to the list
+                final [child.javaName.toUpperFirst()/] item[child.javaName.toUpperFirst()/] = new [child.javaName.toUpperFirst()/]();
+                item[child.javaName.toUpperFirst()/].fillObjectFromCursor(cursor);
+                [child.javaName.toLowerFirst()/].add(item[child.javaName.toUpperFirst()/]); // we add a new object to the list
 
             } while (cursor.moveToNext());
         }
@@ -515,7 +516,7 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
     }
 
 	/**
-     * This function build an array of {@link [aBusinessObject.name.toUpperFirst()/]Base} thanks to a Cursor
+     * This function build an array of {@link [_class/]Base} thanks to a Cursor
      * object received from the database.
      * 
      * @param c The cursor object.
@@ -525,16 +526,16 @@ public class [aBusinessObject.name.toUpperFirst()/]Base extends ResponseBusiness
      *         of the Cursor. If the Cursor is empty, it returns an empty array.
      *  	   <b>The result of this function is return as ArrayList<?>. It has
      *  	   to be casted into the expected class to be useful.</b>
-     *  	   Ex: Cast to ArrayList<{@link [aBusinessObject.name.toUpperFirst()/]}> if you want it as {@link [aBusinessObject.name.toUpperFirst()/]}
+     *  	   Ex: Cast to ArrayList<{@link [_class/]}> if you want it as {@link [_class/]}
      */
     public static ArrayList<?> buildArrayFromCursor(final Cursor c, final boolean join) {
 
-        final ArrayList<[aBusinessObject.name.toUpperFirst()/]Base> result = new ArrayList<[aBusinessObject.name.toUpperFirst()/]Base>();
+        final ArrayList<[_class/]Base> result = new ArrayList<[_class/]Base>();
 
         if (c.moveToFirst()) {
             do {
                 // we create and fill the item
-                final [aBusinessObject.name.toUpperFirst()/]Base newObject = new [aBusinessObject.name.toUpperFirst()/]Base();
+                final [_class/]Base newObject = new [_class/]Base();
                 newObject.fillObjectFromCursor(c);
                 // if it's asked we fill the childs of the item
                 if (join) {

@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.sql.DatabaseMetaData;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -66,6 +67,9 @@ public class DataLibGeneratorParser extends DefaultHandler {
 	Field field = null; //the current field
 	Field fieldXML = null; //the current xmlField
 	boolean isFillingField = false; //tells whether we are filling a Field or not
+	
+//	ArrayList<String> javaNameList = new ArrayList<String>(); //the list of the member variables contained inside the current BusinessObject
+	Stack<String> javaTagStack = new Stack<>(); //stack of names for the current BusinessObject
 	
 	ArrayList<String> prefixList = new ArrayList<String>();
 	String prefixName = ""; //the prefix to paste for the current node's name
@@ -166,18 +170,23 @@ public class DataLibGeneratorParser extends DefaultHandler {
 				String name = attributes.getValue(DataLibLabels.XML_NAME);
 				if(name == null) name = qName;
 
+				javaTagStack.push(qName);
+				String javaTag = getJavaTag(qName);
+
 				//if we are in the content response (first node of the content)
 				if(contentLevel == 0){
 
 					ResponseBusinessObject response;
 
+					String javaName = getJavaName(name);
+					
 					//we create the response depending on the cache status
 					if(cached){
 						response = modelFactory.createResponseBusinessObjectDAO();
-						DataLibGenerator.fillBusinessObjectDAO((BusinessObjectDAO) response, name, packageName, new BigInteger(""+parseId), qName, null, null, null, null, project);
+						DataLibGenerator.fillBusinessObjectDAO((BusinessObjectDAO) response, name, packageName, new BigInteger(""+parseId), qName, javaName, javaTag, null, null, null, null, project);
 					} else {
 						response = modelFactory.createResponseBusinessObject();
-						DataLibGenerator.fillBusinessObject(response, name, packageName, new BigInteger(""+parseId), qName, null, null, null, null);
+						DataLibGenerator.fillBusinessObject(response, name, packageName, new BigInteger(""+parseId), qName, javaName, javaTag, null, null, null, null);
 					}
 					parseId++; //we increment the parseId counter
 
@@ -195,6 +204,11 @@ public class DataLibGeneratorParser extends DefaultHandler {
 					prefixName = name; // we declare the prefix name
 					responseTagName = qName; //we set the response tag name
 
+					//we create and add the new XML node
+					FieldBusinessObject f = null;
+					f = DataLibGenerator.createFieldBusinessObject(modelFactory, name, null, "", "", qName, javaName, javaTag, new BigInteger(""+parseId), null, parent, null, bo, null);
+					bo.setRelatedField(f);
+					
 				} else { //if we are on the rest of the content
 
 					//we check if the node is multiple. If it is we create a new child for the parent
@@ -203,26 +217,29 @@ public class DataLibGeneratorParser extends DefaultHandler {
 					//if the tag is multiple, we add a new content level 
 					if(multiple){
 
+						String javaName = getJavaName(name);
+
 						//we create the BusinessObject depending on the cache status
 						if(cached){
 							bo = modelFactory.createBusinessObjectDAO();
-							DataLibGenerator.fillBusinessObjectDAO((BusinessObjectDAO) bo, name, packageName, new BigInteger(""+parseId), qName, null, null, null,null, project);
+							DataLibGenerator.fillBusinessObjectDAO((BusinessObjectDAO) bo, name, packageName, new BigInteger(""+parseId), qName, javaName, javaTag, null, null, null,null, project);
 						} else {
 							bo = modelFactory.createBusinessObject();
-							DataLibGenerator.fillBusinessObject(bo, name, packageName, new BigInteger(""+parseId), qName, null, null, null, null);
+							DataLibGenerator.fillBusinessObject(bo, name, packageName, new BigInteger(""+parseId), qName, javaName, javaTag, null, null, null, null);
 						}
 						
 						//we create and add the new XML node
 						FieldBusinessObject f = null;
-						f = DataLibGenerator.createFieldBusinessObject(modelFactory, name, null, "", "", qName, new BigInteger(""+parseId), null, parent, null, bo, null);
+						f = DataLibGenerator.createFieldBusinessObject(modelFactory, name, null, "", "", qName, javaName, javaTag, new BigInteger(""+parseId), null, parent, null, bo, null);
 						//if we are on the first level after the ResponseBusinessObject
 						if(fieldXML == null){
 							((ResponseBusinessObject)parent).getXmlContentFields().add(f);
+							f.setXmlParent(parent.getRelatedField());
 						} else {
 							f.setXmlParent(fieldXML);
 							fieldXML.getXmlContentFields().add(f);
-							bo.setRelatedField(f);
 						}
+						bo.setRelatedField(f);
 						fieldXML = f;
 						
 						parseId++; //we increment the parseId counter
@@ -247,24 +264,26 @@ public class DataLibGeneratorParser extends DefaultHandler {
 							bo.getContentFields().remove(field); //we remove it from the current business object
 						else
 							isFillingField = true;
-						
+
+						String javaName = getJavaName(name);
+
 						ParameterType type = getParameterType(attributes.getValue(DataLibLabels.XML_TYPE));
 						String defaultValue = attributes.getValue(DataLibLabels.XML_DEFAULT);
 
 						//we create the current field
-						field = DataLibGenerator.createField(modelFactory, name, type, "", defaultValue, qName, new BigInteger(""+parseId), null, bo, null);
+						field = DataLibGenerator.createField(modelFactory, name, type, "", defaultValue, qName, javaName, javaTag, new BigInteger(""+parseId), null, bo, null);
 
 						//we create and add the new XML node
 						Field f = null;
-						f = DataLibGenerator.createField(modelFactory, name, type, "", defaultValue, qName, new BigInteger(""+parseId), null, bo, null);
+						f = DataLibGenerator.createField(modelFactory, name, type, "", defaultValue, qName, javaName, javaTag, new BigInteger(""+parseId), null, bo, null);
 						//if we are on the first level after the ResponseBusinessObject
 						if(fieldXML == null){
 							((ResponseBusinessObject)parent).getXmlContentFields().add(f);
 						} else {
 							f.setXmlParent(fieldXML);
 							fieldXML.getXmlContentFields().add(f);
-							field.setRelatedField(f);
 						}
+						field.setRelatedField(f);
 						fieldXML = f;
 
 						parseId++; //we increment the parseId counter
@@ -337,7 +356,7 @@ public class DataLibGeneratorParser extends DefaultHandler {
 
 	}
 
-
+	
 	@Override
 	public void characters(final char[] ch, final int start, final int length) throws SAXException {
 		mBuilder.append(ch, start, length);
@@ -423,6 +442,9 @@ public class DataLibGeneratorParser extends DefaultHandler {
 				parent = parent.getParent();
 				fieldXML = fieldXML.getXmlParent();
 			}
+			
+			javaTagStack.pop();
+			
 			break;			
 
 
@@ -491,17 +513,23 @@ public class DataLibGeneratorParser extends DefaultHandler {
 		return DataLibConfig.DEFAUT_WEBSERVICE_PARAMETER_TYPE;
 	}
 
+	
 	private String getPrefixName(){
 		StringBuilder prefix = new StringBuilder();
 		for (int i = 0; i < prefixList.size(); i++) {
-			prefix.append(prefixList.get(i));
+			String item = prefixList.get(i);
+			if(item.length() > 0){
+				prefix.append(Character.toUpperCase(item.charAt(0)));
+				prefix.append(item.substring(1));
+			} else
+				prefix.append(item);
 		}
 		return prefix.toString();
 	}
+
 	public DataLibProject getParseResult(){
 		return project;
 	}
-
 
 
 	private void processBOAttributes(final Attributes attributes, BusinessObject businessObject, Field field) {
@@ -510,11 +538,18 @@ public class DataLibGeneratorParser extends DefaultHandler {
 			
 			if(!attributes.getQName(i).startsWith(DataLibLabels.XML_PREFIX)){
 				ParameterType typeP = getParameterType(attributes.getValue(i));
-				businessObject.getAttributes().add(DataLibGenerator.createField(modelFactory, getPrefixName()+attributes.getQName(i), typeP, "", "", attributes.getQName(i), new BigInteger("-1"), null, bo, null));
+
+				String xmlName = attributes.getQName(i);
+				String upperName = Character.toUpperCase(xmlName.charAt(0))+xmlName.substring(1);
+				String javaName = getPrefixName()+upperName;
+				String javaTag = getJavaTag(xmlName);
+				String name = getPrefixName()+upperName;
+
+				businessObject.getAttributes().add(DataLibGenerator.createField(modelFactory, name, typeP, "", "", xmlName, javaName, javaTag, new BigInteger("-1"), null, bo, null));
 				if(field != null)
-					field.getXmlAttributes().add(DataLibGenerator.createField(modelFactory, getPrefixName()+attributes.getQName(i), typeP, "", "", attributes.getQName(i), new BigInteger("-1"), null, bo, null));
+					field.getXmlAttributes().add(DataLibGenerator.createField(modelFactory, name, typeP, "", "", xmlName, javaName, javaTag, new BigInteger("-1"), null, bo, null));
 				else
-					((ResponseBusinessObject) businessObject).getXmlAttributes().add(DataLibGenerator.createField(modelFactory, getPrefixName()+attributes.getQName(i), typeP, "", "", attributes.getQName(i), new BigInteger("-1"), null, bo, null));
+					((ResponseBusinessObject) businessObject).getXmlAttributes().add(DataLibGenerator.createField(modelFactory, name, typeP, "", "", xmlName, javaName, javaTag, new BigInteger("-1"), null, bo, null));
 			}
 		}
 	}
@@ -525,13 +560,43 @@ public class DataLibGeneratorParser extends DefaultHandler {
 			
 			if(!attributes.getQName(i).startsWith(DataLibLabels.XML_PREFIX)){
 				ParameterType typeP = getParameterType(attributes.getValue(i));
-				bo.getAttributes().add(DataLibGenerator.createField(modelFactory, getPrefixName()+attributes.getQName(i), typeP, "", "", attributes.getQName(i), new BigInteger("-1"), null, bo, null));
-				field.getXmlAttributes().add(DataLibGenerator.createField(modelFactory, getPrefixName()+attributes.getQName(i), typeP, "", "", attributes.getQName(i), new BigInteger("-1"), null, bo, null));
-				f.getXmlAttributes().add(DataLibGenerator.createField(modelFactory, getPrefixName()+attributes.getQName(i), typeP, "", "", attributes.getQName(i), new BigInteger("-1"), null, bo, null));
+				String xmlName = attributes.getQName(i);
+				String upperName = Character.toUpperCase(xmlName.charAt(0))+xmlName.substring(1);
+				String javaName = getPrefixName()+upperName;
+				String javaTag = getJavaTag(xmlName);
+				String name = getPrefixName()+upperName;
+				bo.getAttributes().add(DataLibGenerator.createField(modelFactory, name, typeP, "", "", xmlName, javaName, javaTag, new BigInteger("-1"), null, bo, null));
+				field.getXmlAttributes().add(DataLibGenerator.createField(modelFactory, name, typeP, "", "", xmlName, javaName, javaTag, new BigInteger("-1"), null, bo, null));
+				f.getXmlAttributes().add(DataLibGenerator.createField(modelFactory, name, typeP, "", "", xmlName, javaName, javaTag, new BigInteger("-1"), null, bo, null));
 			}
 		}
 	}
 
+	private String getJavaName(String name) {
+		
+//		javaName = null;
+//		while(javaName == null){
+//			if(javaNameList.contains(name));			
+//		}
+		
+		return name;
+	}
+
+	private String getJavaTag(String name) {
+		
+		StringBuilder b = new StringBuilder();
+
+		int size = javaTagStack.size();
+		for (int i = 0; i < size; i++) {
+			b.append(javaTagStack.get(i).toUpperCase());
+			if(i<=size-2)
+			b.append("_");
+		}		
+		
+		return b.toString();
+	}
+	
+	
 }
 
 

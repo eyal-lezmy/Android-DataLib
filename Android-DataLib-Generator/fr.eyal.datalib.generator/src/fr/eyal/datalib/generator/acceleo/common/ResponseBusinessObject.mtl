@@ -6,22 +6,23 @@
 [template public responseBusinessObject(aBusinessObject : ResponseBusinessObject){
 _package:String = aBusinessObject._package+'.model.'+getPackage(aBusinessObject);
 _directory:String = getDirectoryFromPackage(_package);
+_class:String = aBusinessObject.javaName.toUpperFirst();
 }]
-[file (_directory + aBusinessObject.name.toUpperFirst() + '.java', false, 'UTF-8')]
-// [protected (_package+'.'+aBusinessObject.name.toUpperFirst()+'. DO NOT MODIFY THE GENERATED COMMENTS')]
+[file (_directory + _class + '.java', false, 'UTF-8')]
+// [protected (_package+'.'+_class+'. DO NOT MODIFY THE GENERATED COMMENTS')]
 package [_package/];
 
 import android.os.Parcel;
 
-public class [aBusinessObject.name.toUpperFirst()/] extends [aBusinessObject.name.toUpperFirst()/]Base {
+public class [_class/] extends [_class/]Base {
 
-    private static final String TAG = [aBusinessObject.name.toUpperFirst()/].class.getSimpleName();
+    private static final String TAG = [_class/].class.getSimpleName();
 
-    public [aBusinessObject.name.toUpperFirst()/]() {
+    public [_class/]() {
         super();
     }
 
-    public [aBusinessObject.name.toUpperFirst()/](final Parcel in) {
+    public [_class/](final Parcel in) {
         super(in);
     }
 

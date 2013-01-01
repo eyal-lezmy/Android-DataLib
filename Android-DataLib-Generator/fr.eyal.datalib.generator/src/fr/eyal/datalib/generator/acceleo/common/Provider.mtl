@@ -97,7 +97,7 @@ case CODE_[webService.contentResponse.name.toUpper()/]:
 
 [template public getTypeCases (aBusinessObject : BusinessObject) post (trim()) ]
 case CODE[getCompleteNameToUpper(aBusinessObject, '_')/]:
-    return [getCompleteNameToUpperFirst(aBusinessObject, '')/].CONTENT_URL;
+    return [aBusinessObject.javaName.toUpperFirst()/].CONTENT_URL;
 
 	[for (businessObject : BusinessObject | aBusinessObject.childs)]
 	[getTypeCases (businessObject) /]
@@ -119,7 +119,7 @@ case CODE_[webService.contentResponse.name.toUpper()/]:
 
 [template public getTableNamesCases (aBusinessObject : BusinessObject) post (trim())]
 case CODE[getCompleteNameToUpper(aBusinessObject, '_')/]:
-    return [getCompleteNameToUpperFirst(aBusinessObject, '')/].DATABASE_TABLE_NAME;
+    return [aBusinessObject.javaName.toUpperFirst()/].DATABASE_TABLE_NAME;
 
 	[for (businessObject : BusinessObject | aBusinessObject.childs)]
 [getTableNamesCases (businessObject) /]
@@ -138,7 +138,7 @@ matcher.addURI(AUTHORITY, [webService.contentResponse.name.toUpperFirst()/].CONT
 [/template]
 
 [template public matchURIs (aBusinessObject : BusinessObject) post (trim())]
-matcher.addURI(AUTHORITY, [getCompleteNameToUpperFirst(aBusinessObject, '')/].CONTENT_PATH, CODE[getCompleteNameToUpper(aBusinessObject, '_')/]);
+matcher.addURI(AUTHORITY, [aBusinessObject.javaName.toUpperFirst()/].CONTENT_PATH, CODE[getCompleteNameToUpper(aBusinessObject, '_')/]);
 [for (businessObject : BusinessObject | aBusinessObject.childs)]
 [matchURIs (businessObject) /]
 [/for]
@@ -156,7 +156,7 @@ matcher.addURI(AUTHORITY, [getCompleteNameToUpperFirst(aBusinessObject, '')/].CO
 [/template]
 
 [template public listCreateTables (aBusinessObject : BusinessObject) post (trim()) ]
-[getCompleteNameToUpperFirst(aBusinessObject, '')/].CREATE_TABLE,
+[aBusinessObject.javaName.toUpperFirst()/].CREATE_TABLE,
 [for (businessObject : BusinessObject | aBusinessObject.childs)]
 [listCreateTables (businessObject) /]
 [/for]
@@ -174,7 +174,7 @@ matcher.addURI(AUTHORITY, [getCompleteNameToUpperFirst(aBusinessObject, '')/].CO
 [/template]
 
 [template public listFieldsTables (aBusinessObject : BusinessObject) post (trim()) ]
-[getCompleteNameToUpperFirst(aBusinessObject, '')/].DATABASE_TABLE_FIELDS_NAMES,
+[aBusinessObject.javaName.toUpperFirst()/].DATABASE_TABLE_FIELDS_NAMES,
 [for (businessObject : BusinessObject | aBusinessObject.childs)]
 [listFieldsTables (businessObject) /]
 [/for]
@@ -194,7 +194,7 @@ matcher.addURI(AUTHORITY, [getCompleteNameToUpperFirst(aBusinessObject, '')/].CO
 [/template]
 
 [template public listTables (aBusinessObject : BusinessObject) post (trim())]
-[getCompleteNameToUpperFirst(aBusinessObject, '')/].DATABASE_TABLE_NAME,
+[aBusinessObject.javaName.toUpperFirst()/].DATABASE_TABLE_NAME,
 [for (businessObject : BusinessObject | aBusinessObject.childs)]
 [listTables (businessObject) /]
 [/for]
@@ -203,27 +203,27 @@ matcher.addURI(AUTHORITY, [getCompleteNameToUpperFirst(aBusinessObject, '')/].CO
 [template public declareCodes (aProject : DataLibProject) post (trim())]
 [for (webService : WebService | aProject.webservices) ]
 [if (webService.cached)]
-public static final int CODE_[webService.contentResponse.name.toUpper()/] = [webService.contentResponse.parseId/];
+public static final int CODE_[webService.contentResponse.javaName.toUpper()/] = [webService.contentResponse.parseId/];
 [comment][trace ('message')][webService.contentResponse.name/][/trace][/comment]
 	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
-[declareCodes (businessObject, webService.contentResponse.name.toUpper()+'_') /]
+[declareCodes (businessObject, webService.contentResponse.javaName.toUpper()+'_') /]
 	[/for]
 [/if]
 [/for]
 [/template]
 
 [template public declareCodes (aBusinessObject : BusinessObject, prefix : String) ]
-public static final int CODE_[prefix/][aBusinessObject.name.toUpper()/] = [aBusinessObject.parseId/];
+public static final int CODE_[prefix/][aBusinessObject.javaName.toUpper()/] = [aBusinessObject.parseId/];
 
 [for (businessObject : BusinessObject | aBusinessObject.childs)]
-[declareCodes (businessObject, prefix+aBusinessObject.name.toUpper()+'_') /]
+[declareCodes (businessObject, prefix+aBusinessObject.javaName.toUpper()+'_') /]
 [/for]
 [/template]
 
 [template public addImports (aProject : DataLibProject) ]
 [for (webService : WebService | aProject.webservices) ]
 [if (webService.cached)]
-import [webService.contentResponse._package/].model.[webService.contentResponse.name.toLower()/].[webService.contentResponse.name.toUpperFirst()/];
+import [webService.contentResponse._package/].model.[webService.contentResponse.name.toLower()/].[webService.contentResponse.javaName.toUpperFirst()/];
 	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [addImports (businessObject) /]
 	[/for]
@@ -232,7 +232,7 @@ import [webService.contentResponse._package/].model.[webService.contentResponse.
 [/template]
 
 [template public addImports (aBusinessObject : BusinessObject) ]
-import [aBusinessObject._package/].model.[aBusinessObject.parent.name.toLower()/].[getCompleteNameToUpperFirst(aBusinessObject, '')/];
+import [aBusinessObject._package/].model.[aBusinessObject.parent.javaName.toLower()/].[aBusinessObject.javaName.toUpperFirst()/];
 	[for (businessObject : BusinessObject | aBusinessObject.childs)]
 [addImports (businessObject) /]
 	[/for]
