@@ -376,7 +376,6 @@ public class [_class/]Base extends BusinessObjectDAO {
     @Override
     public void deleteChildsFromDatabase(final ArrayList<ContentProviderOperation> batch) {
         [if (aBusinessObject.childs->size() > 0)]
-        Out.d(TAG, "deleting childs of " + _id);
 			[for (child : BusinessObject | aBusinessObject.childs)]
         // we first remove all the childs of the childs of the object
         for (final [child.javaName.toUpperFirst()/] item : [child.javaName.toLowerFirst()/]) {
@@ -457,16 +456,14 @@ public class [_class/]Base extends BusinessObjectDAO {
                 args, // id of the object
                 null);
 
-        Out.d(TAG, "Adding " + cursor.getCount() + " childs into " + TAG);
-
         // if we get a result
         if (cursor.moveToFirst()) {
 
             do {
                 // we create and then fill the item with the Cursor
                 final [child.javaName.toUpperFirst()/] item[child.javaName.toUpperFirst()/] = new [child.javaName.toUpperFirst()/]();
-                item.fillObjectFromCursor(cursor);
-                [child.javaName.toLowerFirst()/].add(item); // we add a new object to the list
+                item[child.javaName.toUpperFirst()/].fillObjectFromCursor(cursor);
+                [child.javaName.toLowerFirst()/].add(item[child.javaName.toUpperFirst()/]); // we add a new object to the list
 
             } while (cursor.moveToNext());
         }
