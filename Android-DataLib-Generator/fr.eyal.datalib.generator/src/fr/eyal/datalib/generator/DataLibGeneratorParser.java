@@ -1,8 +1,6 @@
 package fr.eyal.datalib.generator;
 
 import java.math.BigInteger;
-import java.sql.DatabaseMetaData;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -24,9 +22,7 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.model.Field;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.FieldBusinessObject;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelFactory;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage;
-import fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ResponseBusinessObject;
-import fr.eyal.lib.datalib.genmodel.android.datalib.model.ResponseBusinessObjectDAO;
 
 
 public class DataLibGeneratorParser extends DefaultHandler {

@@ -1,9 +1,6 @@
 package fr.eyal.datalib.generator;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.ObjectInputStream.GetField;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,24 +9,18 @@ import java.util.Map;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
 
 import fr.eyal.datalib.generator.acceleo.common.Main;
-import fr.eyal.lib.datalib.genmodel.android.AndroidPackage;
 import fr.eyal.lib.datalib.genmodel.android.datalib.DataLibProject;
 import fr.eyal.lib.datalib.genmodel.android.datalib.DatalibFactory;
 import fr.eyal.lib.datalib.genmodel.android.datalib.DatalibPackage;
 import fr.eyal.lib.datalib.genmodel.android.datalib.WebService;
-import fr.eyal.lib.datalib.genmodel.android.datalib.content.ContentPackage;
 import fr.eyal.lib.datalib.genmodel.android.datalib.content.DataLibOption;
 import fr.eyal.lib.datalib.genmodel.android.datalib.content.HttpMethod;
 import fr.eyal.lib.datalib.genmodel.android.datalib.content.ParameterType;
