@@ -19,8 +19,7 @@ public class CatalogTitlesWebConfig extends DataLibWebConfig {
     private CatalogTitlesWebConfig() {}
 
     private int httpType = DataLibRequest.HTTP_REST_GET;
-	private int requestOptions = 
-			DataLibRequest.OPTION_DATABASE_CACHE_DISABLED;
+	private int requestOptions = DataLibRequest.OPTION_NO_OPTION;
     private int parseType = DataLibRequest.PARSE_TYPE_SAX_XML;
 
     /**

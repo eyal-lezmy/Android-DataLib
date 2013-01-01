@@ -15,5 +15,15 @@ public class CatalogTitles extends CatalogTitlesBase {
         super(in);
     }
 
+    public CatalogTitles(final long id) {
+        super(id);
+    }
+
+    public CatalogTitles(final String url) {
+        super(url);
+    }
+
+
+
 }
 // End of user code
