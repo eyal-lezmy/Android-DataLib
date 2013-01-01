@@ -15,7 +15,7 @@
 			<datalib:httpMethod>GET</datalib:httpMethod>
 			<datalib:parseType>SAX</datalib:parseType>
 			<datalib:options>
-				<datalib:OPTION_DATABASE_CACHE_DISABLED />
+<!-- 				<datalib:OPTION_DATABASE_CACHE_DISABLED /> -->
 			</datalib:options>
 			<datalib:parameters>
  				<max_results datalib:type="int" datalib:description="Maximum number of results expected. If this parameter is not present, the default value is 25."/>
