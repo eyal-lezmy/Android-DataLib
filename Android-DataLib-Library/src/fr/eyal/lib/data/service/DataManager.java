@@ -201,7 +201,15 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
         return mServiceHelper.isRequestInProgress(requestId);
     }
 
-    public boolean launchResponse(final int requestId) {
+    /**
+     * Launch the response handling asynchronously
+     * TODO determine if this function is still useful
+     * 
+     * @param requestId the request ID
+     * 
+     * @return <b>true</b> if the request have been found among the non treated request and <b>false</b> if not
+     */
+    protected boolean launchResponse(final int requestId) {
         final Bundle bundle = mDataLibResponsesSparseArray.get(requestId);
 
         if (bundle == null)
