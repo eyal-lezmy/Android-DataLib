@@ -291,6 +291,10 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
 
 [/for]
 
+// [protected (aProject.name.toUpperFirst()+'DataManager DO NOT MODIFY THE GENERATED COMMENTS')]
+// You can add here your personal content 
+// [/protected]
+
 }
 [/file]
 [/template]

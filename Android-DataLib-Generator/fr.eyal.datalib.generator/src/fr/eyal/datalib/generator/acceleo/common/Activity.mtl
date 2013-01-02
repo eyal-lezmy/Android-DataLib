@@ -59,6 +59,10 @@ public abstract class [_project/]DataLibActivity extends Activity implements OnD
 		super.onPause();
 	}
 	
+
+// [protected (aProject.name.toUpperFirst()+'DataLibActivity DO NOT MODIFY THE GENERATED COMMENTS')]
+// [/protected]
+
 }
 [/file]
 [/template]

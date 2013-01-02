@@ -75,6 +75,10 @@ public class [aProject.name.toUpperFirst()/]Provider extends BusinessObjectProvi
         }
     }
 
+// [protected (aProject.name.toUpperFirst()+'Provider DO NOT MODIFY THE GENERATED COMMENTS')]
+// [/protected]
+
+
 }
 
 

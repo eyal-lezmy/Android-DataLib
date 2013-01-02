@@ -57,6 +57,10 @@ public class [aWebService.name.toUpperFirst()/]WebConfig extends DataLibWebConfi
     public int getRequestOptions() {
         return requestOptions;
     }
+
+// [protected (aWebService.name.toUpperFirst()+'Config DO NOT MODIFY THE GENERATED COMMENTS')]
+// [/protected]
+
 }
 
 [/file]

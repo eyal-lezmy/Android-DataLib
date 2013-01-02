@@ -54,6 +54,10 @@ public class [aProject.name.toUpperFirst()/]Service extends DataLibService {
         }
     }
 
+// [protected (aProject.name.toUpperFirst()+'Service DO NOT MODIFY THE GENERATED COMMENTS')]
+// [/protected]
+
+
 }
 
 [/file]

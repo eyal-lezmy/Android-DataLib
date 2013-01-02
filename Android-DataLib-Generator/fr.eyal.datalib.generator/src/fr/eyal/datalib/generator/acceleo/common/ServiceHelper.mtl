@@ -89,6 +89,10 @@ public class [aProject.name.toUpperFirst()/]ServiceHelper extends ServiceHelper 
     
 [/for]
 
+// [protected (aProject.name.toUpperFirst()+'ServiceHelper DO NOT MODIFY THE GENERATED COMMENTS')]
+// [/protected]
+
+
 }
 
 [/file]
