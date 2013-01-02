@@ -127,7 +127,7 @@ public class [_class/]Base extends BusinessObjectDAO {
 				[elseif (field.type = ParameterType::boolean)]
 			"tinyint",
 				[else]
-			//[field.type/] unknonwn
+			//[field.type/] unknown
 				[/if]
 			[/for]
 			[/if]
@@ -144,7 +144,7 @@ public class [_class/]Base extends BusinessObjectDAO {
 				[elseif (field.type = ParameterType::boolean)]
 			"tinyint",
 				[else]
-			//[field.type/] type unknonwn
+			//[field.type/] type unknown
 				[/if]
 			[/for]
 			[/if]
@@ -159,22 +159,28 @@ public class [_class/]Base extends BusinessObjectDAO {
             + DATABASE_TABLE_FIELDS_NAMES['['/]1] + " " + DATABASE_TABLE_FIELDS_TYPES['['/]1] + ", "
             + DATABASE_TABLE_FIELDS_NAMES['['/]2] + " " + DATABASE_TABLE_FIELDS_TYPES['['/]2] + " REFERENCES "
             + [aBusinessObject.parent.javaName.toUpperFirst()/].DATABASE_TABLE_NAME + "(" + [aBusinessObject.parent.javaName.toUpperFirst()/].DATABASE_TABLE_FIELDS_NAMES['['/]0] + ") ON DELETE CASCADE" + ", "
+
 			[if (aBusinessObject.attributes->size() > 0)]
 			//list of attributes
-			[for (field : Field | aBusinessObject.attributes){offset:Integer = 2;}]
-			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+2)+']'/] + ", "
-			[/for]
-			[/if]
-
-		    [if (aBusinessObject.contentFields->size() > 0)]
-			//list of content
-			[for (field : Field | aBusinessObject.contentFields) {offset:Integer = aBusinessObject.attributes->size()+2;}]
-				[if (i <> aBusinessObject.contentFields->size())]
-			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+2)+']'/] + ", "
+			[for (field : Field | aBusinessObject.attributes){offset:Integer = 2; totalSize:Integer = aBusinessObject.attributes->size() + aBusinessObject.contentFields->size();}]
+				[if (i < totalSize)]
+			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+offset)+']'/] + ", "
 				[else]
-			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+2)+']'/] + "); "
+			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+offset)+']'/] + "); "
 				[/if]
 			[/for]
+
+			[/if]
+		    [if (aBusinessObject.contentFields->size() > 0)]
+			//list of content
+			[for (field : Field | aBusinessObject.contentFields) {offset:Integer = aBusinessObject.attributes->size()+2; totalSize:Integer = aBusinessObject.contentFields->size();}]
+				[if (i < totalSize)]
+			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+offset)+']'/] + ", "
+				[else]
+			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+offset)+']'/] + "); "
+				[/if]
+			[/for]
+
 			[/if]
             + "CREATE INDEX "
             + DATABASE_TABLE_NAME + "_" + DATABASE_TABLE_FIELDS_NAMES['['/]0] + " ON " + DATABASE_TABLE_NAME + " (" + DATABASE_TABLE_FIELDS_NAMES['['/]0] + ");";

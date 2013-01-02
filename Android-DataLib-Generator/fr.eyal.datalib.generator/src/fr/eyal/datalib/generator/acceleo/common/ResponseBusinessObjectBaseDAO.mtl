@@ -132,7 +132,7 @@ public class [_class/]Base extends ResponseBusinessObjectDAO {
 				[elseif (field.type = ParameterType::boolean)]
 			"tinyint",
 				[else]
-			//[field.type/] unknonwn
+			//[field.type/] unknown
 				[/if]
 			[/for]
 			[/if]
@@ -149,7 +149,7 @@ public class [_class/]Base extends ResponseBusinessObjectDAO {
 				[elseif (field.type = ParameterType::boolean)]
 			"tinyint",
 				[else]
-			//[field.type/] type unknonwn
+			//[field.type/] type unknown
 				[/if]
 			[/for]
 			[/if]
@@ -166,18 +166,22 @@ public class [_class/]Base extends ResponseBusinessObjectDAO {
             + DATABASE_TABLE_FIELDS_NAMES['['/]3] + " " + DATABASE_TABLE_FIELDS_TYPES['['/]3] + ", "
 			[if (aBusinessObject.attributes->size() > 0)]
 			//list of attributes
-			[for (field : Field | aBusinessObject.attributes){offset:Integer = 3;}]
-			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+2)+']'/] + ", "
+			[for (field : Field | aBusinessObject.attributes){offset:Integer = 3; totalSize:Integer = aBusinessObject.attributes->size() + aBusinessObject.contentFields->size();}]
+				[if (i < totalSize)]
+			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+offset)+']'/] + ", "
+				[else]
+			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+offset)+']'/] + "); "
+				[/if]
 			[/for]
 			[/if]
 
 		    [if (aBusinessObject.contentFields->size() > 0)]
 		    //list of content
-			[for (field : Field | aBusinessObject.contentFields) {offset:Integer = aBusinessObject.attributes->size()+3;}]
-				[if (i <> aBusinessObject.contentFields->size())]
-			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+2)+']'/] + ", "
+			[for (field : Field | aBusinessObject.contentFields) {offset:Integer = aBusinessObject.attributes->size()+3; totalSize:Integer = aBusinessObject.contentFields->size();}]
+				[if (i < totalSize)]
+			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+offset)+']'/] + ", "
 				[else]
-			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+2)+']'/] + "); "
+			+ DATABASE_TABLE_FIELDS_NAMES['['+(i+offset)+']'/] + " " + DATABASE_TABLE_FIELDS_TYPES['['+(i+offset)+']'/] + "); "
 				[/if]
 			[/for]
 			[/if]
