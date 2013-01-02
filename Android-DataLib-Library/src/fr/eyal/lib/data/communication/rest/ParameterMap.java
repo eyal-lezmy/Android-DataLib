@@ -19,6 +19,9 @@ package fr.eyal.lib.data.communication.rest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import android.content.ContentValues;
 import android.os.Parcel;
@@ -122,7 +125,7 @@ public class ParameterMap implements Parcelable {
     }
 
     /**
-     * Gets a value. Valid value types are {@link String}, {@link Boolean}, and
+     * Get a value. Valid value types are {@link String}, {@link Boolean}, and
      * {@link Number} implementations.
      *
      * @param key the value to get
@@ -131,15 +134,56 @@ public class ParameterMap implements Parcelable {
     public Object get(final String key) {
         return mValues.get(key);
     }
+    
+    /**
+     * Get the key set
+     *
+     * @return the Set of parameters names
+     */
+    public Set<String> keySet() {
+        return mValues.keySet();
+    }
+    
+    /**
+     * Get the key set
+     *
+     * @param ordered define the list as ordered or not
+     *
+     * @return the Set of parameters names
+     */
+    public SortedSet<String> keySet(boolean ordered) {
+        return new TreeSet<String>(mValues.keySet());
+    }
 
+    
     /**
      * Returns URL encoded data
      * 
      * @return URL encoded String
      */
     public String urlEncode() {
+    	return urlEncode(false);
+    }
+    
+    /**
+     * Returns URL encoded data
+     * 
+     * @param ordered asks to order the parameter keys before building the result String
+     *  
+     * @return URL encoded String
+     */
+    public String urlEncode(boolean ordered) {
         StringBuilder sb = new StringBuilder();
-        for (String key : mValues.keySet()) {
+        
+        Set<String> keys;
+        
+        if(ordered){
+        	keys = (SortedSet<String>) new TreeSet<String>(mValues.keySet());
+        } else {
+        	keys = mValues.keySet();
+        }
+        
+        for (String key : keys) {
             if (sb.length() > 0) {
                 sb.append("&");
             }
