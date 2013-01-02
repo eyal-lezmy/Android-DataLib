@@ -23,8 +23,9 @@
  				<oauth_nonce datalib:type="string" datalib:description="A random string"/>
 				<oauth_signature_method datalib:type="string" datalib:description="The OAuth signature method. Here we use HMAC-SHA1"/>
 				<oauth_timestamp datalib:type="int" datalib:description="The current timestamp"/>
-				<start_index datalib:type="string" datalib:description="Start index of the result (to paginate the results). This value is linked to max_result"/>
+				<start_index datalib:type="int" datalib:description="Start index of the result (to paginate the results). This value is linked to max_result"/>
 				<term datalib:type="string" datalib:description="The term of the content you are looking for"/>
+				<oauth_signature datalib:type="string" datalib:description="The request's signature computed thanks to the specific OAuth process"/>
 			</datalib:parameters>
 		</datalib:config>
 		<!-- Content definition of the web service -->
