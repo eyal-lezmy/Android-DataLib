@@ -5,10 +5,11 @@
     datalib:package="fr.eyal.datalib.sample.netflix.data" 
     datalib:authority="fr.eyal.datalib.sample.netflix.datacache.provider"
     datalib:databaseName="datalib_cache"
-    datalib:databaseVersion="1">
+    datalib:databaseVersion="2">
 	<datalib:webservice
 		datalib:httpMethod="GET"
 		datalib:parseType="SAX"
+		datalib:name="CatalogTitles"
 		datalib:url="http://api-public.netflix.com/catalog/titles">
 		<!-- Configuration of the web service -->
 		<datalib:config>
@@ -29,7 +30,8 @@
 			</datalib:parameters>
 		</datalib:config>
 		<!-- Content definition of the web service -->
-<catalog_titles datalib:name="CatalogTitles">
+<h1 datalib:name="error">string</h1>
+<catalog_titles>
   <number_of_results>int</number_of_results>
   <start_index>int</start_index>
   <results_per_page>int</results_per_page>
