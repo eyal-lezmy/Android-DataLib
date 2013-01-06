@@ -63,6 +63,7 @@ public class DataLibGeneratorParser extends DefaultHandler {
 	Field field = null; //the current field
 	Field fieldXML = null; //the current xmlField
 	boolean isFillingField = false; //tells whether we are filling a Field or not
+	Field tempField;
 	
 //	ArrayList<String> javaNameList = new ArrayList<String>(); //the list of the member variables contained inside the current BusinessObject
 	Stack<String> javaTagStack = new Stack<>(); //stack of names for the current BusinessObject
@@ -70,7 +71,10 @@ public class DataLibGeneratorParser extends DefaultHandler {
 	ArrayList<String> prefixList = new ArrayList<String>();
 	String prefixName = ""; //the prefix to paste for the current node's name
 	String responseTagName; //the first content node's tag name
+	boolean isResponseField = false; //tells if we are on the ResponseBusinessObject level and the content does not still has a contentField
 
+	Attributes mCurrentAttributes;
+	
 	boolean cached = DataLibConfig.DEFAUT_WEBSERVICE_CACHED;
 	int contentLevel = 0;
 	long parseId = 0;
@@ -103,6 +107,8 @@ public class DataLibGeneratorParser extends DefaultHandler {
 
 		mBuilder.setLength(0);
 
+		mCurrentAttributes = attributes;
+		
 		switch (mState) {
 
 		case UNKNOWN:
@@ -142,14 +148,40 @@ public class DataLibGeneratorParser extends DefaultHandler {
 				String url = attributes.getValue(DataLibLabels.XML_URL);
 				if(url == null) throw new SAXException("'"+DataLibLabels.XML_URL+"' attributes is mandatory for each "+DataLibLabels.XML_WEBSERVICE+" tag. ou must provide the URL reference of the webservice");
 
+				name = attributes.getValue(DataLibLabels.XML_NAME);
+				
 				webservice = factory.createWebService();
 				webservice.setCached(true);
 				webservice.setMethod(httpMethod);
 				webservice.setPackage(packageName);
 				webservice.setParseType(parseType);
 				webservice.setUrl(url);
+				webservice.setName(name);
 
 				project.getWebservices().add(webservice);
+				
+
+				ResponseBusinessObject response;
+				
+				String javaTag = getJavaTag(name);
+				String javaName = name;
+
+				//we create the response depending on the cache status
+				if(cached){
+					response = modelFactory.createResponseBusinessObjectDAO();
+					DataLibGenerator.fillBusinessObjectDAO((BusinessObjectDAO) response, name, packageName, new BigInteger(""+parseId), qName, javaName, javaTag, null, null, null, null, project);
+				} else {
+					response = modelFactory.createResponseBusinessObject();
+					DataLibGenerator.fillBusinessObject(response, name, packageName, new BigInteger(""+parseId), qName, javaName, javaTag, null, null, null, null);
+				}
+				parseId++; //we increment the parseId counter
+
+				//we add the content response to the webservice
+				webservice.setContentResponse((ResponseBusinessObject) response);
+
+				parent = response; //we set the response as the node's parent
+				bo = response; //we set the response as the current business object to fill
+
 			}
 			break;
 
@@ -169,30 +201,17 @@ public class DataLibGeneratorParser extends DefaultHandler {
 				javaTagStack.push(qName);
 				String javaTag = getJavaTag(qName);
 
+				//we check if the node is multiple. If it is we create a new child for the parent
+				boolean multiple = Boolean.parseBoolean(attributes.getValue(DataLibLabels.XML_MULTIPLE));
+
 				//if we are in the content response (first node of the content)
 				if(contentLevel == 0){
 
-					ResponseBusinessObject response;
-
+					//we tell that we are on the response level
+					isResponseField = true;
+					
 					String javaName = getJavaName(name);
 					
-					//we create the response depending on the cache status
-					if(cached){
-						response = modelFactory.createResponseBusinessObjectDAO();
-						DataLibGenerator.fillBusinessObjectDAO((BusinessObjectDAO) response, name, packageName, new BigInteger(""+parseId), qName, javaName, javaTag, null, null, null, null, project);
-					} else {
-						response = modelFactory.createResponseBusinessObject();
-						DataLibGenerator.fillBusinessObject(response, name, packageName, new BigInteger(""+parseId), qName, javaName, javaTag, null, null, null, null);
-					}
-					parseId++; //we increment the parseId counter
-
-					//we add the content response to the webservice
-					webservice.setContentResponse((ResponseBusinessObject) response);
-					webservice.setName(name); //the web service takes the name of the first node
-
-					parent = response; //we set the response as the node's parent
-					bo = response; //we set the response as the current business object to fill
-
 					//we manage the attributes linking
 					processBOAttributes(attributes, bo, null);
 					
@@ -201,15 +220,23 @@ public class DataLibGeneratorParser extends DefaultHandler {
 					responseTagName = qName; //we set the response tag name
 
 					//we create and add the new XML node
-					FieldBusinessObject f = null;
-					f = DataLibGenerator.createFieldBusinessObject(modelFactory, name, null, "", "", qName, javaName, javaTag, new BigInteger(""+parseId), null, parent, null, bo, null);
-					bo.setRelatedField(f);
+					if(multiple)
+						tempField = DataLibGenerator.createFieldBusinessObject(modelFactory, name, null, "", "", qName, javaName, javaTag, new BigInteger(""+parseId), null, parent, null, bo, null);
+					else
+						tempField = DataLibGenerator.createField(modelFactory, name, null, "", "", qName, javaName, javaTag, new BigInteger(""+parseId), null, parent, null);
+						
+					parseId++;
+					
+					((ResponseBusinessObject)bo).getXmlContentFields().add(tempField);
+					fieldXML = tempField;
+
+					
 					
 				} else { //if we are on the rest of the content
 
-					//we check if the node is multiple. If it is we create a new child for the parent
-					boolean multiple = Boolean.parseBoolean(attributes.getValue(DataLibLabels.XML_MULTIPLE));
-
+					//We tells that we are out on the response level
+					isResponseField = false;
+					
 					//if the tag is multiple, we add a new content level 
 					if(multiple){
 
@@ -228,13 +255,13 @@ public class DataLibGeneratorParser extends DefaultHandler {
 						FieldBusinessObject f = null;
 						f = DataLibGenerator.createFieldBusinessObject(modelFactory, name, null, "", "", qName, javaName, javaTag, new BigInteger(""+parseId), null, parent, null, bo, null);
 						//if we are on the first level after the ResponseBusinessObject
-						if(fieldXML == null){
-							((ResponseBusinessObject)parent).getXmlContentFields().add(f);
-							f.setXmlParent(parent.getRelatedField());
-						} else {
+//						if(fieldXML == null){
+//							((ResponseBusinessObject)parent).getXmlContentFields().add(f);
+//							f.setXmlParent(parent.getRelatedField());
+//						} else {
 							f.setXmlParent(fieldXML);
 							fieldXML.getXmlContentFields().add(f);
-						}
+//						}
 						bo.setRelatedField(f);
 						fieldXML = f;
 						
@@ -272,15 +299,13 @@ public class DataLibGeneratorParser extends DefaultHandler {
 						//we create and add the new XML node
 						Field f = null;
 						f = DataLibGenerator.createField(modelFactory, name, type, "", defaultValue, qName, javaName, javaTag, new BigInteger(""+parseId), null, bo, null);
-						//if we are on the first level after the ResponseBusinessObject
-						if(fieldXML == null){
-							((ResponseBusinessObject)parent).getXmlContentFields().add(f);
-						} else {
-							f.setXmlParent(fieldXML);
-							fieldXML.getXmlContentFields().add(f);
-						}
-						field.setRelatedField(f);
+						f.setXmlParent(fieldXML);
+						f.setRelatedField(field);
+
+						fieldXML.getXmlContentFields().add(f);
 						fieldXML = f;
+
+						field.setRelatedField(f);
 
 						parseId++; //we increment the parseId counter
 
@@ -414,7 +439,42 @@ public class DataLibGeneratorParser extends DefaultHandler {
 			//if we finish to read the content
 			if (qName.equals(responseTagName)) {
 				mState = WEBSERVICE;
+				contentLevel--;
+				
+				String content = mBuilder.toString();
+				content = content.replaceAll("\\s+", "");
+				
+				if(isResponseField && !content.equals("")){
+					
+					//we get the name
+					String name = mCurrentAttributes.getValue(DataLibLabels.XML_NAME);
+					if(name == null) name = qName;
 
+					String javaTag = getJavaTag(qName);
+					String javaName = getJavaName(name);
+					
+					ParameterType type = getParameterType(mBuilder.toString());
+
+					String defaultValue = mCurrentAttributes.getValue(DataLibLabels.XML_DEFAULT);
+					
+					//we create the current field
+					field = DataLibGenerator.createField(modelFactory, name, type, "", defaultValue, qName, javaName, javaTag, new BigInteger(""+parseId), null, bo, null);
+										
+//					//we update the prefix name
+//					prefixList.add(name);
+//					prefixName = prefixName + name;
+					
+//					//we manage the attributes linking
+//					processFieldAttributes(mCurrentAttributes, f);
+					
+					bo.getContentFields().add(field);
+
+					tempField.setRelatedField(field);
+				}
+				
+				
+				
+				
 				//if we are reading a field
 			} else if(isFillingField) {
 				
@@ -448,6 +508,8 @@ public class DataLibGeneratorParser extends DefaultHandler {
 			// do nothing
 			break;
 		}
+		
+		mBuilder.setLength(0);
 
 	}
 
