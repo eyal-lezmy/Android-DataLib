@@ -164,7 +164,7 @@ public class Processor {
                 break;
         }
         HttpResponse httpResponse = httpClient.execute(httpRequest);
-        System.out.println(httpResponse.getBodyAsString());
+        Out.d(TAG, httpResponse.getBodyAsString());
         return httpResponse;
 
         //        return NetworkConnection.retrieveFromService(request.url, mHeaders, context);
