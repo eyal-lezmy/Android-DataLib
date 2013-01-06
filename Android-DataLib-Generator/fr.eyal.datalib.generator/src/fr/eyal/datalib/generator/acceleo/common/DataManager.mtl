@@ -230,7 +230,7 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
 		[/if]
 		[/for]
         //we prepare the request's url
-        final String url = ServiceHelper.getServiceUrl([aProject.name.toUpperFirst()/]ServiceHelper.URL_[webService.name.toUpper()/], params);
+        final String url = [aProject.name.toUpperFirst()/]ServiceHelper.URL_[webService.name.toUpper()/];
 
         int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, url, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.name.toUpper()/], [aProject.name.toUpperFirst()/]Service.class);
 
@@ -277,7 +277,7 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
 		[/if]
 		[/for]
         //we prepare the request's url
-        final String url = ServiceHelper.getServiceUrl([aProject.name.toUpperFirst()/]ServiceHelper.URL_[webService.name.toUpper()/], params);
+        final String url = [aProject.name.toUpperFirst()/]ServiceHelper.URL_[webService.name.toUpper()/]
 
 		int requestId = mServiceHelper.launchRequest(options, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.name.toUpper()/], params, [aProject.name.toUpperFirst()/]Service.class, url);
 		
