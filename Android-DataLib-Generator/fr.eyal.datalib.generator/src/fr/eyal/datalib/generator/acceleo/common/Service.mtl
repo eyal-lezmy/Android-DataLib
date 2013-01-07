@@ -17,6 +17,10 @@ import fr.eyal.lib.data.service.DataLibService;
 import fr.eyal.lib.data.service.model.DataLibRequest;
 [importWebConfigs(aProject)/]
 [importParsers(aProject)/]
+// [protected (aProject.name.toUpperFirst()+'Service imports')]
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
+// [/protected]
 
 public class [aProject.name.toUpperFirst()/]Service extends DataLibService {
 
@@ -54,7 +58,9 @@ public class [aProject.name.toUpperFirst()/]Service extends DataLibService {
         }
     }
 
-// [protected (aProject.name.toUpperFirst()+'Service DO NOT MODIFY THE GENERATED COMMENTS')]
+// [protected (aProject.name.toUpperFirst()+'Service')]
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
 // [/protected]
 
 

@@ -14,6 +14,10 @@ import android.content.UriMatcher;
 import android.net.Uri;
 import fr.eyal.lib.data.model.provider.BusinessObjectProvider;
 [addImports(aProject)/]
+// [protected (aProject.name.toUpperFirst()+'Provider imports')]
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
+// [/protected]
 
 public class [aProject.name.toUpperFirst()/]Provider extends BusinessObjectProvider {
 
@@ -75,7 +79,9 @@ public class [aProject.name.toUpperFirst()/]Provider extends BusinessObjectProvi
         }
     }
 
-// [protected (aProject.name.toUpperFirst()+'Provider DO NOT MODIFY THE GENERATED COMMENTS')]
+// [protected (aProject.name.toUpperFirst()+'Provider')]
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
 // [/protected]
 
 

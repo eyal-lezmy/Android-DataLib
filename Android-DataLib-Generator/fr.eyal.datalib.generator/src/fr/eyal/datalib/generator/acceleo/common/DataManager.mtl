@@ -26,6 +26,10 @@ import fr.eyal.lib.data.service.model.DataLibRequest;
 import [webService.contentResponse._package+'.model.'+getPackage(webService.contentResponse)+'.*'/];
 [/for]
 import [aProject._package+'.model.'+aProject.name.toUpperFirst()/]Provider;
+// [protected (aProject.name.toUpperFirst()+'DataManager imports')]
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
+// [/protected]
 
 public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
 
@@ -291,8 +295,9 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
 
 [/for]
 
-// [protected (aProject.name.toUpperFirst()+'DataManager DO NOT MODIFY THE GENERATED COMMENTS')]
-// You can add here your personal content 
+// [protected (aProject.name.toUpperFirst()+'DataManager')]
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
 // [/protected]
 
 }

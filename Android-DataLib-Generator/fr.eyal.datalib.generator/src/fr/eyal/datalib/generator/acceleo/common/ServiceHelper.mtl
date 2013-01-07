@@ -16,6 +16,11 @@ import android.content.Context;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
 import fr.eyal.lib.data.service.ServiceHelper;
 import fr.eyal.lib.data.service.model.DataLibRequest;
+// [protected (aProject.name.toUpperFirst()+'ServiceHelper imports')]
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
+// [/protected]
+
 
 public class [aProject.name.toUpperFirst()/]ServiceHelper extends ServiceHelper {
 
@@ -89,7 +94,9 @@ public class [aProject.name.toUpperFirst()/]ServiceHelper extends ServiceHelper 
     
 [/for]
 
-// [protected (aProject.name.toUpperFirst()+'ServiceHelper DO NOT MODIFY THE GENERATED COMMENTS')]
+// [protected (aProject.name.toUpperFirst()+'ServiceHelper')]
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
 // [/protected]
 
 

@@ -16,6 +16,10 @@ import fr.eyal.lib.data.service.DataManager.OnDataListener;
 
 import android.app.Activity;
 import android.os.Bundle;
+// [protected (aProject.name.toUpperFirst()+'DataLibActivity imports')]
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
+// [/protected]
 
 
 public abstract class [_project/]DataLibActivity extends Activity implements OnDataListener {
@@ -60,7 +64,9 @@ public abstract class [_project/]DataLibActivity extends Activity implements OnD
 	}
 	
 
-// [protected (aProject.name.toUpperFirst()+'DataLibActivity DO NOT MODIFY THE GENERATED COMMENTS')]
+// [protected (aProject.name.toUpperFirst()+'DataLibActivity')]
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
 // [/protected]
 
 }

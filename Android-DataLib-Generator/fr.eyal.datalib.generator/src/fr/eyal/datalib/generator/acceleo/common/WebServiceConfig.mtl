@@ -12,6 +12,10 @@ package [_package/];
 
 import fr.eyal.lib.data.service.DataLibWebConfig;
 import fr.eyal.lib.data.service.model.DataLibRequest;
+// [protected (aWebService.name.toUpperFirst()+'Config imports')]
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
+// [/protected]
 
 public class [aWebService.name.toUpperFirst()/]WebConfig extends DataLibWebConfig {
 
@@ -58,7 +62,9 @@ public class [aWebService.name.toUpperFirst()/]WebConfig extends DataLibWebConfi
         return requestOptions;
     }
 
-// [protected (aWebService.name.toUpperFirst()+'Config DO NOT MODIFY THE GENERATED COMMENTS')]
+// [protected (aWebService.name.toUpperFirst()+'Config')]
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
 // [/protected]
 
 }
