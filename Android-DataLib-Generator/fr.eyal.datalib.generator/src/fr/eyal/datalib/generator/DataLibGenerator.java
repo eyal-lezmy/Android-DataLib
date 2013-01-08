@@ -60,19 +60,23 @@ public class DataLibGenerator {
 		System.out.println("Target folder: " + folderPath);
 		
 		
-		//we parse the content
-		
-		//we create the XMI model content
-		DataLibProject project = createXMI(modelPath, inputPath); //"model/apilogin.xml"); //"platform:/resource/DataLibGeneratorAcceleo/model/apilogin.xml");
+		try{
+			//we create the XMI model content
+			DataLibProject project = createXMI(modelPath, inputPath); //"model/apilogin.xml"); //"platform:/resource/DataLibGeneratorAcceleo/model/apilogin.xml");			
+
+			String[] generationArgs = {
+					folderPath
+			};
+			
+			System.out.println("Generation...");
+			
+			//we start the generation
+			Main.main(project, generationArgs);
+			
+		} catch (Exception e) {
+			System.err.println("An Exception occured: " + e.getMessage() + ". \nSolve it to finish the generation");
+		}
 	    
-	    String[] generationArgs = {
-	    		folderPath
-	    };
-
-		System.out.println("Generation...");
-
-	    //we start the generation
-		Main.main(project, generationArgs);
 		
 		System.out.println("Generation done !");
 	}
@@ -252,9 +256,10 @@ public class DataLibGenerator {
 	 * @param description
 	 * @return
 	 */
-	public static Parameter createParameter(ModelFactory modelFactory, String name, ParameterType type, String description){
+	public static Parameter createParameter(ModelFactory modelFactory, String name, ParameterType type, String description, int urlParam){
 		Parameter parameter = modelFactory.createParameter();
 		fillParameter(parameter, name, type, description);
+		parameter.setUrlParameter(urlParam);
 		
 		return parameter;
 	}
