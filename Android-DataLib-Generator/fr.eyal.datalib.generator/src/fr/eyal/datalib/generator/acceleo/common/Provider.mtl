@@ -84,7 +84,6 @@ public class [aProject.name.toUpperFirst()/]Provider extends BusinessObjectProvi
 // DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
 // [/protected]
 
-
 }
 
 
@@ -97,32 +96,31 @@ public class [aProject.name.toUpperFirst()/]Provider extends BusinessObjectProvi
 [if (webService.cached)]
 case CODE_[webService.contentResponse.name.toUpper()/]:
     return [webService.contentResponse.name.toUpperFirst()/].CONTENT_URL;
-
 	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [getTypeCases (businessObject) /]
 	[/for]
 [/if]
+
 [/for]
 [/template]
 
 [template public getTypeCases (aBusinessObject : BusinessObject) post (trim()) ]
 case CODE[getCompleteNameToUpper(aBusinessObject, '_')/]:
     return [aBusinessObject.javaName.toUpperFirst()/].CONTENT_URL;
-
 	[for (businessObject : BusinessObject | aBusinessObject.childs)]
-	[getTypeCases (businessObject) /]
+[getTypeCases (businessObject) /]
 	[/for]
 [/template]
 
 [template public getTableNamesCases (aProject : DataLibProject) post (trim()) ]
 [for (webService : WebService | aProject.webservices)]
 [if (webService.cached)]
-case CODE_[webService.contentResponse.name.toUpper()/]:
-    return [webService.contentResponse.name.toUpperFirst()/].DATABASE_TABLE_NAME;
-
+case CODE_[webService.contentResponse.javaName.toUpper()/]:
+    return [webService.contentResponse.javaName.toUpperFirst()/].DATABASE_TABLE_NAME;
 	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [getTableNamesCases (businessObject) /]
 	[/for]
+
 [/if]
 [/for]
 [/template]
@@ -130,7 +128,6 @@ case CODE_[webService.contentResponse.name.toUpper()/]:
 [template public getTableNamesCases (aBusinessObject : BusinessObject) post (trim())]
 case CODE[getCompleteNameToUpper(aBusinessObject, '_')/]:
     return [aBusinessObject.javaName.toUpperFirst()/].DATABASE_TABLE_NAME;
-
 	[for (businessObject : BusinessObject | aBusinessObject.childs)]
 [getTableNamesCases (businessObject) /]
 	[/for]
@@ -212,19 +209,16 @@ matcher.addURI(AUTHORITY, [aBusinessObject.javaName.toUpperFirst()/].CONTENT_PAT
 
 [template public declareCodes (aProject : DataLibProject) post (trim())]
 [for (webService : WebService | aProject.webservices) ]
-[if (webService.cached)]
-public static final int CODE_[webService.contentResponse.javaName.toUpper()/] = [webService.contentResponse.parseId/];
-[comment][trace ('message')][webService.contentResponse.name/][/trace][/comment]
-	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
+[if (webService.cached)]public static final int CODE_[webService.contentResponse.javaName.toUpper()/] = [webService.contentResponse.parseId/];
+[for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [declareCodes (businessObject, webService.contentResponse.javaName.toUpper()+'_') /]
-	[/for]
-[/if]
 [/for]
+
+[/if][/for]
 [/template]
 
-[template public declareCodes (aBusinessObject : BusinessObject, prefix : String) ]
+[template public declareCodes (aBusinessObject : BusinessObject, prefix : String) post (trim())]
 public static final int CODE_[prefix/][aBusinessObject.javaName.toUpper()/] = [aBusinessObject.parseId/];
-
 [for (businessObject : BusinessObject | aBusinessObject.childs)]
 [declareCodes (businessObject, prefix+aBusinessObject.javaName.toUpper()+'_') /]
 [/for]

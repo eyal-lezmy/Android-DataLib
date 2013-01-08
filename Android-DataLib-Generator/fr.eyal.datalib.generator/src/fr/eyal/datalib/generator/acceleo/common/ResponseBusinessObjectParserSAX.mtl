@@ -104,29 +104,13 @@ public class [aBusinessObject.javaName.toUpperFirst()/]Parser extends DefaultHan
 [for (field : Field | aBusinessObject.xmlContentFields)]
 	[let  prefixVariable:String = aBusinessObject.javaName.toLowerFirst()]
 		[if (field.oclIsKindOf(FieldBusinessObject))]
-	[defineEndElement (field.oclAsType(FieldBusinessObject), prefixVariable) /]
+[defineEndElement (field.oclAsType(FieldBusinessObject), prefixVariable) /]
 		[else]
-	[defineEndElement (field, prefixVariable) /]
+[defineEndElement (field, prefixVariable) /]
 		[/if]
 	[/let]
 [/for]
 
-[comment][for (field : Field | aBusinessObject.xmlContentFields)]
-case [field.javaTag/]:
-    if (qName.equals("[getName(field)/]")) {
-        mState = UNKNOWN;
-    }
-    break;
-[/for]
-
-[let  prefixVariable:String = aBusinessObject.javaName.toLowerFirst()]
-	[for (field : Field | aBusinessObject.contentFields)]
-[defineEndElement (field, prefixVariable) /]
-	[/for]
-	[for (businessObject : BusinessObject | aBusinessObject.childs)]
-[defineEndElement (businessObject, prefixVariable) /]
-	[/for]
-[/let][/comment]
 [/template]
 
 [template public defineEndElement (aBusinessObject : FieldBusinessObject, prefixVariable : String) post (trim()) ]
