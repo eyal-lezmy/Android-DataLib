@@ -623,13 +623,22 @@ public interface ModelPackage extends EPackage {
 	int PARAMETER__DESCRIPTION = 2;
 
 	/**
+	 * The feature id for the '<em><b>Url Parameter</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__URL_PARAMETER = 3;
+
+	/**
 	 * The number of structural features of the '<em>Parameter</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PARAMETER_FEATURE_COUNT = 3;
+	int PARAMETER_FEATURE_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldImpl <em>Field</em>}' class.
@@ -667,6 +676,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int FIELD__DESCRIPTION = PARAMETER__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Url Parameter</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD__URL_PARAMETER = PARAMETER__URL_PARAMETER;
 
 	/**
 	 * The feature id for the '<em><b>Default Value</b></em>' attribute.
@@ -803,6 +821,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int FIELD_BUSINESS_OBJECT__DESCRIPTION = FIELD__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Url Parameter</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD_BUSINESS_OBJECT__URL_PARAMETER = FIELD__URL_PARAMETER;
 
 	/**
 	 * The feature id for the '<em><b>Default Value</b></em>' attribute.
@@ -1271,6 +1298,17 @@ public interface ModelPackage extends EPackage {
 	EAttribute getParameter_Description();
 
 	/**
+	 * Returns the meta object for the attribute '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#getUrlParameter <em>Url Parameter</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Url Parameter</em>'.
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#getUrlParameter()
+	 * @see #getParameter()
+	 * @generated
+	 */
+	EAttribute getParameter_UrlParameter();
+
+	/**
 	 * Returns the meta object for class '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.FieldBusinessObject <em>Field Business Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1588,6 +1626,14 @@ public interface ModelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PARAMETER__DESCRIPTION = eINSTANCE.getParameter_Description();
+
+		/**
+		 * The meta object literal for the '<em><b>Url Parameter</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARAMETER__URL_PARAMETER = eINSTANCE.getParameter_UrlParameter();
 
 		/**
 		 * The meta object literal for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldBusinessObjectImpl <em>Field Business Object</em>}' class.

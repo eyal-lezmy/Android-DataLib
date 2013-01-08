@@ -218,6 +218,15 @@ public class DatalibPackageImpl extends EPackageImpl implements DatalibPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getWebService_UrlParameters() {
+		return (EReference)webServiceEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getDataLibProject() {
 		return dataLibProjectEClass;
 	}
@@ -314,6 +323,7 @@ public class DatalibPackageImpl extends EPackageImpl implements DatalibPackage {
 		createEReference(webServiceEClass, WEB_SERVICE__PARAMETERS);
 		createEReference(webServiceEClass, WEB_SERVICE__CONTENT_RESPONSE);
 		createEAttribute(webServiceEClass, WEB_SERVICE__CACHED);
+		createEReference(webServiceEClass, WEB_SERVICE__URL_PARAMETERS);
 
 		dataLibProjectEClass = createEClass(DATA_LIB_PROJECT);
 		createEAttribute(dataLibProjectEClass, DATA_LIB_PROJECT__NAME);
@@ -372,6 +382,7 @@ public class DatalibPackageImpl extends EPackageImpl implements DatalibPackage {
 		initEReference(getWebService_Parameters(), theModelPackage.getParameter(), null, "parameters", null, 0, -1, WebService.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWebService_ContentResponse(), theModelPackage.getResponseBusinessObject(), null, "contentResponse", null, 1, 1, WebService.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getWebService_Cached(), ecorePackage.getEBoolean(), "cached", null, 1, 1, WebService.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getWebService_UrlParameters(), theModelPackage.getParameter(), null, "urlParameters", null, 0, -1, WebService.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(dataLibProjectEClass, DataLibProject.class, "DataLibProject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getDataLibProject_Name(), ecorePackage.getEString(), "name", null, 1, 1, DataLibProject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -151,13 +151,22 @@ public interface DatalibPackage extends EPackage {
 	int WEB_SERVICE__CACHED = 8;
 
 	/**
+	 * The feature id for the '<em><b>Url Parameters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WEB_SERVICE__URL_PARAMETERS = 9;
+
+	/**
 	 * The number of structural features of the '<em>Web Service</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WEB_SERVICE_FEATURE_COUNT = 9;
+	int WEB_SERVICE_FEATURE_COUNT = 10;
 
 	/**
 	 * The meta object id for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.impl.DataLibProjectImpl <em>Data Lib Project</em>}' class.
@@ -343,6 +352,17 @@ public interface DatalibPackage extends EPackage {
 	EAttribute getWebService_Cached();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link fr.eyal.lib.datalib.genmodel.android.datalib.WebService#getUrlParameters <em>Url Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Url Parameters</em>'.
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.WebService#getUrlParameters()
+	 * @see #getWebService()
+	 * @generated
+	 */
+	EReference getWebService_UrlParameters();
+
+	/**
 	 * Returns the meta object for class '{@link fr.eyal.lib.datalib.genmodel.android.datalib.DataLibProject <em>Data Lib Project</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -521,6 +541,14 @@ public interface DatalibPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute WEB_SERVICE__CACHED = eINSTANCE.getWebService_Cached();
+
+		/**
+		 * The meta object literal for the '<em><b>Url Parameters</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference WEB_SERVICE__URL_PARAMETERS = eINSTANCE.getWebService_UrlParameters();
 
 		/**
 		 * The meta object literal for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.impl.DataLibProjectImpl <em>Data Lib Project</em>}' class.

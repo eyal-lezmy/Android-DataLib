@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#getName <em>Name</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#getType <em>Type</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#getDescription <em>Description</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#getUrlParameter <em>Url Parameter</em>}</li>
  * </ul>
  * </p>
  *
@@ -109,5 +110,32 @@ public interface Parameter extends EObject {
 	 * @generated
 	 */
 	void setDescription(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Url Parameter</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Url Parameter</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Url Parameter</em>' attribute.
+	 * @see #setUrlParameter(int)
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage#getParameter_UrlParameter()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getUrlParameter();
+
+	/**
+	 * Sets the value of the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#getUrlParameter <em>Url Parameter</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Url Parameter</em>' attribute.
+	 * @see #getUrlParameter()
+	 * @generated
+	 */
+	void setUrlParameter(int value);
 
 } // Parameter

@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.WebService#getParameters <em>Parameters</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.WebService#getContentResponse <em>Content Response</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.WebService#isCached <em>Cached</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.WebService#getUrlParameters <em>Url Parameters</em>}</li>
  * </ul>
  * </p>
  *
@@ -263,5 +264,21 @@ public interface WebService extends EObject {
 	 * @generated
 	 */
 	void setCached(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Url Parameters</b></em>' containment reference list.
+	 * The list contents are of type {@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Url Parameters</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Url Parameters</em>' containment reference list.
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.DatalibPackage#getWebService_UrlParameters()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Parameter> getUrlParameters();
 
 } // WebService

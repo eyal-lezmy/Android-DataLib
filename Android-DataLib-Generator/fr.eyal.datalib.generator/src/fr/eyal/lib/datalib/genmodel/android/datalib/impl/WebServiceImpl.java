@@ -49,6 +49,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.impl.WebServiceImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.impl.WebServiceImpl#getContentResponse <em>Content Response</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.impl.WebServiceImpl#isCached <em>Cached</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.impl.WebServiceImpl#getUrlParameters <em>Url Parameters</em>}</li>
  * </ul>
  * </p>
  *
@@ -184,6 +185,16 @@ public class WebServiceImpl extends EObjectImpl implements WebService {
 	 * @ordered
 	 */
 	protected boolean cached = CACHED_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getUrlParameters() <em>Url Parameters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUrlParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Parameter> urlParameters;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -402,6 +413,18 @@ public class WebServiceImpl extends EObjectImpl implements WebService {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Parameter> getUrlParameters() {
+		if (urlParameters == null) {
+			urlParameters = new EObjectContainmentEList<Parameter>(Parameter.class, this, DatalibPackage.WEB_SERVICE__URL_PARAMETERS);
+		}
+		return urlParameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -409,6 +432,8 @@ public class WebServiceImpl extends EObjectImpl implements WebService {
 				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
 			case DatalibPackage.WEB_SERVICE__CONTENT_RESPONSE:
 				return basicSetContentResponse(null, msgs);
+			case DatalibPackage.WEB_SERVICE__URL_PARAMETERS:
+				return ((InternalEList<?>)getUrlParameters()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -439,6 +464,8 @@ public class WebServiceImpl extends EObjectImpl implements WebService {
 				return getContentResponse();
 			case DatalibPackage.WEB_SERVICE__CACHED:
 				return isCached();
+			case DatalibPackage.WEB_SERVICE__URL_PARAMETERS:
+				return getUrlParameters();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -481,6 +508,10 @@ public class WebServiceImpl extends EObjectImpl implements WebService {
 			case DatalibPackage.WEB_SERVICE__CACHED:
 				setCached((Boolean)newValue);
 				return;
+			case DatalibPackage.WEB_SERVICE__URL_PARAMETERS:
+				getUrlParameters().clear();
+				getUrlParameters().addAll((Collection<? extends Parameter>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -520,6 +551,9 @@ public class WebServiceImpl extends EObjectImpl implements WebService {
 			case DatalibPackage.WEB_SERVICE__CACHED:
 				setCached(CACHED_EDEFAULT);
 				return;
+			case DatalibPackage.WEB_SERVICE__URL_PARAMETERS:
+				getUrlParameters().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -550,6 +584,8 @@ public class WebServiceImpl extends EObjectImpl implements WebService {
 				return contentResponse != null;
 			case DatalibPackage.WEB_SERVICE__CACHED:
 				return cached != CACHED_EDEFAULT;
+			case DatalibPackage.WEB_SERVICE__URL_PARAMETERS:
+				return urlParameters != null && !urlParameters.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

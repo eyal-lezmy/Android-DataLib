@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.ParameterImpl#getName <em>Name</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.ParameterImpl#getType <em>Type</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.ParameterImpl#getDescription <em>Description</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.ParameterImpl#getUrlParameter <em>Url Parameter</em>}</li>
  * </ul>
  * </p>
  *
@@ -93,6 +94,26 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 	 * @ordered
 	 */
 	protected String description = DESCRIPTION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getUrlParameter() <em>Url Parameter</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUrlParameter()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int URL_PARAMETER_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getUrlParameter() <em>Url Parameter</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUrlParameter()
+	 * @generated
+	 * @ordered
+	 */
+	protected int urlParameter = URL_PARAMETER_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -181,6 +202,27 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getUrlParameter() {
+		return urlParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setUrlParameter(int newUrlParameter) {
+		int oldUrlParameter = urlParameter;
+		urlParameter = newUrlParameter;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.PARAMETER__URL_PARAMETER, oldUrlParameter, urlParameter));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -190,6 +232,8 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 				return getType();
 			case ModelPackage.PARAMETER__DESCRIPTION:
 				return getDescription();
+			case ModelPackage.PARAMETER__URL_PARAMETER:
+				return getUrlParameter();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -210,6 +254,9 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 				return;
 			case ModelPackage.PARAMETER__DESCRIPTION:
 				setDescription((String)newValue);
+				return;
+			case ModelPackage.PARAMETER__URL_PARAMETER:
+				setUrlParameter((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -232,6 +279,9 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 			case ModelPackage.PARAMETER__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
+			case ModelPackage.PARAMETER__URL_PARAMETER:
+				setUrlParameter(URL_PARAMETER_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -250,6 +300,8 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 				return type != TYPE_EDEFAULT;
 			case ModelPackage.PARAMETER__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
+			case ModelPackage.PARAMETER__URL_PARAMETER:
+				return urlParameter != URL_PARAMETER_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -270,6 +322,8 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 		result.append(type);
 		result.append(", description: ");
 		result.append(description);
+		result.append(", urlParameter: ");
+		result.append(urlParameter);
 		result.append(')');
 		return result.toString();
 	}
