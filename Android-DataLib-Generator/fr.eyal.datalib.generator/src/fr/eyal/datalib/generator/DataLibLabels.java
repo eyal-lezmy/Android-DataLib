@@ -12,7 +12,6 @@ public class DataLibLabels {
 	public static final String XML_OPTIONS = XML_PREFIX + "options";
 	public static final String XML_PARAMETERS = XML_PREFIX + "parameters";
 	
-	
 	//attributes
 	public static final String XML_NAME = XML_PREFIX + "name";
 	public static final String XML_PACKAGE = XML_PREFIX + "package";
@@ -24,6 +23,7 @@ public class DataLibLabels {
 	public static final String XML_MULTIPLE = XML_PREFIX + "multiple";
 	public static final String XML_DEFAULT = XML_PREFIX + "default";
 	public static final String XML_DESCRIPTION = XML_PREFIX + "description";
+	public static final String XML_URL_PARAMETERS = XML_PREFIX + "urlParameter";
 	
 	//webservice options
 	public static final String XML_OPTION_NO_OPTION = XML_PREFIX + "OPTION_NO_OPTION";

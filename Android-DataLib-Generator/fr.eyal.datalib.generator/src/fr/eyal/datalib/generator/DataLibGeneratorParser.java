@@ -1,9 +1,11 @@
 package fr.eyal.datalib.generator;
 
 import java.math.BigInteger;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import org.eclipse.emf.common.util.EList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -22,6 +24,7 @@ import fr.eyal.lib.datalib.genmodel.android.datalib.model.Field;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.FieldBusinessObject;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelFactory;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage;
+import fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter;
 import fr.eyal.lib.datalib.genmodel.android.datalib.model.ResponseBusinessObject;
 
 
@@ -147,7 +150,7 @@ public class DataLibGeneratorParser extends DefaultHandler {
 
 				String url = attributes.getValue(DataLibLabels.XML_URL);
 				if(url == null) throw new SAXException("'"+DataLibLabels.XML_URL+"' attributes is mandatory for each "+DataLibLabels.XML_WEBSERVICE+" tag. ou must provide the URL reference of the webservice");
-
+				
 				name = attributes.getValue(DataLibLabels.XML_NAME);
 				
 				webservice = factory.createWebService();
@@ -368,8 +371,21 @@ public class DataLibGeneratorParser extends DefaultHandler {
 			String description = attributes.getValue(DataLibLabels.XML_DESCRIPTION);
 			ParameterType type = getParameterType(attributes.getValue(DataLibLabels.XML_TYPE));
 
-			webservice.getParameters().add(DataLibGenerator.createParameter(modelFactory, qName, type, description));
+			//we eventually add the url parameter
+			int urlIndex = -1;
+			String urlParam = attributes.getValue(DataLibLabels.XML_URL_PARAMETERS);
+			if(urlParam != null){
+				urlIndex = Integer.parseInt(urlParam);
 
+				EList<Parameter> urlParamsList = webservice.getUrlParameters();
+				//we scope the urlIndex and set it as the maximum acceptable value for the actual array
+				int index = (urlIndex+1 > urlParamsList.size()) ? urlParamsList.size() : urlIndex;
+				
+				webservice.getUrlParameters().add(index, DataLibGenerator.createParameter(modelFactory, qName, type, description, urlIndex));
+			}
+			
+			webservice.getParameters().add(DataLibGenerator.createParameter(modelFactory, qName, type, description, urlIndex));
+			
 		default:
 			// do nothing
 			break;
@@ -377,7 +393,7 @@ public class DataLibGeneratorParser extends DefaultHandler {
 
 	}
 
-	
+
 	@Override
 	public void characters(final char[] ch, final int start, final int length) throws SAXException {
 		mBuilder.append(ch, start, length);
@@ -402,6 +418,26 @@ public class DataLibGeneratorParser extends DefaultHandler {
 		case CONFIG:
 			if (qName.equals(DataLibLabels.XML_CONFIG)) {
 				mState = WEBSERVICE;
+				
+				//we check the URL format
+				EList<Parameter> params =  webservice.getUrlParameters();
+				if(params.size() > 0){
+					
+					Parameter lastParams = params.get(params.size()-1);
+					String[] array = new String[lastParams.getUrlParameter()+1];
+					try{
+						for (Parameter parameter : params) {
+							array[parameter.getUrlParameter()] = parameter.getName();
+						}
+					} catch (IndexOutOfBoundsException e) {
+						throw new IllegalArgumentException("The URL parameters are not well numbered. Check that is correct and add the corresponding parameters into the <"+DataLibLabels.XML_PARAMETERS+"> content's. Use "+DataLibLabels.XML_URL_PARAMETERS+" attribute to define the parameter as a URL parameter specifying its ID");
+					}
+					String test = MessageFormat.format(webservice.getUrl(), (Object[])array);
+					System.out.println(test);
+					
+				} else {
+					System.out.println(webservice.getUrl());
+				}
 			}
 			break;
 
