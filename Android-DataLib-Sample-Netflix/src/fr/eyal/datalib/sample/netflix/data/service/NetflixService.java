@@ -7,12 +7,33 @@ import fr.eyal.lib.data.processor.Processor;
 import fr.eyal.lib.data.service.DataLibService;
 import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.datalib.sample.netflix.data.config.CatalogTitlesWebConfig;
+import fr.eyal.datalib.sample.netflix.data.config.PeopleWebConfig;
+import fr.eyal.datalib.sample.netflix.data.config.FilmographyWebConfig;
+import fr.eyal.datalib.sample.netflix.data.config.MovieWebConfig;
+import fr.eyal.datalib.sample.netflix.data.config.SynopsisWebConfig;
+import fr.eyal.datalib.sample.netflix.data.config.CastWebConfig;
+import fr.eyal.datalib.sample.netflix.data.config.DirectorsWebConfig;
 import fr.eyal.datalib.sample.netflix.data.parser.CatalogTitlesParser;
+import fr.eyal.datalib.sample.netflix.data.parser.PeopleParser;
+import fr.eyal.datalib.sample.netflix.data.parser.FilmographyParser;
+import fr.eyal.datalib.sample.netflix.data.parser.MovieParser;
+import fr.eyal.datalib.sample.netflix.data.parser.SynopsisParser;
+import fr.eyal.datalib.sample.netflix.data.parser.CastParser;
+import fr.eyal.datalib.sample.netflix.data.parser.DirectorsParser;
+// Start of user code NetflixService imports
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 
 public class NetflixService extends DataLibService {
 
     //different Service's possible actions
-	public static final int WEBSERVICE_CATALOGTITLES = 1;
+	public static final int WEBSERVICE_CATALOGTITLES = 1; 
+	public static final int WEBSERVICE_PEOPLE = 2; 
+	public static final int WEBSERVICE_FILMOGRAPHY = 3; 
+	public static final int WEBSERVICE_MOVIE = 4; 
+	public static final int WEBSERVICE_SYNOPSIS = 5; 
+	public static final int WEBSERVICE_CAST = 6; 
+	public static final int WEBSERVICE_DIRECTORS = 7;
 
     public NetflixService() {
         super();
@@ -31,6 +52,30 @@ public class NetflixService extends DataLibService {
 			    CatalogTitlesWebConfig.applyToRequest(request, CatalogTitlesWebConfig.getInstance());
 			    handler = new CatalogTitlesParser();
 			    break;
+			case WEBSERVICE_PEOPLE:
+			    PeopleWebConfig.applyToRequest(request, PeopleWebConfig.getInstance());
+			    handler = new PeopleParser();
+			    break;
+			case WEBSERVICE_FILMOGRAPHY:
+			    FilmographyWebConfig.applyToRequest(request, FilmographyWebConfig.getInstance());
+			    handler = new FilmographyParser();
+			    break;
+			case WEBSERVICE_MOVIE:
+			    MovieWebConfig.applyToRequest(request, MovieWebConfig.getInstance());
+			    handler = new MovieParser();
+			    break;
+			case WEBSERVICE_SYNOPSIS:
+			    SynopsisWebConfig.applyToRequest(request, SynopsisWebConfig.getInstance());
+			    handler = new SynopsisParser();
+			    break;
+			case WEBSERVICE_CAST:
+			    CastWebConfig.applyToRequest(request, CastWebConfig.getInstance());
+			    handler = new CastParser();
+			    break;
+			case WEBSERVICE_DIRECTORS:
+			    DirectorsWebConfig.applyToRequest(request, DirectorsWebConfig.getInstance());
+			    handler = new DirectorsParser();
+			    break;
 			default:
             	return;
         }
@@ -47,6 +92,11 @@ public class NetflixService extends DataLibService {
         	throw new SecurityException("android.permission.ACCESS_NETWORK_STATE needed. Add it to te manifest to be able to use this function");
         }
     }
+
+// Start of user code NetflixService
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
+
 
 }
 

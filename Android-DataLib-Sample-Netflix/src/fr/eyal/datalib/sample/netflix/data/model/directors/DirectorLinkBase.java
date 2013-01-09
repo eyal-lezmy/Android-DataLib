@@ -1,4 +1,4 @@
-package fr.eyal.datalib.sample.netflix.data.model.catalogtitles;
+package fr.eyal.datalib.sample.netflix.data.model.directors;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,7 +16,7 @@ import android.os.RemoteException;
 import fr.eyal.lib.data.model.BusinessObjectDAO;
 import fr.eyal.datalib.sample.netflix.data.model.NetflixProvider;
 
-public class LinkBase extends BusinessObjectDAO {
+public class DirectorLinkBase extends BusinessObjectDAO {
 
     protected long _parentId = ID_INVALID;
 
@@ -25,11 +25,11 @@ public class LinkBase extends BusinessObjectDAO {
 	public String attrRel = "";
 	public String attrTitle = "";
 
-    public LinkBase() {
+    public DirectorLinkBase() {
         super();
     }
 
-    public LinkBase(final long id) {
+    public DirectorLinkBase(final long id) {
         super(id);
     }
 
@@ -45,14 +45,14 @@ public class LinkBase extends BusinessObjectDAO {
     /**
      * Constants used with a ContentProvider's access
      */
-    public static final String CONTENT_PATH = "link";
+    public static final String CONTENT_PATH = "directorlink";
     public static final String CONTENT_URL = NetflixProvider.PROVIDER_PREFIX + NetflixProvider.AUTHORITY + "/" + CONTENT_PATH;
     public static final Uri CONTENT_URI = Uri.parse(CONTENT_URL);
 
     /**
      * SQL databases table's name
      */
-    public static String DATABASE_TABLE_NAME = "link";
+    public static String DATABASE_TABLE_NAME = "directorlink";
 
     /**
      * SQL database table's fields names
@@ -104,11 +104,12 @@ public class LinkBase extends BusinessObjectDAO {
 			+ DATABASE_TABLE_FIELDS_NAMES[0] + " " + DATABASE_TABLE_FIELDS_TYPES[0] + " PRIMARY KEY AUTOINCREMENT" + ", "
             + DATABASE_TABLE_FIELDS_NAMES[1] + " " + DATABASE_TABLE_FIELDS_TYPES[1] + ", "
             + DATABASE_TABLE_FIELDS_NAMES[2] + " " + DATABASE_TABLE_FIELDS_TYPES[2] + " REFERENCES "
-            + CatalogTitle.DATABASE_TABLE_NAME + "(" + CatalogTitle.DATABASE_TABLE_FIELDS_NAMES[0] + ") ON DELETE CASCADE" + ", "
+            + Director.DATABASE_TABLE_NAME + "(" + Director.DATABASE_TABLE_FIELDS_NAMES[0] + ") ON DELETE CASCADE" + ", "
+
 			//list of attributes
 			+ DATABASE_TABLE_FIELDS_NAMES[3] + " " + DATABASE_TABLE_FIELDS_TYPES[3] + ", "
 			+ DATABASE_TABLE_FIELDS_NAMES[4] + " " + DATABASE_TABLE_FIELDS_TYPES[4] + ", "
-			+ DATABASE_TABLE_FIELDS_NAMES[5] + " " + DATABASE_TABLE_FIELDS_TYPES[5] + ", "
+			+ DATABASE_TABLE_FIELDS_NAMES[5] + " " + DATABASE_TABLE_FIELDS_TYPES[5] + "); "
 
             + "CREATE INDEX "
             + DATABASE_TABLE_NAME + "_" + DATABASE_TABLE_FIELDS_NAMES[0] + " ON " + DATABASE_TABLE_NAME + " (" + DATABASE_TABLE_FIELDS_NAMES[0] + ");";
@@ -156,7 +157,7 @@ public class LinkBase extends BusinessObjectDAO {
         final String[] args = { id + "" };
 
         // we check the existence inside the database
-        final Cursor cursor = mResolver.query(CONTENT_URI, // link
+        final Cursor cursor = mResolver.query(CONTENT_URI, // DirectorLink
                 columns, // id
                 where, // id=?
                 args, // id
@@ -279,7 +280,7 @@ public class LinkBase extends BusinessObjectDAO {
     }
 
 	/**
-     * This function build an array of {@link LinkBase} thanks to a Cursor
+     * This function build an array of {@link DirectorLinkBase} thanks to a Cursor
      * object received from the database.
      * 
      * @param c The cursor object.
@@ -289,16 +290,16 @@ public class LinkBase extends BusinessObjectDAO {
      *         of the Cursor. If the Cursor is empty, it returns an empty array.
      *  	   <b>The result of this function is return as ArrayList<?>. It has
      *  	   to be casted into the expected class to be useful.</b>
-     *  	   Ex: Cast to ArrayList<{@link Link}> if you want it as {@link Link}
+     *  	   Ex: Cast to ArrayList<{@link DirectorLink}> if you want it as {@link DirectorLink}
      */
     public static ArrayList<?> buildArrayFromCursor(final Cursor c, final boolean join) {
 
-        final ArrayList<LinkBase> result = new ArrayList<LinkBase>();
+        final ArrayList<DirectorLinkBase> result = new ArrayList<DirectorLinkBase>();
 
         if (c.moveToFirst()) {
             do {
                 // we create and fill the item
-                final LinkBase newObject = new LinkBase();
+                final DirectorLinkBase newObject = new DirectorLinkBase();
                 newObject.fillObjectFromCursor(c);
                 // if it's asked we fill the childs of the item
                 if (join) {
@@ -317,15 +318,15 @@ public class LinkBase extends BusinessObjectDAO {
      * PARCELABLE MANAGMENT
      */
 
-	public static final Parcelable.Creator<LinkBase> CREATOR = new Parcelable.Creator<LinkBase>() {
+	public static final Parcelable.Creator<DirectorLinkBase> CREATOR = new Parcelable.Creator<DirectorLinkBase>() {
 	    @Override
-	    public LinkBase createFromParcel(final Parcel in) {
-	        return new LinkBase(in);
+	    public DirectorLinkBase createFromParcel(final Parcel in) {
+	        return new DirectorLinkBase(in);
 	    }
 	
 	    @Override
-	    public LinkBase[] newArray(final int size) {
-	        return new LinkBase[size];
+	    public DirectorLinkBase[] newArray(final int size) {
+	        return new DirectorLinkBase[size];
 	    }
 	};
 	
@@ -347,7 +348,7 @@ public class LinkBase extends BusinessObjectDAO {
 		
 	}
 
-	public LinkBase(final Parcel in) {
+	public DirectorLinkBase(final Parcel in) {
 		// Business Object DAO
 		_id = in.readLong();
 		_updatedAt = Calendar.getInstance();

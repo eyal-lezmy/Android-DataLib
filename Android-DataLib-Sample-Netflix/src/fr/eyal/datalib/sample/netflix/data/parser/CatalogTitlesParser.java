@@ -9,6 +9,9 @@ import org.xml.sax.helpers.DefaultHandler;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.parser.GenericHandler;
 import fr.eyal.datalib.sample.netflix.data.model.catalogtitles.*;
+// Start of user code CatalogTitlesParser imports
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 
 
 public class CatalogTitlesParser extends DefaultHandler implements GenericHandler {
@@ -18,27 +21,28 @@ public class CatalogTitlesParser extends DefaultHandler implements GenericHandle
     public static final int UNKNOWN = -1;
 
 	//CatalogTitles
-	private static final int CATALOG_TITLES = 0;
-	private static final int CATALOG_TITLES_NUMBER_OF_RESULTS = 1;
-	private static final int CATALOG_TITLES_START_INDEX = 2;
-	private static final int CATALOG_TITLES_RESULTS_PER_PAGE = 3;
-	private static final int CATALOG_TITLES_CATALOG_TITLE = 4;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_ID = 5;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_TITLE = 6;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_BOX_ART = 7;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_RELEASE_YEAR = 8;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_CATEGORY = 9;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_LINK = 10;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_RUNTIME = 11;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_AVERAGE_RATING = 12;
+	private static final int H1 = 1;
+	private static final int CATALOG_TITLES = 2;
+	private static final int CATALOG_TITLES_NUMBER_OF_RESULTS = 3;
+	private static final int CATALOG_TITLES_START_INDEX = 4;
+	private static final int CATALOG_TITLES_RESULTS_PER_PAGE = 5;
+	private static final int CATALOG_TITLES_CATALOG_TITLE = 6;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_ID = 7;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_TITLE = 8;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_BOX_ART = 9;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_RELEASE_YEAR = 10;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_CATEGORY = 11;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_LINK = 12;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_RUNTIME = 13;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_AVERAGE_RATING = 14;
     
 	private int mState = UNKNOWN;
 
     private final StringBuilder mBuilder = new StringBuilder();
 	private CatalogTitles catalogTitles;
 	private CatalogTitle catalogTitle;
-	private Category category;
-	private Link link;
+	private CatalogTitleCategory catalogTitleCategory;
+	private CatalogTitleLink catalogTitleLink;
 
     public CatalogTitlesParser() {
 	catalogTitles = new CatalogTitles();
@@ -58,15 +62,20 @@ public class CatalogTitlesParser extends DefaultHandler implements GenericHandle
         switch (mState) {
 
 			case UNKNOWN:
-			    if (qName.equals("catalog_titles")) {
-			        mState = CATALOG_TITLES;
-			        catalogTitles = new CatalogTitles();
-			        catalogTitles.catalogTitle = new ArrayList<CatalogTitle>();
+			
+			    if (qName.equals("h1")) {
+					mState = H1;
+					
+			    }
+				else if (qName.equals("catalog_titles")) {
+					mState = CATALOG_TITLES;
 					
 			    }
 			    break;
 			
+			
 			case CATALOG_TITLES:
+			
 			    if (qName.equals("number_of_results")) {
 					mState = CATALOG_TITLES_NUMBER_OF_RESULTS;
 					
@@ -82,12 +91,11 @@ public class CatalogTitlesParser extends DefaultHandler implements GenericHandle
 				else if (qName.equals("catalog_title")) {
 			        mState = CATALOG_TITLES_CATALOG_TITLE;
 			        catalogTitle = new CatalogTitle();
+			        catalogTitle.catalogTitleCategory = new ArrayList<CatalogTitleCategory>();
+			        catalogTitle.catalogTitleLink = new ArrayList<CatalogTitleLink>();
 					
 			    }
 			    break;
-			
-			
-			
 			
 			case CATALOG_TITLES_CATALOG_TITLE:
 			
@@ -112,16 +120,16 @@ public class CatalogTitlesParser extends DefaultHandler implements GenericHandle
 			    }
 				else if (qName.equals("category")) {
 			        mState = CATALOG_TITLES_CATALOG_TITLE_CATEGORY;
-			        category = new Category();
-					category.attrLabel = attributes.getValue("label");
-					category.attrTerm = attributes.getValue("term");
+			        catalogTitleCategory = new CatalogTitleCategory();
+					catalogTitleCategory.attrLabel = attributes.getValue("label");
+					catalogTitleCategory.attrTerm = attributes.getValue("term");
 			    }
 				else if (qName.equals("link")) {
 			        mState = CATALOG_TITLES_CATALOG_TITLE_LINK;
-			        link = new Link();
-					link.attrHref = attributes.getValue("href");
-					link.attrRel = attributes.getValue("rel");
-					link.attrTitle = attributes.getValue("title");
+			        catalogTitleLink = new CatalogTitleLink();
+					catalogTitleLink.attrHref = attributes.getValue("href");
+					catalogTitleLink.attrRel = attributes.getValue("rel");
+					catalogTitleLink.attrTitle = attributes.getValue("title");
 			    }
 				else if (qName.equals("runtime")) {
 					mState = CATALOG_TITLES_CATALOG_TITLE_RUNTIME;
@@ -149,27 +157,33 @@ public class CatalogTitlesParser extends DefaultHandler implements GenericHandle
 
         switch (mState) {
 			
+			case H1:
+			    if (qName.equals("h1")) {
+			        mState = UNKNOWN;
+					catalogTitles.error = mBuilder.toString();
+			    }
+			    break;
 			case CATALOG_TITLES:
 			    if (qName.equals("catalog_titles")) {
 			        mState = UNKNOWN;
 			    }
 			    break;
-			
+				
 			case CATALOG_TITLES_NUMBER_OF_RESULTS:
 			    if (qName.equals("number_of_results")) {
-			        mState = UNKNOWN;
+			        mState = CATALOG_TITLES;
 					catalogTitles.number_of_results = Integer.parseInt(mBuilder.toString());
 			    }
 			    break;
 			case CATALOG_TITLES_START_INDEX:
 			    if (qName.equals("start_index")) {
-			        mState = UNKNOWN;
+			        mState = CATALOG_TITLES;
 					catalogTitles.start_index = Integer.parseInt(mBuilder.toString());
 			    }
 			    break;
 			case CATALOG_TITLES_RESULTS_PER_PAGE:
 			    if (qName.equals("results_per_page")) {
-			        mState = UNKNOWN;
+			        mState = CATALOG_TITLES;
 					catalogTitles.results_per_page = Integer.parseInt(mBuilder.toString());
 			    }
 			    break;
@@ -179,7 +193,6 @@ public class CatalogTitlesParser extends DefaultHandler implements GenericHandle
 					catalogTitles.catalogTitle.add(catalogTitle);
 			    }
 			    break;
-				
 			
 			case CATALOG_TITLES_CATALOG_TITLE_ID:
 			    if (qName.equals("id")) {
@@ -205,6 +218,18 @@ public class CatalogTitlesParser extends DefaultHandler implements GenericHandle
 					catalogTitle.release_year = Integer.parseInt(mBuilder.toString());
 			    }
 			    break;
+			case CATALOG_TITLES_CATALOG_TITLE_CATEGORY:
+			    if (qName.equals("category")) {
+			        mState = CATALOG_TITLES_CATALOG_TITLE;
+					catalogTitle.catalogTitleCategory.add(catalogTitleCategory);
+			    }
+			    break;
+			case CATALOG_TITLES_CATALOG_TITLE_LINK:
+			    if (qName.equals("link")) {
+			        mState = CATALOG_TITLES_CATALOG_TITLE;
+					catalogTitle.catalogTitleLink.add(catalogTitleLink);
+			    }
+			    break;
 			case CATALOG_TITLES_CATALOG_TITLE_RUNTIME:
 			    if (qName.equals("runtime")) {
 			        mState = CATALOG_TITLES_CATALOG_TITLE;
@@ -215,18 +240,6 @@ public class CatalogTitlesParser extends DefaultHandler implements GenericHandle
 			    if (qName.equals("average_rating")) {
 			        mState = CATALOG_TITLES_CATALOG_TITLE;
 					catalogTitle.average_rating = Float.parseFloat(mBuilder.toString());
-			    }
-			    break;
-			case CATALOG_TITLES_CATALOG_TITLE_CATEGORY:
-			    if (qName.equals("category")) {
-			        mState = CATALOG_TITLES_CATALOG_TITLE;
-					catalogTitle.category.add(category);
-			    }
-			    break;
-			case CATALOG_TITLES_CATALOG_TITLE_LINK:
-			    if (qName.equals("link")) {
-			        mState = CATALOG_TITLES_CATALOG_TITLE;
-					catalogTitle.link.add(link);
 			    }
 			    break;
 
@@ -240,6 +253,11 @@ public class CatalogTitlesParser extends DefaultHandler implements GenericHandle
     public void parse(final Object content) {
         // TODO Auto-generated method stub
     }
+
+// Start of user code CatalogTitlesParser
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
+
 }
 
 

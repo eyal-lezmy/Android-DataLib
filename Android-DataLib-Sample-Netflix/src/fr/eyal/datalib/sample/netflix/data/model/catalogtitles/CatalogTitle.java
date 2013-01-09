@@ -15,10 +15,6 @@ public class CatalogTitle extends CatalogTitleBase {
         super(in);
     }
 
-    public CatalogTitle(final long id) {
-        super(id);
-    }
-
 
 }
 // End of user code

@@ -6,6 +6,9 @@ import fr.eyal.lib.data.service.DataManager.OnDataListener;
 
 import android.app.Activity;
 import android.os.Bundle;
+// Start of user code NetflixDataLibActivity imports
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 
 
 public abstract class NetflixDataLibActivity extends Activity implements OnDataListener {
@@ -49,4 +52,9 @@ public abstract class NetflixDataLibActivity extends Activity implements OnDataL
 		super.onPause();
 	}
 	
+
+// Start of user code NetflixDataLibActivity
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
+
 }

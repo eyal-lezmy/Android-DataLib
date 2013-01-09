@@ -1,4 +1,4 @@
-package fr.eyal.datalib.sample.netflix.data.model.catalogtitles;
+package fr.eyal.datalib.sample.netflix.data.model.filmography;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,19 +16,20 @@ import android.os.RemoteException;
 import fr.eyal.lib.data.model.BusinessObjectDAO;
 import fr.eyal.datalib.sample.netflix.data.model.NetflixProvider;
 
-public class CategoryBase extends BusinessObjectDAO {
+public class FilmographyCategoryBase extends BusinessObjectDAO {
 
     protected long _parentId = ID_INVALID;
 
 	//list of attributes
+	public String attrScheme = "";
 	public String attrLabel = "";
 	public String attrTerm = "";
 
-    public CategoryBase() {
+    public FilmographyCategoryBase() {
         super();
     }
 
-    public CategoryBase(final long id) {
+    public FilmographyCategoryBase(final long id) {
         super(id);
     }
 
@@ -44,14 +45,14 @@ public class CategoryBase extends BusinessObjectDAO {
     /**
      * Constants used with a ContentProvider's access
      */
-    public static final String CONTENT_PATH = "category";
+    public static final String CONTENT_PATH = "filmographycategory";
     public static final String CONTENT_URL = NetflixProvider.PROVIDER_PREFIX + NetflixProvider.AUTHORITY + "/" + CONTENT_PATH;
     public static final Uri CONTENT_URI = Uri.parse(CONTENT_URL);
 
     /**
      * SQL databases table's name
      */
-    public static String DATABASE_TABLE_NAME = "category";
+    public static String DATABASE_TABLE_NAME = "filmographycategory";
 
     /**
      * SQL database table's fields names
@@ -60,6 +61,7 @@ public class CategoryBase extends BusinessObjectDAO {
     public static final String FIELD__UPDATED_AT = BusinessObjectDAO.FIELD_UPDATED_AT;
     public static final String FIELD__PARENT_ID = "_parent_id";
 	//list of attributes
+    public static final String FIELD_ATTR_SCHEME = "ATTR_scheme";
     public static final String FIELD_ATTR_LABEL = "ATTR_label";
     public static final String FIELD_ATTR_TERM = "ATTR_term";
 
@@ -73,6 +75,7 @@ public class CategoryBase extends BusinessObjectDAO {
             FIELD__UPDATED_AT, // updated_at
             FIELD__PARENT_ID, // sensors_id
             //list of attributes
+		    FIELD_ATTR_SCHEME, //scheme;
 		    FIELD_ATTR_LABEL, //label;
 		    FIELD_ATTR_TERM, //term;
 
@@ -89,6 +92,7 @@ public class CategoryBase extends BusinessObjectDAO {
 			//list of attributes
 			"text",
 			"text",
+			"text",
 		
 
     };
@@ -100,10 +104,12 @@ public class CategoryBase extends BusinessObjectDAO {
 			+ DATABASE_TABLE_FIELDS_NAMES[0] + " " + DATABASE_TABLE_FIELDS_TYPES[0] + " PRIMARY KEY AUTOINCREMENT" + ", "
             + DATABASE_TABLE_FIELDS_NAMES[1] + " " + DATABASE_TABLE_FIELDS_TYPES[1] + ", "
             + DATABASE_TABLE_FIELDS_NAMES[2] + " " + DATABASE_TABLE_FIELDS_TYPES[2] + " REFERENCES "
-            + CatalogTitle.DATABASE_TABLE_NAME + "(" + CatalogTitle.DATABASE_TABLE_FIELDS_NAMES[0] + ") ON DELETE CASCADE" + ", "
+            + Filmography_item.DATABASE_TABLE_NAME + "(" + Filmography_item.DATABASE_TABLE_FIELDS_NAMES[0] + ") ON DELETE CASCADE" + ", "
+
 			//list of attributes
 			+ DATABASE_TABLE_FIELDS_NAMES[3] + " " + DATABASE_TABLE_FIELDS_TYPES[3] + ", "
 			+ DATABASE_TABLE_FIELDS_NAMES[4] + " " + DATABASE_TABLE_FIELDS_TYPES[4] + ", "
+			+ DATABASE_TABLE_FIELDS_NAMES[5] + " " + DATABASE_TABLE_FIELDS_TYPES[5] + "); "
 
             + "CREATE INDEX "
             + DATABASE_TABLE_NAME + "_" + DATABASE_TABLE_FIELDS_NAMES[0] + " ON " + DATABASE_TABLE_NAME + " (" + DATABASE_TABLE_FIELDS_NAMES[0] + ");";
@@ -131,6 +137,7 @@ public class CategoryBase extends BusinessObjectDAO {
         values.put(FIELD__UPDATED_AT, _updatedAt.getTimeInMillis() / 1000);
 
 		//list of attributes
+	    values.put(FIELD_ATTR_SCHEME, attrScheme);
 	    values.put(FIELD_ATTR_LABEL, attrLabel);
 	    values.put(FIELD_ATTR_TERM, attrTerm);
 	
@@ -150,7 +157,7 @@ public class CategoryBase extends BusinessObjectDAO {
         final String[] args = { id + "" };
 
         // we check the existence inside the database
-        final Cursor cursor = mResolver.query(CONTENT_URI, // category
+        final Cursor cursor = mResolver.query(CONTENT_URI, // FilmographyCategory
                 columns, // id
                 where, // id=?
                 args, // id
@@ -186,6 +193,7 @@ public class CategoryBase extends BusinessObjectDAO {
             _parentId = cursor.getLong(i++);
 
 			//list of attributes
+			attrScheme = cursor.getString(i++);
 			attrLabel = cursor.getString(i++);
 			attrTerm = cursor.getString(i++);
 		
@@ -272,7 +280,7 @@ public class CategoryBase extends BusinessObjectDAO {
     }
 
 	/**
-     * This function build an array of {@link CategoryBase} thanks to a Cursor
+     * This function build an array of {@link FilmographyCategoryBase} thanks to a Cursor
      * object received from the database.
      * 
      * @param c The cursor object.
@@ -282,16 +290,16 @@ public class CategoryBase extends BusinessObjectDAO {
      *         of the Cursor. If the Cursor is empty, it returns an empty array.
      *  	   <b>The result of this function is return as ArrayList<?>. It has
      *  	   to be casted into the expected class to be useful.</b>
-     *  	   Ex: Cast to ArrayList<{@link Category}> if you want it as {@link Category}
+     *  	   Ex: Cast to ArrayList<{@link FilmographyCategory}> if you want it as {@link FilmographyCategory}
      */
     public static ArrayList<?> buildArrayFromCursor(final Cursor c, final boolean join) {
 
-        final ArrayList<CategoryBase> result = new ArrayList<CategoryBase>();
+        final ArrayList<FilmographyCategoryBase> result = new ArrayList<FilmographyCategoryBase>();
 
         if (c.moveToFirst()) {
             do {
                 // we create and fill the item
-                final CategoryBase newObject = new CategoryBase();
+                final FilmographyCategoryBase newObject = new FilmographyCategoryBase();
                 newObject.fillObjectFromCursor(c);
                 // if it's asked we fill the childs of the item
                 if (join) {
@@ -310,15 +318,15 @@ public class CategoryBase extends BusinessObjectDAO {
      * PARCELABLE MANAGMENT
      */
 
-	public static final Parcelable.Creator<CategoryBase> CREATOR = new Parcelable.Creator<CategoryBase>() {
+	public static final Parcelable.Creator<FilmographyCategoryBase> CREATOR = new Parcelable.Creator<FilmographyCategoryBase>() {
 	    @Override
-	    public CategoryBase createFromParcel(final Parcel in) {
-	        return new CategoryBase(in);
+	    public FilmographyCategoryBase createFromParcel(final Parcel in) {
+	        return new FilmographyCategoryBase(in);
 	    }
 	
 	    @Override
-	    public CategoryBase[] newArray(final int size) {
-	        return new CategoryBase[size];
+	    public FilmographyCategoryBase[] newArray(final int size) {
+	        return new FilmographyCategoryBase[size];
 	    }
 	};
 	
@@ -334,18 +342,20 @@ public class CategoryBase extends BusinessObjectDAO {
 		dest.writeLong(_updatedAt.getTimeInMillis());
 		
 		//list of attributes
+		dest.writeString(attrScheme);
 		dest.writeString(attrLabel);
 		dest.writeString(attrTerm);
 		
 	}
 
-	public CategoryBase(final Parcel in) {
+	public FilmographyCategoryBase(final Parcel in) {
 		// Business Object DAO
 		_id = in.readLong();
 		_updatedAt = Calendar.getInstance();
 		_updatedAt.setTimeInMillis(in.readLong());
 		
 		//list of attributes
+		attrScheme = in.readString();
 		attrLabel = in.readString();
 		attrTerm = in.readString();	
 		
