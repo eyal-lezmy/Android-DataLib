@@ -227,8 +227,8 @@ public class DirectorBase extends BusinessObjectDAO {
 
 	@Override
 	protected int updateChildrenId(long[] ids, int index, int parentIndex) {
-        for (final DirectorLink item : directorLink) {
-            index = item.updateId(ids, index, parentIndex);
+        for (final DirectorLink directorLinkElement : directorLink) {
+            index = directorLinkElement.updateId(ids, index, parentIndex);
         }
 
 		return index;
@@ -266,8 +266,8 @@ public class DirectorBase extends BusinessObjectDAO {
     @Override
     public void deleteChildsFromDatabase(final ArrayList<ContentProviderOperation> batch) {
         // we first remove all the childs of the childs of the object
-        for (final DirectorLink item : directorLink) {
-            item.deleteChildsFromDatabase(batch);
+        for (final DirectorLink directorLinkElement : directorLink) {
+            directorLinkElement.deleteChildsFromDatabase(batch);
         }
 
 		String whereClause = "";
@@ -284,16 +284,16 @@ public class DirectorBase extends BusinessObjectDAO {
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
-		for (final DirectorLink item : directorLink) {
-            item.addIntoDatabase(batch, DirectorLink.CONTENT_URI, DirectorLink.FIELD__PARENT_ID, previousResult);
+		for (final DirectorLink directorLinkElement : directorLink) {
+            directorLinkElement.addIntoDatabase(batch, DirectorLink.CONTENT_URI, DirectorLink.FIELD__PARENT_ID, previousResult);
         }
     }
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
-		for (final DirectorLink item : directorLink) {
-            item._parentId = _id;
-            item.addIntoDatabase(batch, DirectorLink.CONTENT_URI);
+		for (final DirectorLink directorLinkElement : directorLink) {
+            directorLinkElement._parentId = _id;
+            directorLinkElement.addIntoDatabase(batch, DirectorLink.CONTENT_URI);
         }
     }
 

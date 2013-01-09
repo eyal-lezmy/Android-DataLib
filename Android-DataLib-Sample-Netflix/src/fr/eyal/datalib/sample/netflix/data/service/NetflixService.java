@@ -6,6 +6,8 @@ import fr.eyal.lib.data.parser.GenericHandler;
 import fr.eyal.lib.data.processor.Processor;
 import fr.eyal.lib.data.service.DataLibService;
 import fr.eyal.lib.data.service.model.DataLibRequest;
+import fr.eyal.datalib.sample.netflix.data.config.NewReleasesWebConfig;
+import fr.eyal.datalib.sample.netflix.data.config.AutocompleteWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.CatalogTitlesWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.PeopleWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.FilmographyWebConfig;
@@ -13,6 +15,8 @@ import fr.eyal.datalib.sample.netflix.data.config.MovieWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.SynopsisWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.CastWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.DirectorsWebConfig;
+import fr.eyal.datalib.sample.netflix.data.parser.NewReleasesParser;
+import fr.eyal.datalib.sample.netflix.data.parser.AutocompleteParser;
 import fr.eyal.datalib.sample.netflix.data.parser.CatalogTitlesParser;
 import fr.eyal.datalib.sample.netflix.data.parser.PeopleParser;
 import fr.eyal.datalib.sample.netflix.data.parser.FilmographyParser;
@@ -27,13 +31,15 @@ import fr.eyal.datalib.sample.netflix.data.parser.DirectorsParser;
 public class NetflixService extends DataLibService {
 
     //different Service's possible actions
-	public static final int WEBSERVICE_CATALOGTITLES = 1; 
-	public static final int WEBSERVICE_PEOPLE = 2; 
-	public static final int WEBSERVICE_FILMOGRAPHY = 3; 
-	public static final int WEBSERVICE_MOVIE = 4; 
-	public static final int WEBSERVICE_SYNOPSIS = 5; 
-	public static final int WEBSERVICE_CAST = 6; 
-	public static final int WEBSERVICE_DIRECTORS = 7;
+	public static final int WEBSERVICE_NEWRELEASES = 1; 
+	public static final int WEBSERVICE_AUTOCOMPLETE = 2; 
+	public static final int WEBSERVICE_CATALOGTITLES = 3; 
+	public static final int WEBSERVICE_PEOPLE = 4; 
+	public static final int WEBSERVICE_FILMOGRAPHY = 5; 
+	public static final int WEBSERVICE_MOVIE = 6; 
+	public static final int WEBSERVICE_SYNOPSIS = 7; 
+	public static final int WEBSERVICE_CAST = 8; 
+	public static final int WEBSERVICE_DIRECTORS = 9;
 
     public NetflixService() {
         super();
@@ -48,6 +54,14 @@ public class NetflixService extends DataLibService {
         //We initiate the specific workers
         switch (processorType) {
 
+			case WEBSERVICE_NEWRELEASES:
+			    NewReleasesWebConfig.applyToRequest(request, NewReleasesWebConfig.getInstance());
+			    handler = new NewReleasesParser();
+			    break;
+			case WEBSERVICE_AUTOCOMPLETE:
+			    AutocompleteWebConfig.applyToRequest(request, AutocompleteWebConfig.getInstance());
+			    handler = new AutocompleteParser();
+			    break;
 			case WEBSERVICE_CATALOGTITLES:
 			    CatalogTitlesWebConfig.applyToRequest(request, CatalogTitlesWebConfig.getInstance());
 			    handler = new CatalogTitlesParser();

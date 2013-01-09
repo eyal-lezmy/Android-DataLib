@@ -3,6 +3,7 @@ package fr.eyal.datalib.sample.netflix.data.model;
 import android.content.UriMatcher;
 import android.net.Uri;
 import fr.eyal.lib.data.model.provider.BusinessObjectProvider;
+import fr.eyal.datalib.sample.netflix.data.model.newreleases.*;
 import fr.eyal.datalib.sample.netflix.data.model.people.*;
 import fr.eyal.datalib.sample.netflix.data.model.filmography.*;
 import fr.eyal.datalib.sample.netflix.data.model.movie.*;
@@ -21,27 +22,30 @@ public class NetflixProvider extends BusinessObjectProvider {
     /**
      * Tables' Codes
      */
-	public static final int CODE_PEOPLE = 15;
-	public static final int CODE_PEOPLE_PEOPLELINK = 20;
+	public static final int CODE_NEWRELEASES = 0;
+	public static final int CODE_NEWRELEASES_ITEM = 8;
 	
-	public static final int CODE_FILMOGRAPHY = 21;
-	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM = 24;
-	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM_FILMOGRAPHYLINK = 28;
-	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM_FILMOGRAPHYCATEGORY = 30;
+	public static final int CODE_PEOPLE = 32;
+	public static final int CODE_PEOPLE_PEOPLELINK = 37;
 	
-	public static final int CODE_MOVIE = 33;
-	public static final int CODE_MOVIE_MOVIELINK = 39;
-	public static final int CODE_MOVIE_MOVIECATEGORY = 41;
+	public static final int CODE_FILMOGRAPHY = 38;
+	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM = 41;
+	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM_FILMOGRAPHYLINK = 45;
+	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM_FILMOGRAPHYCATEGORY = 47;
 	
-	public static final int CODE_SYNOPSIS = 44;
+	public static final int CODE_MOVIE = 50;
+	public static final int CODE_MOVIE_MOVIELINK = 56;
+	public static final int CODE_MOVIE_MOVIECATEGORY = 58;
 	
-	public static final int CODE_CAST = 47;
-	public static final int CODE_CAST_CASTPERSON = 50;
-	public static final int CODE_CAST_CASTPERSON_CASTLINK = 54;
+	public static final int CODE_SYNOPSIS = 61;
 	
-	public static final int CODE_DIRECTORS = 55;
-	public static final int CODE_DIRECTORS_DIRECTOR = 58;
-	public static final int CODE_DIRECTORS_DIRECTOR_DIRECTORLINK = 62;
+	public static final int CODE_CAST = 64;
+	public static final int CODE_CAST_CASTPERSON = 67;
+	public static final int CODE_CAST_CASTPERSON_CASTLINK = 71;
+	
+	public static final int CODE_DIRECTORS = 72;
+	public static final int CODE_DIRECTORS_DIRECTOR = 75;
+	public static final int CODE_DIRECTORS_DIRECTOR_DIRECTORLINK = 79;
 
     static {
 
@@ -50,6 +54,8 @@ public class NetflixProvider extends BusinessObjectProvider {
 
         //Tables' names list
         String[] LOCAL_DATABASE_TABLES_NAMES = {
+				NewReleases.DATABASE_TABLE_NAME,
+				Item.DATABASE_TABLE_NAME,
 				People.DATABASE_TABLE_NAME,
 				PeopleLink.DATABASE_TABLE_NAME,
 				Filmography.DATABASE_TABLE_NAME,
@@ -71,6 +77,8 @@ public class NetflixProvider extends BusinessObjectProvider {
 
         //Tables' fields' names list
         String[][] LOCAL_DATABASE_TABLES_FIELDS_NAMES = {
+                NewReleases.DATABASE_TABLE_FIELDS_NAMES,
+                Item.DATABASE_TABLE_FIELDS_NAMES,
                 People.DATABASE_TABLE_FIELDS_NAMES,
                 PeopleLink.DATABASE_TABLE_FIELDS_NAMES,
                 Filmography.DATABASE_TABLE_FIELDS_NAMES,
@@ -92,6 +100,8 @@ public class NetflixProvider extends BusinessObjectProvider {
 
         //Tables' fields' names list
         String[] LOCAL_CREATE_TABLES = {
+				NewReleases.CREATE_TABLE,
+				Item.CREATE_TABLE,
 				People.CREATE_TABLE,
 				PeopleLink.CREATE_TABLE,
 				Filmography.CREATE_TABLE,
@@ -115,6 +125,8 @@ public class NetflixProvider extends BusinessObjectProvider {
         UriMatcher matcher = sUriMatcher;
 
         //We add each URIs into the matcher
+		matcher.addURI(AUTHORITY, NewReleases.CONTENT_PATH, CODE_NEWRELEASES);
+		matcher.addURI(AUTHORITY, Item.CONTENT_PATH, CODE_NEWRELEASES_ITEM);
 		matcher.addURI(AUTHORITY, People.CONTENT_PATH, CODE_PEOPLE);
 		matcher.addURI(AUTHORITY, PeopleLink.CONTENT_PATH, CODE_PEOPLE_PEOPLELINK);
 		matcher.addURI(AUTHORITY, Filmography.CONTENT_PATH, CODE_FILMOGRAPHY);
@@ -136,6 +148,11 @@ public class NetflixProvider extends BusinessObjectProvider {
     @Override
     protected String getTableName(final int match) {
         switch (match) {
+			case CODE_NEWRELEASES:
+			    return NewReleases.DATABASE_TABLE_NAME;
+			case CODE_NEWRELEASES_ITEM:
+			    return Item.DATABASE_TABLE_NAME;
+			
 			case CODE_PEOPLE:
 			    return People.DATABASE_TABLE_NAME;
 			case CODE_PEOPLE_PEOPLELINK:
@@ -183,6 +200,13 @@ public class NetflixProvider extends BusinessObjectProvider {
     public String getType(final Uri uri) {
 
         switch (sUriMatcher.match(uri)) {
+			case CODE_NEWRELEASES:
+			    return NewReleases.CONTENT_URL;
+			case CODE_NEWRELEASES_ITEM:
+			    return Item.CONTENT_URL;
+			
+			
+			
 			case CODE_PEOPLE:
 			    return People.CONTENT_URL;
 			case CODE_PEOPLE_PEOPLELINK:

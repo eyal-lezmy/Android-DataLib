@@ -21,17 +21,17 @@ public class FilmographyParser extends DefaultHandler implements GenericHandler 
     public static final int UNKNOWN = -1;
 
 	//Filmography
-	private static final int H1 = 22;
-	private static final int FILMOGRAPHY = 23;
-	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM = 24;
-	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_ID = 25;
-	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_TITLE = 26;
-	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_BOX_ART = 27;
-	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_LINK = 28;
-	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_RELEASE_YEAR = 29;
-	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_CATEGORY = 30;
-	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_RUNTIME = 31;
-	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_AVERAGE_RATING = 32;
+	private static final int H1 = 39;
+	private static final int FILMOGRAPHY = 40;
+	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM = 41;
+	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_ID = 42;
+	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_TITLE = 43;
+	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_BOX_ART = 44;
+	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_LINK = 45;
+	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_RELEASE_YEAR = 46;
+	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_CATEGORY = 47;
+	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_RUNTIME = 48;
+	private static final int FILMOGRAPHY_FILMOGRAPHY_ITEM_AVERAGE_RATING = 49;
     
 	private int mState = UNKNOWN;
 

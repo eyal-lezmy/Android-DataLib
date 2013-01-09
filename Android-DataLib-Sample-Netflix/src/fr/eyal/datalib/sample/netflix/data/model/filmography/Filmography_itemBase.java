@@ -296,12 +296,12 @@ public class Filmography_itemBase extends BusinessObjectDAO {
 
 	@Override
 	protected int updateChildrenId(long[] ids, int index, int parentIndex) {
-        for (final FilmographyLink item : filmographyLink) {
-            index = item.updateId(ids, index, parentIndex);
+        for (final FilmographyLink filmographyLinkElement : filmographyLink) {
+            index = filmographyLinkElement.updateId(ids, index, parentIndex);
         }
 
-        for (final FilmographyCategory item : filmographyCategory) {
-            index = item.updateId(ids, index, parentIndex);
+        for (final FilmographyCategory filmographyCategoryElement : filmographyCategory) {
+            index = filmographyCategoryElement.updateId(ids, index, parentIndex);
         }
 
 		return index;
@@ -339,12 +339,12 @@ public class Filmography_itemBase extends BusinessObjectDAO {
     @Override
     public void deleteChildsFromDatabase(final ArrayList<ContentProviderOperation> batch) {
         // we first remove all the childs of the childs of the object
-        for (final FilmographyLink item : filmographyLink) {
-            item.deleteChildsFromDatabase(batch);
+        for (final FilmographyLink filmographyLinkElement : filmographyLink) {
+            filmographyLinkElement.deleteChildsFromDatabase(batch);
         }
         // we first remove all the childs of the childs of the object
-        for (final FilmographyCategory item : filmographyCategory) {
-            item.deleteChildsFromDatabase(batch);
+        for (final FilmographyCategory filmographyCategoryElement : filmographyCategory) {
+            filmographyCategoryElement.deleteChildsFromDatabase(batch);
         }
 
 		String whereClause = "";
@@ -366,23 +366,23 @@ public class Filmography_itemBase extends BusinessObjectDAO {
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
-		for (final FilmographyLink item : filmographyLink) {
-            item.addIntoDatabase(batch, FilmographyLink.CONTENT_URI, FilmographyLink.FIELD__PARENT_ID, previousResult);
+		for (final FilmographyLink filmographyLinkElement : filmographyLink) {
+            filmographyLinkElement.addIntoDatabase(batch, FilmographyLink.CONTENT_URI, FilmographyLink.FIELD__PARENT_ID, previousResult);
         }
-		for (final FilmographyCategory item : filmographyCategory) {
-            item.addIntoDatabase(batch, FilmographyCategory.CONTENT_URI, FilmographyCategory.FIELD__PARENT_ID, previousResult);
+		for (final FilmographyCategory filmographyCategoryElement : filmographyCategory) {
+            filmographyCategoryElement.addIntoDatabase(batch, FilmographyCategory.CONTENT_URI, FilmographyCategory.FIELD__PARENT_ID, previousResult);
         }
     }
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
-		for (final FilmographyLink item : filmographyLink) {
-            item._parentId = _id;
-            item.addIntoDatabase(batch, FilmographyLink.CONTENT_URI);
+		for (final FilmographyLink filmographyLinkElement : filmographyLink) {
+            filmographyLinkElement._parentId = _id;
+            filmographyLinkElement.addIntoDatabase(batch, FilmographyLink.CONTENT_URI);
         }
-		for (final FilmographyCategory item : filmographyCategory) {
-            item._parentId = _id;
-            item.addIntoDatabase(batch, FilmographyCategory.CONTENT_URI);
+		for (final FilmographyCategory filmographyCategoryElement : filmographyCategory) {
+            filmographyCategoryElement._parentId = _id;
+            filmographyCategoryElement.addIntoDatabase(batch, FilmographyCategory.CONTENT_URI);
         }
     }
 

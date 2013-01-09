@@ -253,8 +253,8 @@ public class DirectorsBase extends ResponseBusinessObjectDAO {
 
 	@Override
 	protected int updateChildrenId(long[] ids, int index, int parentIndex) {
-        for (final Director item : director) {
-            index = item.updateId(ids, index, parentIndex);
+        for (final Director directorElement : director) {
+            index = directorElement.updateId(ids, index, parentIndex);
         }
 
 		return index;
@@ -288,16 +288,16 @@ public class DirectorsBase extends ResponseBusinessObjectDAO {
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
-		for (final Director item : director) {
-            item.addIntoDatabase(batch, Director.CONTENT_URI, Director.FIELD__PARENT_ID, previousResult);
+		for (final Director directorElement : director) {
+            directorElement.addIntoDatabase(batch, Director.CONTENT_URI, Director.FIELD__PARENT_ID, previousResult);
         }
     }
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
-		for (final Director item : director) {
-            item._parentId = _id;
-            item.addIntoDatabase(batch, Director.CONTENT_URI);
+		for (final Director directorElement : director) {
+            directorElement._parentId = _id;
+            directorElement.addIntoDatabase(batch, Director.CONTENT_URI);
         }
     }
 
@@ -305,8 +305,8 @@ public class DirectorsBase extends ResponseBusinessObjectDAO {
     public void deleteChildsFromDatabase(final ArrayList<ContentProviderOperation> batch) {
         Out.d(TAG, "deleting childs of " + _id);
         // we first remove all the childs of the childs of the object
-        for (final Director item : director) {
-            item.deleteChildsFromDatabase(batch);
+        for (final Director directorElement : director) {
+            directorElement.deleteChildsFromDatabase(batch);
         }
 
 		String whereClause = "";

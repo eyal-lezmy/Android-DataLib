@@ -21,8 +21,8 @@ public class SynopsisParser extends DefaultHandler implements GenericHandler {
     public static final int UNKNOWN = -1;
 
 	//Synopsis
-	private static final int H1 = 45;
-	private static final int SYNOPSIS = 46;
+	private static final int H1 = 62;
+	private static final int SYNOPSIS = 63;
     
 	private int mState = UNKNOWN;
 

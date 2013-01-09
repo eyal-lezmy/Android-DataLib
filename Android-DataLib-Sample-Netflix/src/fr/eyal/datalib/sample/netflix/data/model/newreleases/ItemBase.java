@@ -1,4 +1,4 @@
-package fr.eyal.datalib.sample.netflix.data.model.cast;
+package fr.eyal.datalib.sample.netflix.data.model.newreleases;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,24 +16,20 @@ import android.os.RemoteException;
 import fr.eyal.lib.data.model.BusinessObjectDAO;
 import fr.eyal.datalib.sample.netflix.data.model.NetflixProvider;
 
-public class CastPersonBase extends BusinessObjectDAO {
+public class ItemBase extends BusinessObjectDAO {
 
     protected long _parentId = ID_INVALID;
 
 	//list of content
-	public String id;
-	public String name;
-	public String bio;
-	
-	
-	//list of childs
-	public ArrayList<CastLink> castLink;
+	public String title;
+	public String link;
+	public String description;
 
-    public CastPersonBase() {
+    public ItemBase() {
         super();
     }
 
-    public CastPersonBase(final long id) {
+    public ItemBase(final long id) {
         super(id);
     }
 
@@ -49,14 +45,14 @@ public class CastPersonBase extends BusinessObjectDAO {
     /**
      * Constants used with a ContentProvider's access
      */
-    public static final String CONTENT_PATH = "castperson";
+    public static final String CONTENT_PATH = "item";
     public static final String CONTENT_URL = NetflixProvider.PROVIDER_PREFIX + NetflixProvider.AUTHORITY + "/" + CONTENT_PATH;
     public static final Uri CONTENT_URI = Uri.parse(CONTENT_URL);
 
     /**
      * SQL databases table's name
      */
-    public static String DATABASE_TABLE_NAME = "castperson";
+    public static String DATABASE_TABLE_NAME = "item";
 
     /**
      * SQL database table's fields names
@@ -65,9 +61,9 @@ public class CastPersonBase extends BusinessObjectDAO {
     public static final String FIELD__UPDATED_AT = BusinessObjectDAO.FIELD_UPDATED_AT;
     public static final String FIELD__PARENT_ID = "_parent_id";
 	//list of content
-    public static final String FIELD_ID = "id";
-    public static final String FIELD_NAME = "name";
-    public static final String FIELD_BIO = "bio";
+    public static final String FIELD_TITLE = "title";
+    public static final String FIELD_LINK = "link";
+    public static final String FIELD_DESCRIPTION = "description";
 
     /**
      * List of SQL database fields' names
@@ -78,9 +74,9 @@ public class CastPersonBase extends BusinessObjectDAO {
             FIELD__UPDATED_AT, // updated_at
             FIELD__PARENT_ID, // sensors_id
 		    //list of content
-		    FIELD_ID, //id;
-		    FIELD_NAME, //name;
-		    FIELD_BIO, //bio;
+		    FIELD_TITLE, //title;
+		    FIELD_LINK, //link;
+		    FIELD_DESCRIPTION, //description;
     };
 
     /**
@@ -106,7 +102,7 @@ public class CastPersonBase extends BusinessObjectDAO {
 			+ DATABASE_TABLE_FIELDS_NAMES[0] + " " + DATABASE_TABLE_FIELDS_TYPES[0] + " PRIMARY KEY AUTOINCREMENT" + ", "
             + DATABASE_TABLE_FIELDS_NAMES[1] + " " + DATABASE_TABLE_FIELDS_TYPES[1] + ", "
             + DATABASE_TABLE_FIELDS_NAMES[2] + " " + DATABASE_TABLE_FIELDS_TYPES[2] + " REFERENCES "
-            + Cast.DATABASE_TABLE_NAME + "(" + Cast.DATABASE_TABLE_FIELDS_NAMES[0] + ") ON DELETE CASCADE" + ", "
+            + NewReleases.DATABASE_TABLE_NAME + "(" + NewReleases.DATABASE_TABLE_FIELDS_NAMES[0] + ") ON DELETE CASCADE" + ", "
 
 			//list of content
 			+ DATABASE_TABLE_FIELDS_NAMES[3] + " " + DATABASE_TABLE_FIELDS_TYPES[3] + ", "
@@ -140,9 +136,9 @@ public class CastPersonBase extends BusinessObjectDAO {
 
 	
 	    //list of content
-	    values.put(FIELD_ID, id);
-	    values.put(FIELD_NAME, name);
-	    values.put(FIELD_BIO, bio);
+	    values.put(FIELD_TITLE, title);
+	    values.put(FIELD_LINK, link);
+	    values.put(FIELD_DESCRIPTION, description);
 		
         return values;
     }
@@ -159,7 +155,7 @@ public class CastPersonBase extends BusinessObjectDAO {
         final String[] args = { id + "" };
 
         // we check the existence inside the database
-        final Cursor cursor = mResolver.query(CONTENT_URI, // CastPerson
+        final Cursor cursor = mResolver.query(CONTENT_URI, // item
                 columns, // id
                 where, // id=?
                 args, // id
@@ -182,8 +178,6 @@ public class CastPersonBase extends BusinessObjectDAO {
 
     @Override
     protected void fillObjectFromCursor(final Cursor cursor) {
-		// we initialize the childs tabs
-        	castLink = new ArrayList<CastLink>();
 
 		// if we have a content
         if (!cursor.isClosed() && !cursor.isAfterLast()) {
@@ -198,9 +192,9 @@ public class CastPersonBase extends BusinessObjectDAO {
 
 		
 			//list of content
-			id = cursor.getString(i++);
-			name = cursor.getString(i++);
-			bio = cursor.getString(i++);
+			title = cursor.getString(i++);
+			link = cursor.getString(i++);
+			description = cursor.getString(i++);
 
         } else {
             _id = ID_INVALID;
@@ -227,9 +221,7 @@ public class CastPersonBase extends BusinessObjectDAO {
 
 	@Override
 	protected int updateChildrenId(long[] ids, int index, int parentIndex) {
-        for (final CastLink castLinkElement : castLink) {
-            index = castLinkElement.updateId(ids, index, parentIndex);
-        }
+		// Nothing to do
 
 		return index;
 	}
@@ -265,79 +257,28 @@ public class CastPersonBase extends BusinessObjectDAO {
 
     @Override
     public void deleteChildsFromDatabase(final ArrayList<ContentProviderOperation> batch) {
-        // we first remove all the childs of the childs of the object
-        for (final CastLink castLinkElement : castLink) {
-            castLinkElement.deleteChildsFromDatabase(batch);
-        }
-
-		String whereClause = "";
-		final String[] argsClause = { _id + "" };
-
-        // we delete all the child entries
-        whereClause = CastLink.FIELD__PARENT_ID + "=?"; // castperson_id=?
-        batch.add(ContentProviderOperation.newDelete(CastLink.CONTENT_URI)
-                .withSelection(whereClause, argsClause)
-                .build());
-
+		// Nothing to do
     }
 
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
-		for (final CastLink castLinkElement : castLink) {
-            castLinkElement.addIntoDatabase(batch, CastLink.CONTENT_URI, CastLink.FIELD__PARENT_ID, previousResult);
-        }
+		// Nothing to do
     }
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
-		for (final CastLink castLinkElement : castLink) {
-            castLinkElement._parentId = _id;
-            castLinkElement.addIntoDatabase(batch, CastLink.CONTENT_URI);
-        }
+		// Nothing to do
     }
 
 
     @Override
     protected void fillChildrenFromDatabase() {
-		String[] columns;
-        String where;
-        String[] args;
-        Cursor cursor;
-
-        // we define the access conditions to the objects
-        columns = new String[CastLink.DATABASE_TABLE_FIELDS_NAMES.length];
-        for (int i = 0; i < CastLink.DATABASE_TABLE_FIELDS_NAMES.length; i++) {
-            columns[i] = CastLink.DATABASE_TABLE_FIELDS_NAMES[i];
-        }
-
-        where = CastLink.FIELD__PARENT_ID + "=?";
-        args = new String[1];
-        args[0] = _id + "";
-
-        // we check the existence of the entry inside the database
-        cursor = mResolver.query(CastLink.CONTENT_URI,
-                columns, // all the columns of the object
-                where, // castperson_id=?
-                args, // id of the object
-                null);
-
-        // if we get a result
-        if (cursor.moveToFirst()) {
-
-            do {
-                // we create and then fill the item with the Cursor
-                final CastLink itemCastLink = new CastLink();
-                itemCastLink.fillObjectFromCursor(cursor);
-                castLink.add(itemCastLink); // we add a new object to the list
-
-            } while (cursor.moveToNext());
-        }
-        cursor.close();			
+		// Nothing to do
     }
 
 	/**
-     * This function build an array of {@link CastPersonBase} thanks to a Cursor
+     * This function build an array of {@link ItemBase} thanks to a Cursor
      * object received from the database.
      * 
      * @param c The cursor object.
@@ -347,16 +288,16 @@ public class CastPersonBase extends BusinessObjectDAO {
      *         of the Cursor. If the Cursor is empty, it returns an empty array.
      *  	   <b>The result of this function is return as ArrayList<?>. It has
      *  	   to be casted into the expected class to be useful.</b>
-     *  	   Ex: Cast to ArrayList<{@link CastPerson}> if you want it as {@link CastPerson}
+     *  	   Ex: Cast to ArrayList<{@link Item}> if you want it as {@link Item}
      */
     public static ArrayList<?> buildArrayFromCursor(final Cursor c, final boolean join) {
 
-        final ArrayList<CastPersonBase> result = new ArrayList<CastPersonBase>();
+        final ArrayList<ItemBase> result = new ArrayList<ItemBase>();
 
         if (c.moveToFirst()) {
             do {
                 // we create and fill the item
-                final CastPersonBase newObject = new CastPersonBase();
+                final ItemBase newObject = new ItemBase();
                 newObject.fillObjectFromCursor(c);
                 // if it's asked we fill the childs of the item
                 if (join) {
@@ -375,15 +316,15 @@ public class CastPersonBase extends BusinessObjectDAO {
      * PARCELABLE MANAGMENT
      */
 
-	public static final Parcelable.Creator<CastPersonBase> CREATOR = new Parcelable.Creator<CastPersonBase>() {
+	public static final Parcelable.Creator<ItemBase> CREATOR = new Parcelable.Creator<ItemBase>() {
 	    @Override
-	    public CastPersonBase createFromParcel(final Parcel in) {
-	        return new CastPersonBase(in);
+	    public ItemBase createFromParcel(final Parcel in) {
+	        return new ItemBase(in);
 	    }
 	
 	    @Override
-	    public CastPersonBase[] newArray(final int size) {
-	        return new CastPersonBase[size];
+	    public ItemBase[] newArray(final int size) {
+	        return new ItemBase[size];
 	    }
 	};
 	
@@ -399,32 +340,23 @@ public class CastPersonBase extends BusinessObjectDAO {
 		dest.writeLong(_updatedAt.getTimeInMillis());
 		
 		//list of content
-		dest.writeString(id);
-		dest.writeString(name);
-		dest.writeString(bio);
+		dest.writeString(title);
+		dest.writeString(link);
+		dest.writeString(description);
 		
-		//list of childs
-		dest.writeParcelableArray(castLink.toArray(new CastLink[castLink.size()]), 0);
 	}
 
-	public CastPersonBase(final Parcel in) {
+	public ItemBase(final Parcel in) {
 		// Business Object DAO
 		_id = in.readLong();
 		_updatedAt = Calendar.getInstance();
 		_updatedAt.setTimeInMillis(in.readLong());
 		
 		//list of content
-		id = in.readString();
-		name = in.readString();
-		bio = in.readString();	
+		title = in.readString();
+		link = in.readString();
+		description = in.readString();	
 		
-		//list of children
-		Parcelable[] items; 
-		items = in.readParcelableArray(CastLink.class.getClassLoader());
-		castLink = new ArrayList<CastLink>();
-		for (final Parcelable parcelable : items) {
-		    castLink.add((CastLink) parcelable);
-		}
 		
 	}    
 }

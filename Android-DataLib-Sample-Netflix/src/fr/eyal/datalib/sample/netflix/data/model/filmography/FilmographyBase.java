@@ -253,8 +253,8 @@ public class FilmographyBase extends ResponseBusinessObjectDAO {
 
 	@Override
 	protected int updateChildrenId(long[] ids, int index, int parentIndex) {
-        for (final Filmography_item item : filmography_item) {
-            index = item.updateId(ids, index, parentIndex);
+        for (final Filmography_item filmography_itemElement : filmography_item) {
+            index = filmography_itemElement.updateId(ids, index, parentIndex);
         }
 
 		return index;
@@ -288,16 +288,16 @@ public class FilmographyBase extends ResponseBusinessObjectDAO {
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
-		for (final Filmography_item item : filmography_item) {
-            item.addIntoDatabase(batch, Filmography_item.CONTENT_URI, Filmography_item.FIELD__PARENT_ID, previousResult);
+		for (final Filmography_item filmography_itemElement : filmography_item) {
+            filmography_itemElement.addIntoDatabase(batch, Filmography_item.CONTENT_URI, Filmography_item.FIELD__PARENT_ID, previousResult);
         }
     }
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
-		for (final Filmography_item item : filmography_item) {
-            item._parentId = _id;
-            item.addIntoDatabase(batch, Filmography_item.CONTENT_URI);
+		for (final Filmography_item filmography_itemElement : filmography_item) {
+            filmography_itemElement._parentId = _id;
+            filmography_itemElement.addIntoDatabase(batch, Filmography_item.CONTENT_URI);
         }
     }
 
@@ -305,8 +305,8 @@ public class FilmographyBase extends ResponseBusinessObjectDAO {
     public void deleteChildsFromDatabase(final ArrayList<ContentProviderOperation> batch) {
         Out.d(TAG, "deleting childs of " + _id);
         // we first remove all the childs of the childs of the object
-        for (final Filmography_item item : filmography_item) {
-            item.deleteChildsFromDatabase(batch);
+        for (final Filmography_item filmography_itemElement : filmography_item) {
+            filmography_itemElement.deleteChildsFromDatabase(batch);
         }
 
 		String whereClause = "";

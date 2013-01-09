@@ -253,8 +253,8 @@ public class CastBase extends ResponseBusinessObjectDAO {
 
 	@Override
 	protected int updateChildrenId(long[] ids, int index, int parentIndex) {
-        for (final CastPerson item : castPerson) {
-            index = item.updateId(ids, index, parentIndex);
+        for (final CastPerson castPersonElement : castPerson) {
+            index = castPersonElement.updateId(ids, index, parentIndex);
         }
 
 		return index;
@@ -288,16 +288,16 @@ public class CastBase extends ResponseBusinessObjectDAO {
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
-		for (final CastPerson item : castPerson) {
-            item.addIntoDatabase(batch, CastPerson.CONTENT_URI, CastPerson.FIELD__PARENT_ID, previousResult);
+		for (final CastPerson castPersonElement : castPerson) {
+            castPersonElement.addIntoDatabase(batch, CastPerson.CONTENT_URI, CastPerson.FIELD__PARENT_ID, previousResult);
         }
     }
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
-		for (final CastPerson item : castPerson) {
-            item._parentId = _id;
-            item.addIntoDatabase(batch, CastPerson.CONTENT_URI);
+		for (final CastPerson castPersonElement : castPerson) {
+            castPersonElement._parentId = _id;
+            castPersonElement.addIntoDatabase(batch, CastPerson.CONTENT_URI);
         }
     }
 
@@ -305,8 +305,8 @@ public class CastBase extends ResponseBusinessObjectDAO {
     public void deleteChildsFromDatabase(final ArrayList<ContentProviderOperation> batch) {
         Out.d(TAG, "deleting childs of " + _id);
         // we first remove all the childs of the childs of the object
-        for (final CastPerson item : castPerson) {
-            item.deleteChildsFromDatabase(batch);
+        for (final CastPerson castPersonElement : castPerson) {
+            castPersonElement.deleteChildsFromDatabase(batch);
         }
 
 		String whereClause = "";

@@ -267,8 +267,8 @@ public class PeopleBase extends ResponseBusinessObjectDAO {
 
 	@Override
 	protected int updateChildrenId(long[] ids, int index, int parentIndex) {
-        for (final PeopleLink item : peopleLink) {
-            index = item.updateId(ids, index, parentIndex);
+        for (final PeopleLink peopleLinkElement : peopleLink) {
+            index = peopleLinkElement.updateId(ids, index, parentIndex);
         }
 
 		return index;
@@ -302,16 +302,16 @@ public class PeopleBase extends ResponseBusinessObjectDAO {
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
-		for (final PeopleLink item : peopleLink) {
-            item.addIntoDatabase(batch, PeopleLink.CONTENT_URI, PeopleLink.FIELD__PARENT_ID, previousResult);
+		for (final PeopleLink peopleLinkElement : peopleLink) {
+            peopleLinkElement.addIntoDatabase(batch, PeopleLink.CONTENT_URI, PeopleLink.FIELD__PARENT_ID, previousResult);
         }
     }
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
-		for (final PeopleLink item : peopleLink) {
-            item._parentId = _id;
-            item.addIntoDatabase(batch, PeopleLink.CONTENT_URI);
+		for (final PeopleLink peopleLinkElement : peopleLink) {
+            peopleLinkElement._parentId = _id;
+            peopleLinkElement.addIntoDatabase(batch, PeopleLink.CONTENT_URI);
         }
     }
 
@@ -319,8 +319,8 @@ public class PeopleBase extends ResponseBusinessObjectDAO {
     public void deleteChildsFromDatabase(final ArrayList<ContentProviderOperation> batch) {
         Out.d(TAG, "deleting childs of " + _id);
         // we first remove all the childs of the childs of the object
-        for (final PeopleLink item : peopleLink) {
-            item.deleteChildsFromDatabase(batch);
+        for (final PeopleLink peopleLinkElement : peopleLink) {
+            peopleLinkElement.deleteChildsFromDatabase(batch);
         }
 
 		String whereClause = "";

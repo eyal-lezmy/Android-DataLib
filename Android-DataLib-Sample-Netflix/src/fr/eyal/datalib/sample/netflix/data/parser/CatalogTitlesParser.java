@@ -21,20 +21,20 @@ public class CatalogTitlesParser extends DefaultHandler implements GenericHandle
     public static final int UNKNOWN = -1;
 
 	//CatalogTitles
-	private static final int H1 = 1;
-	private static final int CATALOG_TITLES = 2;
-	private static final int CATALOG_TITLES_NUMBER_OF_RESULTS = 3;
-	private static final int CATALOG_TITLES_START_INDEX = 4;
-	private static final int CATALOG_TITLES_RESULTS_PER_PAGE = 5;
-	private static final int CATALOG_TITLES_CATALOG_TITLE = 6;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_ID = 7;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_TITLE = 8;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_BOX_ART = 9;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_RELEASE_YEAR = 10;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_CATEGORY = 11;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_LINK = 12;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_RUNTIME = 13;
-	private static final int CATALOG_TITLES_CATALOG_TITLE_AVERAGE_RATING = 14;
+	private static final int H1 = 18;
+	private static final int CATALOG_TITLES = 19;
+	private static final int CATALOG_TITLES_NUMBER_OF_RESULTS = 20;
+	private static final int CATALOG_TITLES_START_INDEX = 21;
+	private static final int CATALOG_TITLES_RESULTS_PER_PAGE = 22;
+	private static final int CATALOG_TITLES_CATALOG_TITLE = 23;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_ID = 24;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_TITLE = 25;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_BOX_ART = 26;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_RELEASE_YEAR = 27;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_CATEGORY = 28;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_LINK = 29;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_RUNTIME = 30;
+	private static final int CATALOG_TITLES_CATALOG_TITLE_AVERAGE_RATING = 31;
     
 	private int mState = UNKNOWN;
 

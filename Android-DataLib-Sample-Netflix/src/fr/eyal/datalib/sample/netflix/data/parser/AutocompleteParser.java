@@ -8,39 +8,38 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.parser.GenericHandler;
-import fr.eyal.datalib.sample.netflix.data.model.people.*;
-// Start of user code PeopleParser imports
+import fr.eyal.datalib.sample.netflix.data.model.autocomplete.*;
+// Start of user code AutocompleteParser imports
 // You can add here your personal imports
 // DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 
 
-public class PeopleParser extends DefaultHandler implements GenericHandler {
+public class AutocompleteParser extends DefaultHandler implements GenericHandler {
 
-    private static final String TAG = PeopleParser.class.getSimpleName();
+    private static final String TAG = AutocompleteParser.class.getSimpleName();
 
     public static final int UNKNOWN = -1;
 
-	//People
-	private static final int H1 = 33;
-	private static final int PERSON = 34;
-	private static final int PERSON_ID = 35;
-	private static final int PERSON_NAME = 36;
-	private static final int PERSON_LINK = 37;
+	//Autocomplete
+	private static final int H1 = 13;
+	private static final int AUTOCOMPLETE = 14;
+	private static final int AUTOCOMPLETE_AUTOCOMPLETE_ITEM = 15;
+	private static final int AUTOCOMPLETE_AUTOCOMPLETE_ITEM_TITLE = 16;
     
 	private int mState = UNKNOWN;
 
     private final StringBuilder mBuilder = new StringBuilder();
-	private People people;
-	private PeopleLink peopleLink;
+	private Autocomplete autocomplete;
+	private Autocomplete_item autocomplete_item;
 
-    public PeopleParser() {
-	people = new People();
-	people.peopleLink = new ArrayList<PeopleLink>();
+    public AutocompleteParser() {
+	autocomplete = new Autocomplete();
+	autocomplete.autocomplete_item = new ArrayList<Autocomplete_item>();
 	}
 
     @Override
     public ResponseBusinessObject getParsedData() {
-        return people;
+        return autocomplete;
     }
 
     @Override
@@ -56,29 +55,27 @@ public class PeopleParser extends DefaultHandler implements GenericHandler {
 					mState = H1;
 					
 			    }
-				else if (qName.equals("person")) {
-					mState = PERSON;
+				else if (qName.equals("autocomplete")) {
+					mState = AUTOCOMPLETE;
 					
 			    }
 			    break;
 			
 			
-			case PERSON:
+			case AUTOCOMPLETE:
 			
-			    if (qName.equals("id")) {
-					mState = PERSON_ID;
+			    if (qName.equals("autocomplete_item")) {
+			        mState = AUTOCOMPLETE_AUTOCOMPLETE_ITEM;
+			        autocomplete_item = new Autocomplete_item();
 					
 			    }
-				else if (qName.equals("name")) {
-					mState = PERSON_NAME;
-					
-			    }
-				else if (qName.equals("link")) {
-			        mState = PERSON_LINK;
-			        peopleLink = new PeopleLink();
-					peopleLink.attrHref = attributes.getValue("href");
-					peopleLink.attrRel = attributes.getValue("rel");
-					peopleLink.attrTitle = attributes.getValue("title");
+			    break;
+			
+			case AUTOCOMPLETE_AUTOCOMPLETE_ITEM:
+			
+			    if (qName.equals("title")) {
+					mState = AUTOCOMPLETE_AUTOCOMPLETE_ITEM_TITLE;
+					autocomplete_item.attrTitleShort = attributes.getValue("short");
 			    }
 			    break;
 
@@ -101,31 +98,26 @@ public class PeopleParser extends DefaultHandler implements GenericHandler {
 			case H1:
 			    if (qName.equals("h1")) {
 			        mState = UNKNOWN;
-					people.error = mBuilder.toString();
+					autocomplete.error = mBuilder.toString();
 			    }
 			    break;
-			case PERSON:
-			    if (qName.equals("person")) {
+			case AUTOCOMPLETE:
+			    if (qName.equals("autocomplete")) {
 			        mState = UNKNOWN;
 			    }
 			    break;
 				
-			case PERSON_ID:
-			    if (qName.equals("id")) {
-			        mState = PERSON;
-					people.id = mBuilder.toString();
+			case AUTOCOMPLETE_AUTOCOMPLETE_ITEM:
+			    if (qName.equals("autocomplete_item")) {
+			        mState = AUTOCOMPLETE;
+					autocomplete.autocomplete_item.add(autocomplete_item);
 			    }
 			    break;
-			case PERSON_NAME:
-			    if (qName.equals("name")) {
-			        mState = PERSON;
-					people.name = mBuilder.toString();
-			    }
-			    break;
-			case PERSON_LINK:
-			    if (qName.equals("link")) {
-			        mState = PERSON;
-					people.peopleLink.add(peopleLink);
+			
+			case AUTOCOMPLETE_AUTOCOMPLETE_ITEM_TITLE:
+			    if (qName.equals("title")) {
+			        mState = AUTOCOMPLETE_AUTOCOMPLETE_ITEM;
+					autocomplete_item.title = mBuilder.toString();
 			    }
 			    break;
 
@@ -140,7 +132,7 @@ public class PeopleParser extends DefaultHandler implements GenericHandler {
         // TODO Auto-generated method stub
     }
 
-// Start of user code PeopleParser
+// Start of user code AutocompleteParser
 // You can add here your personal content
 // DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 

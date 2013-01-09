@@ -13,6 +13,8 @@ import fr.eyal.lib.data.service.model.DataLibRequest;
 
 public class NetflixServiceHelper extends ServiceHelper {
 
+	    public static final String URL_NEWRELEASES = "http://dvd.netflix.com/NewReleasesRSS";
+	    public static final String URL_AUTOCOMPLETE = "http://api-public.netflix.com/catalog/titles/autocomplete";
 	    public static final String URL_CATALOGTITLES = "http://api-public.netflix.com/catalog/titles";
 	    public static final String URL_PEOPLE = "http://api-public.netflix.com/catalog/people/{0}";
 	    public static final String URL_FILMOGRAPHY = "http://api-public.netflix.com/catalog/people/{0}/filmography";
@@ -59,6 +61,46 @@ public class NetflixServiceHelper extends ServiceHelper {
 
 
 
+
+    /**
+     * Start {@link NewReleases} request
+     * 
+     *
+     * @return the request's id. If the request have already been sent, it returns the id previously generated. Otherwise it provide a new one that have to be stored.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+	public int getNewReleases( final int options) throws UnsupportedEncodingException {
+
+		//we prepare the parameters
+        final ParameterMap params = new ParameterMap();
+        
+        return launchRequest(options, NetflixService.WEBSERVICE_NEWRELEASES, params, NetflixService.class, URL_NEWRELEASES);
+    }
+    
+
+    /**
+     * Start {@link Autocomplete} request
+     * 
+     * @param oauth_consumer_key The OAuth consumer key of the developer. To disable the adding of it, just define it as null
+     * @param term The term of the content you are looking for. To disable the adding of it, just define it as null
+     *
+     * @return the request's id. If the request have already been sent, it returns the id previously generated. Otherwise it provide a new one that have to be stored.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+	public int getAutocomplete(final String oauth_consumer_key, final String term,  final int options) throws UnsupportedEncodingException {
+
+		//we prepare the parameters
+        final ParameterMap params = new ParameterMap();
+        if (oauth_consumer_key != null)
+        	params.put("oauth_consumer_key", oauth_consumer_key);
+        if (term != null)
+        	params.put("term", term);
+        
+        return launchRequest(options, NetflixService.WEBSERVICE_AUTOCOMPLETE, params, NetflixService.class, URL_AUTOCOMPLETE);
+    }
+    
 
     /**
      * Start {@link CatalogTitles} request
