@@ -27,6 +27,8 @@ import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
 
+import android.os.Build;
+
 /**
  * Lightweight HTTP client that facilitates GET, POST, PUT, and DELETE requests
  * using {@link HttpURLConnection}. Extend this class to support specialized
@@ -39,7 +41,8 @@ import java.util.TreeMap;
 public abstract class AbstractHttpClient {
 
     static {
-        ensureCookieManager();
+    	if (Build.VERSION.SDK_INT > 8)
+    		ensureCookieManager();
     }
 
     public static final String URLENCODED = "application/x-www-form-urlencoded;charset=UTF-8";
