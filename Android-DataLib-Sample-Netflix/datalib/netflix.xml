@@ -5,7 +5,9 @@
     datalib:package="fr.eyal.datalib.sample.netflix.data" 
     datalib:authority="fr.eyal.datalib.sample.netflix.datacache.provider"
     datalib:databaseName="datalib_cache"
-    datalib:databaseVersion="2">
+    datalib:databaseVersion="3">
+    
+    <!-- SEARCH TITLES -->
 	<datalib:webservice
 		datalib:httpMethod="GET"
 		datalib:parseType="SAX"
@@ -16,7 +18,7 @@
 			<datalib:httpMethod>GET</datalib:httpMethod>
 			<datalib:parseType>SAX</datalib:parseType>
 			<datalib:options>
-<!-- 				<datalib:OPTION_DATABASE_CACHE_DISABLED /> -->
+ 				<datalib:OPTION_DATABASE_CACHE_DISABLED />
 			</datalib:options>
 			<datalib:parameters>
  				<max_results datalib:type="int" datalib:description="Maximum number of results expected. If this parameter is not present, the default value is 25."/>
@@ -40,8 +42,8 @@
     <title short="string" regular="string" />
 	<box_art small="string" medium="string" large="string" />
 	<release_year>int</release_year>
-  	<category datalib:multiple="true" label="string" term="string"></category>
-	<link datalib:multiple="true" href="string" rel="string" title="string"></link>
+  	<category datalib:name="CatalogTitleCategory" datalib:multiple="true" label="string" term="string"></category>
+	<link datalib:name="CatalogTitleLink" datalib:multiple="true" href="string" rel="string" title="string"></link>
 	<!-- Idee de formatage d'une selection avec condition. Ici on test si l'attribut title est egal a synopsis
 	<link datalib:condition="attr.title == synopsis" datalib:name="synopsis" href="string" rel="string" title="string"></link>
 	-->
@@ -50,54 +52,212 @@
   </catalog_title>
 </catalog_titles>
 	</datalib:webservice>
+	
+	
+	<!-- PEOPLE -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:name="People"
+		datalib:url="http://api-public.netflix.com/catalog/people/{0}">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+<!-- 				<datalib:OPTION_DATABASE_CACHE_DISABLED /> -->
+			</datalib:options>
+			<datalib:parameters>
+ 				<person_id datalib:type="int" datalib:urlParameter="0" datalib:description="Person's ID"/>
+ 				<oauth_consumer_key datalib:type="string" datalib:description="The OAuth consumer key of the developer"/>
+ 				<oauth_nonce datalib:type="string" datalib:description="A random string"/>
+				<oauth_signature_method datalib:type="string" datalib:description="The OAuth signature method. Here we use HMAC-SHA1"/>
+				<oauth_timestamp datalib:type="int" datalib:description="The current timestamp"/>
+				<oauth_signature datalib:type="string" datalib:description="The request's signature computed thanks to the specific OAuth process"/>
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<h1 datalib:name="error">string</h1>
+<person>
+  <id>string</id>
+  <name>string</name>
+  <link datalib:name="PeopleLink" datalib:multiple="true" href="string" rel="string" title="string"></link>
+</person>
+	</datalib:webservice>
+	
+	
+	<!-- FILMOGRAPHY -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:name="Filmography"
+		datalib:url="http://api-public.netflix.com/catalog/people/{0}/filmography">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+<!-- 				<datalib:OPTION_DATABASE_CACHE_DISABLED /> -->
+			</datalib:options>
+			<datalib:parameters>
+ 				<person_id datalib:type="int" datalib:urlParameter="0" datalib:description="Person's ID"/>
+ 				<oauth_consumer_key datalib:type="string" datalib:description="The OAuth consumer key of the developer"/>
+ 				<oauth_nonce datalib:type="string" datalib:description="A random string"/>
+				<oauth_signature_method datalib:type="string" datalib:description="The OAuth signature method. Here we use HMAC-SHA1"/>
+				<oauth_timestamp datalib:type="int" datalib:description="The current timestamp"/>
+				<oauth_signature datalib:type="string" datalib:description="The request's signature computed thanks to the specific OAuth process"/>
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<h1 datalib:name="error">string</h1>
+<filmography>
+  <filmography_item datalib:multiple="true">
+    <id>string</id>
+    <title short="string" regular="string"></title>
+	<box_art small="string" medium="string" large="string"></box_art>
+	<link datalib:name="FilmographyLink" datalib:multiple="true" href="string" rel="string" title="string"></link>
+	<release_year>int</release_year>
+	<category datalib:name="FilmographyCategory" datalib:multiple="true" scheme="string" label="string" term="string"></category>
+	<runtime>int</runtime>
+	<average_rating>float</average_rating>
+  </filmography_item>
+</filmography>
+	</datalib:webservice>
+
+	
+	<!-- MOVIES -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:name="Movie"
+		datalib:url="http://api-public.netflix.com/catalog/titles/movies/{0}">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+<!-- 				<datalib:OPTION_DATABASE_CACHE_DISABLED /> -->
+			</datalib:options>
+			<datalib:parameters>
+ 				<movie_id datalib:type="int" datalib:urlParameter="0" datalib:description="Movie's ID"/>
+ 				<oauth_consumer_key datalib:type="string" datalib:description="The OAuth consumer key of the developer"/>
+ 				<oauth_nonce datalib:type="string" datalib:description="A random string"/>
+				<oauth_signature_method datalib:type="string" datalib:description="The OAuth signature method. Here we use HMAC-SHA1"/>
+				<oauth_timestamp datalib:type="int" datalib:description="The current timestamp"/>
+				<oauth_signature datalib:type="string" datalib:description="The request's signature computed thanks to the specific OAuth process"/>
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<h1 datalib:name="error">string</h1>
+<catalog_title>
+  <id>string</id>
+  <title short="string" regular="string" />
+  <box_art small="string" medium="string" large="string" />
+  <link datalib:name="MovieLink" datalib:multiple="true" href="string" rel="string" title="string"></link>
+  <release_year>int</release_year>
+  <category datalib:name="MovieCategory" datalib:multiple="true" scheme="string" label="string" term="string"></category>
+  <runtime>int</runtime>
+  <average_rating>float</average_rating>
+</catalog_title>
+	</datalib:webservice>
+	
+
+	<!-- SYNOPSIS -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:name="Synopsis"
+		datalib:url="http://api-public.netflix.com/catalog/titles/movies/{0}/synopsis">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+<!-- 				<datalib:OPTION_DATABASE_CACHE_DISABLED /> -->
+			</datalib:options>
+			<datalib:parameters>
+ 				<movie_id datalib:type="int" datalib:urlParameter="0" datalib:description="Movie's ID"/>
+ 				<oauth_consumer_key datalib:type="string" datalib:description="The OAuth consumer key of the developer"/>
+ 				<oauth_nonce datalib:type="string" datalib:description="A random string"/>
+				<oauth_signature_method datalib:type="string" datalib:description="The OAuth signature method. Here we use HMAC-SHA1"/>
+				<oauth_timestamp datalib:type="int" datalib:description="The current timestamp"/>
+				<oauth_signature datalib:type="string" datalib:description="The request's signature computed thanks to the specific OAuth process"/>
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<h1 datalib:name="error">string</h1>
+<synopsis>string</synopsis>
+	</datalib:webservice>
+	
+
+	<!-- CAST -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:name="Cast"
+		datalib:url="http://api-public.netflix.com/catalog/titles/movies/{0}/cast">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+<!-- 				<datalib:OPTION_DATABASE_CACHE_DISABLED /> -->
+			</datalib:options>
+			<datalib:parameters>
+ 				<movie_id datalib:type="int" datalib:urlParameter="0" datalib:description="Movie's ID"/>
+ 				<oauth_consumer_key datalib:type="string" datalib:description="The OAuth consumer key of the developer"/>
+ 				<oauth_nonce datalib:type="string" datalib:description="A random string"/>
+				<oauth_signature_method datalib:type="string" datalib:description="The OAuth signature method. Here we use HMAC-SHA1"/>
+				<oauth_timestamp datalib:type="int" datalib:description="The current timestamp"/>
+				<oauth_signature datalib:type="string" datalib:description="The request's signature computed thanks to the specific OAuth process"/>
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<h1 datalib:name="error">string</h1>
+<people>
+  <person datalib:name="CastPerson" datalib:multiple="true">
+    <id>string</id>
+    <name>string</name>
+    <bio>string</bio>
+    <link datalib:name="CastLink" datalib:multiple="true" href="string" rel="string" title="string"></link>
+  </person>
+</people>
+	</datalib:webservice>
+
+	<!-- DIRECTORS -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:name="Directors"
+		datalib:url="http://api-public.netflix.com/catalog/titles/movies/{0}/directors">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+<!-- 				<datalib:OPTION_DATABASE_CACHE_DISABLED /> -->
+			</datalib:options>
+			<datalib:parameters>
+ 				<movie_id datalib:type="int" datalib:urlParameter="0" datalib:description="Movie's ID"/>
+ 				<oauth_consumer_key datalib:type="string" datalib:description="The OAuth consumer key of the developer"/>
+ 				<oauth_nonce datalib:type="string" datalib:description="A random string"/>
+				<oauth_signature_method datalib:type="string" datalib:description="The OAuth signature method. Here we use HMAC-SHA1"/>
+				<oauth_timestamp datalib:type="int" datalib:description="The current timestamp"/>
+				<oauth_signature datalib:type="string" datalib:description="The request's signature computed thanks to the specific OAuth process"/>
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<h1 datalib:name="error">string</h1>
+<people>
+  <person datalib:name="Director"  datalib:multiple="true">
+    <id>string</id>
+    <name>string</name>
+    <bio>string</bio>
+    <link datalib:name="DirectorLink"  datalib:multiple="true" href="string" rel="string" title="string"></link>
+  </person>
+</people>
+	</datalib:webservice>
+		
+	
+	
 </datalib:project>
-
-<!-- 
-<catalog_titles>
-  <link href="http://api-public.netflix.com/catalog/titles/index" rel="http://schemas.netflix.com/catalog/titles/index" title="index"></link>
-  <link href="http://api-public.netflix.com/catalog/titles/autocomplete" rel="http://schemas.netflix.com/catalog/titles/autocomplete" title="autocomplete"></link>
-  <url_template>http://api-public.netflix.com/catalog/titles?{-join|&amp;|term|start_index|max_results}</url_template>
-  <number_of_results>1652</number_of_results>
-  <start_index>10</start_index>
-  <results_per_page>2</results_per_page>
-  <catalog_title>
-    <id>http://api-public.netflix.com/catalog/titles/movies/70025188</id>
-    <title short="Chris LeDoux: Video Hits" regular="Chris LeDoux: Video Hits"></title>
-	<box_art small="http://cdn-8.nflximg.com/us/boxshots/tiny/70025188.jpg" medium="http://cdn-8.nflximg.com/us/boxshots/small/70025188.jpg" large="http://cdn-8.nflximg.com/us/boxshots/large/70025188.jpg"></box_art>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70025188/synopsis" rel="http://schemas.netflix.com/catalog/titles/synopsis" title="synopsis"></link>
-	<release_year>1993</release_year>
-	<category scheme="http://api-public.netflix.com/categories/mpaa_ratings" label="NR" term="NR"></category>
-	<category scheme="http://api-public.netflix.com/categories/genres" label="Music &amp; Musicals" term="Music &amp; Musicals"></category>
-	<category scheme="http://api-public.netflix.com/categories/genres" label="Classic Country &amp; Western" term="Classic Country &amp; Western"></category>
-	<category scheme="http://api-public.netflix.com/categories/genres" label="Country &amp; Western/Folk" term="Country &amp; Western/Folk"></category>
-	<runtime>3360</runtime>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70025188/cast" rel="http://schemas.netflix.com/catalog/people.cast" title="cast"></link>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70025188/format_availability" rel="http://schemas.netflix.com/catalog/titles/format_availability" title="formats"></link>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70025188/screen_formats" rel="http://schemas.netflix.com/catalog/titles/screen_formats" title="screen formats"></link>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70025188/languages_and_audio" rel="http://schemas.netflix.com/catalog/titles/languages_and_audio" title="languages and audio"></link>
-	<average_rating>3.0</average_rating>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70025188/similars" rel="http://schemas.netflix.com/catalog/titles.similars" title="similars"></link>
-	<link href="http://www.netflix.com/Movie/Chris_LeDoux_Video_Hits/70025188" rel="alternate" title="web page"></link>
-  </catalog_title>
-
-  <catalog_title>
-    <id>http://api-public.netflix.com/catalog/titles/movies/70048982</id><title short="Best of Chris Isaak" regular="Best of Chris Isaak"></title>
-	<box_art small="http://cdn-2.nflximg.com/us/boxshots/tiny/70048982.jpg" medium="http://cdn-2.nflximg.com/us/boxshots/small/70048982.jpg" large="http://cdn-2.nflximg.com/us/boxshots/large/70048982.jpg"></box_art>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70048982/synopsis" rel="http://schemas.netflix.com/catalog/titles/synopsis" title="synopsis"></link>
-	<release_year>2006</release_year>
-	<category scheme="http://api-public.netflix.com/categories/mpaa_ratings" label="NR" term="NR"></category>
-	<category scheme="http://api-public.netflix.com/categories/genres" label="Music &amp; Musicals" term="Music &amp; Musicals"></category>
-	<category scheme="http://api-public.netflix.com/categories/genres" label="Rock &amp; Pop" term="Rock &amp; Pop"></category>
-	<category scheme="http://api-public.netflix.com/categories/genres" label="Singer-Songwriters" term="Singer-Songwriters"></category>
-	<runtime>3600</runtime>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70048982/cast" rel="http://schemas.netflix.com/catalog/people.cast" title="cast"></link>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70048982/format_availability" rel="http://schemas.netflix.com/catalog/titles/format_availability" title="formats"></link>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70048982/screen_formats" rel="http://schemas.netflix.com/catalog/titles/screen_formats" title="screen formats"></link>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70048982/languages_and_audio" rel="http://schemas.netflix.com/catalog/titles/languages_and_audio" title="languages and audio"></link>
-	<average_rating>3.3</average_rating>
-	<link href="http://api-public.netflix.com/catalog/titles/movies/70048982/similars" rel="http://schemas.netflix.com/catalog/titles.similars" title="similars"></link>
-	<link href="http://www.netflix.com/Movie/Best_of_Chris_Isaak/70048982" rel="alternate" title="web page"></link>
-  </catalog_title>
-  
-</catalog_titles>
- -->
