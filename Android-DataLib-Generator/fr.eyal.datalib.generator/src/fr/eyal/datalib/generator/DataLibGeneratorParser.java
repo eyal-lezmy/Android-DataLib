@@ -286,8 +286,10 @@ public class DataLibGeneratorParser extends DefaultHandler {
 					} else { //we are in a node that has to be include inside the parent's content fields
 
 						//if the previous content field is just a container (that means that it does not contain data, just nodes)
-						if(isFillingField)
+						if(isFillingField){
 							bo.getContentFields().remove(field); //we remove it from the current business object
+							field.getRelatedField().setRelatedField(null);
+						}
 						else
 							isFillingField = true;
 
