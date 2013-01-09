@@ -338,8 +338,8 @@ public class [_class/]Base extends BusinessObjectDAO {
 	protected int updateChildrenId(long['['/]] ids, int index, int parentIndex) {
 		[if (aBusinessObject.childs->size() > 0)]
 			[for (child : BusinessObject | aBusinessObject.childs)]
-        for (final [child.javaName.toUpperFirst()/] item : [child.javaName.toLowerFirst()/]) {
-            index = item.updateId(ids, index, parentIndex);
+        for (final [child.javaName.toUpperFirst()/] [child.javaName.toLowerFirst()/]Element : [child.javaName.toLowerFirst()/]) {
+            index = [child.javaName.toLowerFirst()/]Element.updateId(ids, index, parentIndex);
         }
 
 			[/for]
@@ -384,8 +384,8 @@ public class [_class/]Base extends BusinessObjectDAO {
         [if (aBusinessObject.childs->size() > 0)]
 			[for (child : BusinessObject | aBusinessObject.childs)]
         // we first remove all the childs of the childs of the object
-        for (final [child.javaName.toUpperFirst()/] item : [child.javaName.toLowerFirst()/]) {
-            item.deleteChildsFromDatabase(batch);
+        for (final [child.javaName.toUpperFirst()/] [child.javaName.toLowerFirst()/]Element : [child.javaName.toLowerFirst()/]) {
+            [child.javaName.toLowerFirst()/]Element.deleteChildsFromDatabase(batch);
         }
 			[/for]
 
@@ -412,8 +412,8 @@ public class [_class/]Base extends BusinessObjectDAO {
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
         [if (aBusinessObject.childs->size() > 0)]
 		[for (child : BusinessObject | aBusinessObject.childs)]
-		for (final [child.javaName.toUpperFirst()/] item : [child.javaName.toLowerFirst()/]) {
-            item.addIntoDatabase(batch, [child.javaName.toUpperFirst()/].CONTENT_URI, [child.javaName.toUpperFirst()/].FIELD__PARENT_ID, previousResult);
+		for (final [child.javaName.toUpperFirst()/] [child.javaName.toLowerFirst()/]Element : [child.javaName.toLowerFirst()/]) {
+            [child.javaName.toLowerFirst()/]Element.addIntoDatabase(batch, [child.javaName.toUpperFirst()/].CONTENT_URI, [child.javaName.toUpperFirst()/].FIELD__PARENT_ID, previousResult);
         }
 		[/for]
 		[else]
@@ -425,9 +425,9 @@ public class [_class/]Base extends BusinessObjectDAO {
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
         [if (aBusinessObject.childs->size() > 0)]
 			[for (child : BusinessObject | aBusinessObject.childs)]
-		for (final [child.javaName.toUpperFirst()/] item : [child.javaName.toLowerFirst()/]) {
-            item._parentId = _id;
-            item.addIntoDatabase(batch, [child.javaName.toUpperFirst()/].CONTENT_URI);
+		for (final [child.javaName.toUpperFirst()/] [child.javaName.toLowerFirst()/]Element : [child.javaName.toLowerFirst()/]) {
+            [child.javaName.toLowerFirst()/]Element._parentId = _id;
+            [child.javaName.toLowerFirst()/]Element.addIntoDatabase(batch, [child.javaName.toUpperFirst()/].CONTENT_URI);
         }
 			[/for]
 		[else]
