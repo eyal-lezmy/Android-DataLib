@@ -7,6 +7,70 @@
     datalib:databaseName="datalib_cache"
     datalib:databaseVersion="3">
     
+
+        <!-- NEW RELEASES -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:name="NewReleases"
+		datalib:url="http://dvd.netflix.com/NewReleasesRSS">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+			    <!-- No option -->
+			</datalib:options>
+			<datalib:parameters>
+			    <!-- No parameter -->
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<rss version="2.0">
+  <channel>
+    <title>string</title>
+    <ttl>int</ttl>
+    <link>string</link>
+    <description>string</description>
+    <language>string</language>
+    <item datalib:multiple="true">
+      <title>Dredd</title>
+      <link>http://dvd.netflix.com/Movie/Dredd/70242801</link>
+      <description>string</description>
+    </item>
+  </channel>
+</rss>
+	</datalib:webservice>
+    
+
+    <!-- AUTOCOMPLETE -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:name="Autocomplete"
+		datalib:url="http://api-public.netflix.com/catalog/titles/autocomplete">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+ 				<datalib:OPTION_DATABASE_CACHE_DISABLED />
+			</datalib:options>
+			<datalib:parameters>
+				<oauth_consumer_key datalib:type="string" datalib:description="The OAuth consumer key of the developer"/>
+				<term datalib:type="string" datalib:description="The term of the content you are looking for"/>
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<h1 datalib:name="error">string</h1>
+<autocomplete>
+  <autocomplete_item datalib:multiple="true">
+    <title short="string"></title>
+  </autocomplete_item>
+</autocomplete>
+	</datalib:webservice>
+	
+	
     <!-- SEARCH TITLES -->
 	<datalib:webservice
 		datalib:httpMethod="GET"
@@ -257,7 +321,5 @@
   </person>
 </people>
 	</datalib:webservice>
-		
-	
 	
 </datalib:project>
