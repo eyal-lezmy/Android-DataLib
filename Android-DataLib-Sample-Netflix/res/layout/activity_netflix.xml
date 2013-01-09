@@ -4,11 +4,60 @@
     android:layout_height="match_parent"
     tools:context=".NetflixActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/getPeople"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/searchTitle"
+        android:text="getPeople" />
+
+    <Button
+        android:id="@+id/getFilmography"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/getPeople"
+        android:text="getFilmography" />
+
+    <Button
+        android:id="@+id/getSynopsis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/getFilmography"
+        android:text="getSynopsis" />
+
+    <Button
+        android:id="@+id/getMovie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/getSynopsis"
+        android:text="getMovie" />
+
+    <Button
+        android:id="@+id/getDirectors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/getMovie"
+        android:text="getDirectors" />
+
+    <Button
+        android:id="@+id/getCast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/getDirectors"
+        android:text="getCast" />
+
+    <Button
+        android:id="@+id/searchTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Search title chris" />
 
 </RelativeLayout>
