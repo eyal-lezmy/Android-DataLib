@@ -50,7 +50,7 @@ public class NetflixProvider extends BusinessObjectProvider {
     static {
 
         DATABASE_NAME = "datalib_cache";
-        DATABASE_VERSION = 3;
+        DATABASE_VERSION = 4;
 
         //Tables' names list
         String[] LOCAL_DATABASE_TABLES_NAMES = {

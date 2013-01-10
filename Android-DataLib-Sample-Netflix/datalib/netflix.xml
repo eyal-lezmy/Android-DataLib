@@ -5,7 +5,7 @@
     datalib:package="fr.eyal.datalib.sample.netflix.data" 
     datalib:authority="fr.eyal.datalib.sample.netflix.datacache.provider"
     datalib:databaseName="datalib_cache"
-    datalib:databaseVersion="3">
+    datalib:databaseVersion="4">
     
 
         <!-- NEW RELEASES -->
