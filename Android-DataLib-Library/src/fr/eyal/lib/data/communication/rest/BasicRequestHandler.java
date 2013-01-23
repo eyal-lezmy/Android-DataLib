@@ -36,78 +36,90 @@ import java.net.URL;
  */
 public abstract class BasicRequestHandler implements RequestHandler {
 
-    private final RequestLogger logger;
+	private final RequestLogger logger;
 
-    /**
-     * Constructs a handler with default logger.
-     */
-    public BasicRequestHandler() {
-        this(new ConsoleRequestLogger());
-    }
+	/**
+	 * Constructs a handler with default logger.
+	 */
+	public BasicRequestHandler() {
+		this(new ConsoleRequestLogger());
+	}
 
-    /**
-     * Constructs a handler with supplied logger.
-     * 
-     * @param logger
-     */
-    public BasicRequestHandler(final RequestLogger logger) {
-        this.logger = logger;
-    }
+	/**
+	 * Constructs a handler with supplied logger.
+	 * 
+	 * @param logger
+	 */
+	public BasicRequestHandler(final RequestLogger logger) {
+		this.logger = logger;
+	}
 
-    @Override
-    public HttpURLConnection openConnection(final String urlString) throws IOException {
-        URL url = new URL(urlString);
-        HttpURLConnection uc = (HttpURLConnection) url.openConnection();
-        return uc;
-    }
+	@Override
+	public HttpURLConnection openConnection(final String urlString) throws IOException {
+		URL url = new URL(urlString);
+		HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+		return uc;
+	}
 
-    @Override
-    public void prepareConnection(final HttpURLConnection urlConnection, final HttpRESTMethod httpMethod, final String contentType) throws IOException {
-        // Configure connection for request method
-        urlConnection.setRequestMethod(httpMethod.getMethodName());
-        urlConnection.setDoOutput(httpMethod.getDoOutput());
-        urlConnection.setDoInput(httpMethod.getDoInput());
-        if (contentType != null) {
-            urlConnection.setRequestProperty("Content-Type", contentType);
-        }
-        // Set additional properties
-        urlConnection.setRequestProperty("Accept-Charset", UTF8);
-    }
+	@Override
+	public void prepareConnection(final HttpURLConnection urlConnection, final HttpRESTMethod httpMethod, final String contentType) throws IOException {
+		// Configure connection for request method
+		urlConnection.setRequestMethod(httpMethod.getMethodName());
+		urlConnection.setDoOutput(httpMethod.getDoOutput());
+		urlConnection.setDoInput(httpMethod.getDoInput());
+		if (contentType != null) {
+			urlConnection.setRequestProperty("Content-Type", contentType);
+		}
+		// Set additional properties
+		urlConnection.setRequestProperty("Accept-Charset", UTF8);
+	}
 
-    @Override
-    public void writeStream(final OutputStream out, final byte[] content) throws IOException {
-        out.write(content);
-    }
+	@Override
+	public OutputStream openOutput(HttpURLConnection urlConnection)
+			throws IOException {
+		return urlConnection.getOutputStream();
+	}
 
-    @Override
-    public byte[] readStream(final InputStream in) throws IOException {
-        int nRead;
-        byte[] data = new byte[16384];
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	@Override
+	public void writeStream(final OutputStream out, final byte[] content) throws IOException {
+		out.write(content);
+	}
 
-        while ((nRead = in.read(data)) != -1) {
-            buffer.write(data, 0, nRead);
-        }
-        buffer.flush();
-        return buffer.toByteArray();
-    }
+	@Override
+	public InputStream openInput(HttpURLConnection urlConnection)
+			throws IOException {
+		return urlConnection.getInputStream();
+	}
 
-    @Override
-    public boolean onError(final HttpRequestException e) {
-        HttpResponse res = e.getHttpResponse();
-        if (logger.isLoggingEnabled()) {
-            logger.log("BasicRequestHandler.onError got");
-            e.printStackTrace();
-        }
-        if (res != null) {
-            int status = res.getStatus();
-            if (status > 0) {
-                // Perhaps a 404, 501, or something that will be fixed later
-                return true;
-            }
-        }
-        // Connection refused, host unreachable, etc.
-        return false;
-    }
+	@Override
+	public byte[] readStream(final InputStream in) throws IOException {
+		int nRead;
+		byte[] data = new byte[16384];
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+		while ((nRead = in.read(data)) != -1) {
+			buffer.write(data, 0, nRead);
+		}
+		buffer.flush();
+		return buffer.toByteArray();
+	}
+
+	@Override
+	public boolean onError(final HttpRequestException e) {
+		HttpResponse res = e.getHttpResponse();
+		if (logger.isLoggingEnabled()) {
+			logger.log("BasicRequestHandler.onError got");
+			e.printStackTrace();
+		}
+		if (res != null) {
+			int status = res.getStatus();
+			if (status > 0) {
+				// Perhaps a 404, 501, or something that will be fixed later
+				return true;
+			}
+		}
+		// Connection refused, host unreachable, etc.
+		return false;
+	}
 
 }

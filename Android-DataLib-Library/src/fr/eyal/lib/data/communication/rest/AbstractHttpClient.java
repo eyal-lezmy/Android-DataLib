@@ -312,7 +312,7 @@ public abstract class AbstractHttpClient {
     protected int writeOutputStream(final HttpURLConnection urlConnection, final byte[] content) throws Exception {
         OutputStream out = null;
         try {
-            out = urlConnection.getOutputStream();
+            out = requestHandler.openOutput(urlConnection);
             if (out != null) {
                 requestHandler.writeStream(out, content);
             }
@@ -340,7 +340,7 @@ public abstract class AbstractHttpClient {
         InputStream in = null;
         byte[] responseBody = null;
         try {
-            in = urlConnection.getInputStream();
+            in = requestHandler.openInput(urlConnection);
             if (in != null) {
                 responseBody = requestHandler.readStream(in);
             }
