@@ -29,9 +29,6 @@ import android.os.Environment;
  */
 public class StringTools {
 
-    public static String[] sMonth = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" };
-    public static String[] sMonthShort = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" };
-
     /**
      * Get the IP address to string, from the integer form of it
      * 
@@ -93,14 +90,6 @@ public class StringTools {
         } else {
             throw new IllegalAccessException();
         }
-    }
-
-    public static String getMonthFr(final int month) {
-        return sMonth[month];
-    }
-
-    public static String getMonthFrShortened(final int month) {
-        return sMonthShort[month];
     }
 
 }
