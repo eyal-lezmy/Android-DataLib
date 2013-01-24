@@ -1,0 +1,72 @@
+[comment encoding = UTF-8 /]
+[module ResponseBusinessObjectImageBase('http://www.eyal.fr/android/datalib')/]
+[import fr::eyal::datalib::generator::acceleo::common::BusinessObjectTool /]
+[import fr::eyal::datalib::generator::acceleo::common::Tools /]
+
+[template public responseBusinessObjectImageBase(aBusinessObject : ResponseBusinessObject){
+_package:String = aBusinessObject._package+'.model.'+getPackage(aBusinessObject);
+_directory:String = getDirectoryFromPackage(_package);
+_class:String = aBusinessObject.javaName.toUpperFirst();
+}]
+[file (_directory + _class + 'Base.java', false, 'UTF-8')]
+package [_package/];
+
+[comment TODO add the ArrayList import /]
+import java.util.ArrayList;
+import android.content.OperationApplicationException;
+import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.RemoteException;
+import fr.eyal.lib.data.model.ResponseBusinessObject;
+import fr.eyal.lib.data.service.model.DataLibRequest;
+
+public class [_class/]Base implements ResponseBusinessObject {
+
+    private static final String TAG = [_class/]Base.class.getSimpleName();
+
+	public Bitmap image;
+	
+    public [_class/]Base() {
+        super();
+    }
+
+    /**
+     * PARCELABLE MANAGMENT
+     */
+
+	public static final Parcelable.Creator<[_class/]Base> CREATOR = new Parcelable.Creator<[_class/]Base>() {
+	    @Override
+	    public [_class/]Base createFromParcel(final Parcel in) {
+	        return new [_class/]Base(in);
+	    }
+	
+	    @Override
+	    public [_class/]Base['['/]] newArray(final int size) {
+	        return new [_class/]Base['['/]size];
+	    }
+	};
+	
+	@Override
+	public int describeContents() {
+	    return 0;
+	}
+
+	@Override
+	public void writeToParcel(final Parcel dest, final int flags) {
+		dest.writeParcelable(image, flags);
+	}
+
+	public [_class/]Base(final Parcel in) {
+		image = in.readParcelable(Bitmap.class.getClassLoader());
+	}    
+
+    @Override
+    public void save(final DataLibRequest request) throws RemoteException, OperationApplicationException {
+        // Nothing to do
+    }
+
+}
+
+	[/file]
+[/template]

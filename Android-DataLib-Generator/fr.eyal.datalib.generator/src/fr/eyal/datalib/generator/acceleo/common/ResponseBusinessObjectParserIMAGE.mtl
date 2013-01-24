@@ -1,0 +1,58 @@
+[comment encoding = UTF-8 /]
+[module ResponseBusinessObjectParserIMAGE('http://www.eyal.fr/android/datalib')]
+[import fr::eyal::datalib::generator::acceleo::common::Tools /]
+[import fr::eyal::datalib::generator::acceleo::common::BusinessObjectTool /]
+
+
+[template public businessObjectParserIMAGE(aBusinessObject : ResponseBusinessObject){
+_package:String = aBusinessObject._package+'.parser';
+_directory:String = getDirectoryFromPackage(_package);
+}]
+
+[file (_directory + aBusinessObject.javaName.toUpperFirst() + 'Parser.java', false, 'UTF-8')]
+package [_package/];
+
+import android.graphics.BitmapFactory;
+import fr.eyal.lib.data.model.ResponseBusinessObject;
+import fr.eyal.lib.data.parser.GenericHandler;
+import [aBusinessObject._package+'.model.'+getPackage(aBusinessObject)+'.*'/];
+// [protected (aBusinessObject.name.toUpperFirst()+'Parser imports')]
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
+// [/protected]
+
+
+
+public class [aBusinessObject.javaName.toUpperFirst()/]Parser implements GenericHandler {
+
+    private static final String TAG = [aBusinessObject.javaName.toUpperFirst()/]Parser.class.getSimpleName();
+
+	[aBusinessObject.javaName.toUpperFirst()/] [aBusinessObject.javaName.toLowerFirst()/];
+	
+	public [aBusinessObject.javaName.toUpperFirst()/]Parser(){
+		[aBusinessObject.javaName.toLowerFirst()/] = new [aBusinessObject.javaName.toUpperFirst()/]();
+	}
+	
+	@Override
+	public ResponseBusinessObject getParsedData() {
+		return [aBusinessObject.javaName.toLowerFirst()/];
+	}
+
+	@Override
+	public void parse(Object content) {
+		
+		byte['['/]] data = (byte['['/]]) content;
+		[aBusinessObject.javaName.toLowerFirst()/].image = BitmapFactory.decodeByteArray(data, 0, data.length);
+	}
+	
+
+// [protected (aBusinessObject.name.toUpperFirst()+'Parser')]
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
+// [/protected]
+
+}
+
+
+[/file]
+[/template]

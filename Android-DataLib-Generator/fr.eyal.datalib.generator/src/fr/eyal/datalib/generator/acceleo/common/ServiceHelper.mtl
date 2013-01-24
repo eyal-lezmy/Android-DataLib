@@ -1,6 +1,7 @@
 [comment encoding = UTF-8 /]
 [module ServiceHelper('http://www.eyal.fr/android/datalib')]
 [import fr::eyal::datalib::generator::acceleo::common::Tools /]
+[import fr::eyal::datalib::generator::acceleo::common::HelperTool /]
 
 [template public serviceHelper(aProject : DataLibProject){
 _package:String = aProject._package+'.service';
@@ -11,6 +12,7 @@ _directory:String = getDirectoryFromPackage(_package);
 package [_package/];
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 
 import android.content.Context;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
@@ -77,19 +79,10 @@ public class [aProject.name.toUpperFirst()/]ServiceHelper extends ServiceHelper 
      * @throws UnsupportedEncodingException
      */
 	[displayLaunchMethod(webService)/]
-
-		//we prepare the parameters
-        final ParameterMap params = new ParameterMap();
-		[for (parameter : Parameter | webService.parameters)]
-		[if (parameter.type = ParameterType::String)]
-        if ([parameter.name.toLowerFirst()/] != null)
-        	params.put("[parameter.name/]", [parameter.name.toLowerFirst()/]);
-		[else]
-		params.put("[parameter.name/]", String.valueOf([parameter.name.toLowerFirst()/]));
-		[/if]
-		[/for]
+		
+		[declareUrlAndParameters(webService, aProject)/]
         
-        return launchRequest(options, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.contentResponse.name.toUpper()/], params, [aProject.name.toUpperFirst()/]Service.class, URL_[webService.contentResponse.name.toUpper()/]);
+        return launchRequest(options, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.contentResponse.name.toUpper()/], params, [aProject.name.toUpperFirst()/]Service.class, __url);
     }
     
 [/for]

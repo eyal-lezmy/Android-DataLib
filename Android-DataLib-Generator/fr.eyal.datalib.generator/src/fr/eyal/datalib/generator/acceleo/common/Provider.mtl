@@ -93,7 +93,7 @@ public class [aProject.name.toUpperFirst()/]Provider extends BusinessObjectProvi
 
 [template public getTypeCases (aProject : DataLibProject) post (trim()) ]
 [for (webService : WebService | aProject.webservices)]
-[if (webService.cached)]
+[if (webService.cached and webService.parseType <> ParseType::IMAGE)]
 case CODE_[webService.contentResponse.name.toUpper()/]:
     return [webService.contentResponse.name.toUpperFirst()/].CONTENT_URL;
 	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
@@ -114,7 +114,7 @@ case CODE[getCompleteNameToUpper(aBusinessObject, '_')/]:
 
 [template public getTableNamesCases (aProject : DataLibProject) post (trim()) ]
 [for (webService : WebService | aProject.webservices)]
-[if (webService.cached)]
+[if (webService.cached and webService.parseType <> ParseType::IMAGE)]
 case CODE_[webService.contentResponse.javaName.toUpper()/]:
     return [webService.contentResponse.javaName.toUpperFirst()/].DATABASE_TABLE_NAME;
 	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
@@ -135,7 +135,7 @@ case CODE[getCompleteNameToUpper(aBusinessObject, '_')/]:
 
 [template public matchURIs (aProject : DataLibProject) post (trim())]
 [for (webService : WebService | aProject.webservices) ]
-[if (webService.cached)]
+[if (webService.cached and webService.parseType <> ParseType::IMAGE)]
 matcher.addURI(AUTHORITY, [webService.contentResponse.name.toUpperFirst()/].CONTENT_PATH, CODE_[webService.contentResponse.name.toUpper()/]);
 	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [matchURIs (businessObject) /]
@@ -153,7 +153,7 @@ matcher.addURI(AUTHORITY, [aBusinessObject.javaName.toUpperFirst()/].CONTENT_PAT
 
 [template public listCreateTables (aProject : DataLibProject) post (trim())]
 [for (webService : WebService | aProject.webservices)]
-[if (webService.cached)]
+[if (webService.cached and webService.parseType <> ParseType::IMAGE)]
 [webService.contentResponse.name.toUpperFirst()/].CREATE_TABLE,
 	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [listCreateTables (businessObject) /]
@@ -171,7 +171,7 @@ matcher.addURI(AUTHORITY, [aBusinessObject.javaName.toUpperFirst()/].CONTENT_PAT
 
 [template public listFieldsTables (aProject : DataLibProject) post (trim()) ]
 [for (webService : WebService | aProject.webservices)]
-[if (webService.cached)]
+[if (webService.cached and webService.parseType <> ParseType::IMAGE)]
 [webService.contentResponse.name.toUpperFirst()/].DATABASE_TABLE_FIELDS_NAMES,
 	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [listFieldsTables (businessObject) /]
@@ -189,7 +189,7 @@ matcher.addURI(AUTHORITY, [aBusinessObject.javaName.toUpperFirst()/].CONTENT_PAT
 
 [template public listTables (aProject : DataLibProject) post (trim())]
 [for (webService : WebService | aProject.webservices) ]
-[if (webService.cached)]
+[if (webService.cached and webService.parseType <> ParseType::IMAGE)]
 [webService.contentResponse.name.toUpperFirst()/].DATABASE_TABLE_NAME,
 [comment][trace (webService.contentResponse.toString())][/comment]
 	[for (businessObject : BusinessObject | webService.contentResponse.childs)]
@@ -209,7 +209,7 @@ matcher.addURI(AUTHORITY, [aBusinessObject.javaName.toUpperFirst()/].CONTENT_PAT
 
 [template public declareCodes (aProject : DataLibProject) post (trim())]
 [for (webService : WebService | aProject.webservices) ]
-[if (webService.cached)]public static final int CODE_[webService.contentResponse.javaName.toUpper()/] = [webService.contentResponse.parseId/];
+[if (webService.cached and webService.parseType <> ParseType::IMAGE)]public static final int CODE_[webService.contentResponse.javaName.toUpper()/] = [webService.contentResponse.parseId/];
 [for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [declareCodes (businessObject, webService.contentResponse.javaName.toUpper()+'_') /]
 [/for]
@@ -226,7 +226,7 @@ public static final int CODE_[prefix/][aBusinessObject.javaName.toUpper()/] = [a
 
 [template public addImports (aProject : DataLibProject) ]
 [for (webService : WebService | aProject.webservices) ]
-[if (webService.cached)]
+[if (webService.cached and webService.parseType <> ParseType::IMAGE)]
 import [webService.contentResponse._package/].model.[webService.contentResponse.name.toLower()/].*;
 	[comment][for (businessObject : BusinessObject | webService.contentResponse.childs)]
 [addImports (businessObject) /]
