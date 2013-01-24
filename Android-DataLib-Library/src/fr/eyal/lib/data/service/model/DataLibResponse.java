@@ -27,8 +27,16 @@ import org.apache.http.cookie.CookieSpecRegistry;
  */
 public class DataLibResponse extends BusinessResponse {
 
-    public Map<String, List<String>> headers; //Headers returned by the server
-    public DataLibRequest request; //Request sent by the Service to the processor
+    /**
+     * Headers returned by the server
+     */
+    public Map<String, List<String>> headers;
+    
+    /**
+     * Request sent by the Service to the processor
+     */
+    public DataLibRequest request;
+    
     public CookieStore cookies; //Headers returned by the server
     public CookieSpecRegistry cookiesSpec; //Headers returned by the server
 

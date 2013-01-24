@@ -32,9 +32,16 @@ import fr.eyal.lib.data.service.model.DataLibRequest;
 
 public abstract class ResponseBusinessObjectDAO extends BusinessObjectDAO implements ResponseBusinessObject {
 
-    //header
-    public String _url; // url field of the BusinessObject in the database. This field is used to store a representation of a unique request to be able to choose if the data have to be added or overridden 
-    public long _ttl; // ttl (time to live) value of the BusinessObject in the database
+    /**
+     * url field of the BusinessObject in the database. 
+     * This field is used to store a representation of a unique request to be able to choose if the data have 
+     * to be added or overridden
+     */
+    public String _url; 
+    /**
+     * ttl (time to live) value of the BusinessObject in the database (no logic associated with it for now)
+     */
+    public long _ttl;
 
     /**
      * Public constructor to automatically fill the object with the content from the database. By default, this method reach the last modified object if several

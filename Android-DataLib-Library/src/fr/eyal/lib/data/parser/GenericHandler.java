@@ -32,5 +32,10 @@ public interface GenericHandler {
      * */
     public abstract ResponseBusinessObject getParsedData();
 
+    /**
+     * Parse the data
+     * 
+     * @param content returns the parsing's result
+     */
     public abstract void parse(Object content);
 }

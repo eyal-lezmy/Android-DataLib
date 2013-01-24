@@ -41,16 +41,41 @@ public class ServiceHelper {
     private static final int MAX_RANDOM_REQUEST_ID = Integer.MAX_VALUE;
     private int REQUEST_ID_CPT = 0;
 
-    // Singleton management
-    protected static ServiceHelper sInstance; //Singleton of the ServiceHelper
+    /**
+     * Singleton of the ServiceHelper
+     */
+    protected static ServiceHelper sInstance;
 
-    protected SparseArray<Intent> mRequestSparseArray; //List of requests currently computing
-    protected Context mContext; //Context of execution
-    protected SparseArray<ArrayList<OnRequestFinishedListener>> mListenersSparseArray; //Sparse List of RequestFinishedListener. Each request can be connected to one or several listeners
-    protected ArrayList<OnRequestFinishedRelayer> mRelayersArray; //List or relayers. Every relayers wil receive each Bundle comming from the Service
+    /**
+     * List of requests currently computing
+     */
+    protected SparseArray<Intent> mRequestSparseArray;
+    
+    /**
+     * Context of execution
+     */
+    protected Context mContext;
+    
+    /**
+     * Sparse List of RequestFinishedListener. Each request can be connected to one or several listeners
+     */
+    protected SparseArray<ArrayList<OnRequestFinishedListener>> mListenersSparseArray;
+    
+    /**
+     * List or relayers. Every relayers wil receive each Bundle comming from the Service
+     */
+    protected ArrayList<OnRequestFinishedRelayer> mRelayersArray;
 
-    protected Handler mHandler = new Handler(); //Handler used by the EvalReceiver
-    protected EvalReceiver mEvalReceiver = new EvalReceiver(mHandler); //Receiver that receive the result from the DataLibService
+    
+    /**
+     * Handler used by the EvalReceiver
+     */
+    protected Handler mHandler = new Handler();
+    
+    /**
+     * Receiver that receives the result from the DataLibService
+     */
+    protected EvalReceiver mEvalReceiver = new EvalReceiver(mHandler);
 
     //List of bundled information that can be received from the Service
     protected static final String RECEIVER_EXTRA_REQUEST_ID = "requestId";
@@ -62,8 +87,6 @@ public class ServiceHelper {
     protected static final String RECEIVER_EXTRA_RESULT_MESSAGE = "Message";
     protected static final String RECEIVER_EXTRA_WEBSERVICE_TYPE = "webserviceType";
 
-    //List of webservices' URLs
-    //	public static final String URL_PREVISION_METEO = "http://api.meteorologic.net/forecarss";
 
     /**
      * Get the instance of the {@link ServiceHelper}

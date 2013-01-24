@@ -48,9 +48,15 @@ public abstract class BusinessObjectDAO implements Parcelable {
 
     protected ContentResolver mResolver;
 
-    //header
-    public long _id; // id of the BusinessObject in the database
-    public Calendar _updatedAt; // updated_at field of the BusinessObject in the database
+    /**
+     * id of the BusinessObject in the database
+     */
+    public long _id;
+    
+    /**
+     * updated_at field of the BusinessObject in the database
+     */
+    public Calendar _updatedAt;
 
     /**
      * Public constructor to automatically fill the object with the content from the database. By default, this method reach the last modified object if several

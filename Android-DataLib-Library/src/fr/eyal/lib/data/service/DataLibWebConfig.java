@@ -23,8 +23,19 @@ import fr.eyal.lib.data.service.model.DataLibRequest;
  */
 public class DataLibWebConfig {
 
+    /**
+     * HTTP Type of the request (REST GET, PUT, POST, ...)
+     */
     private int httpType = DataLibRequest.HTTP_REST_GET;
+    
+    /**
+     * Request's options (cache management, cookies, ...)
+     */
     private int requestOptions = DataLibRequest.OPTION_SEND_WITH_PARCELABLE_ENABLED;
+    
+    /**
+     * Format type expected by the webservice (XML, JSON, IMAGE, ...)
+     */
     private int parseType = DataLibRequest.PARSE_TYPE_SAX_XML;
 
     protected static DataLibWebConfig sInstance; //Singleton of the WebConfig

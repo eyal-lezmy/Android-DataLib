@@ -39,24 +39,41 @@ import fr.eyal.lib.util.Out;
  */
 public abstract class BusinessObjectProvider extends ContentProvider {
 
+	private static final String TAG = BusinessObjectProvider.class.getSimpleName();
+
     public static String DATABASE_NAME = null;
     public static int DATABASE_VERSION = -1;
 
-    //Tables' names list
+    /**
+     * Tables' names list
+     */
     public static String[] DATABASE_TABLES_NAMES = null;
 
-    //Tables' fields' names list
+    /**
+     * Tables' fields' names list
+     */
     public static String[][] DATABASE_TABLES_FIELDS_NAMES = null;
 
-    //Tables' fields' names list
+    /**
+     * Tables' fields' names list
+     */
     public static String[] CREATE_TABLES = null;
 
-    private static final String TAG = "BusinessObjectProvider";
 
-    private static Context sContext; //Context of execution
-    private static DatabaseHelper sDbHelper; //SQLite Open Helper
+    /**
+     * Context of execution
+     */
+    private static Context sContext;
+    
+    /**
+     * SQLite Open Helper
+     */
+    private static DatabaseHelper sDbHelper;
 
-    protected static UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH); //Uri matcher
+    /**
+     * Uri matcher
+     */
+    protected static UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     public static final String PROVIDER_PREFIX = "content://";
 
@@ -64,45 +81,12 @@ public abstract class BusinessObjectProvider extends ContentProvider {
      * Codes returned by the URIMatcher corresponding to the URI analyzed
      */
 
-    //	/**
-    //	 * Code corresponding to the {@link PrevisionMeteo} content.
-    //	 */
-    //	public static final int CODE_PREVISION_METEO 		= 0x0000;
-    //	private static final int CODE_PREVISION_METEO_ID 	= 0x0001;
-    //	private static final int CODE_PREVISION_METEO_URL 	= 0x0010;
-
-    //	/**
-    //	 * Code corresponding to the {@link MeteoWeather} content.
-    //	 */
-    //	public static final int CODE_METEO_WEATHER 			= 0x1000;
-    //	private static final int CODE_METEO_WEATHER_ID 		= 0x1001;
-
-    //	static {
-    //		// Email URI matching table
-    //		UriMatcher matcher = sUriMatcher;
-    //
-    //		// All PrevisionMeteo
-    //		matcher.addURI(AUTHORITY, PrevisionMeteo.CONTENT_PATH, CODE_PREVISION_METEO);
-    //		// A specific PrevisionMeteo reached by id
-    //		matcher.addURI(AUTHORITY, PrevisionMeteo.CONTENT_PATH + "/id/#", CODE_PREVISION_METEO_ID);
-    //		// A specific PrevisionMeteo reached by url
-    //		matcher.addURI(AUTHORITY, PrevisionMeteo.CONTENT_PATH + "/url/*", CODE_PREVISION_METEO_URL);
-    //
-    //		// All PrevisionMeteoMeteoWeather
-    //		matcher.addURI(AUTHORITY, MeteoWeather.CONTENT_PATH, CODE_METEO_WEATHER);
-    //		// A specific PrevisionMeteoMeteoWeather reached by id
-    //		matcher.addURI(AUTHORITY, MeteoWeather.CONTENT_PATH + "/id/#", CODE_METEO_WEATHER_ID);
-    //	}
 
     @Override
     public boolean onCreate() {
         Out.d(TAG, "On Create BusinessObjectProvider");
 
         initialize(getContext());
-        //        //we store the context
-        //        sContext = getContext();
-        //        //we create the DatabaseHelper
-        //        sDbHelper = new DatabaseHelper(sContext);
         return true;
     }
 
@@ -240,7 +224,7 @@ public abstract class BusinessObjectProvider extends ContentProvider {
 
     /**
      * Get the table name corresponding to the matched URI
-     * This used to implement a switch/case algoritm like this :
+     * This used to implement a switch/case algorithm like this :
      * 
      * <code>
      * switch (match) {

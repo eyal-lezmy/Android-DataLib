@@ -44,14 +44,30 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
 
     private static final String LOG_TAG = DataManager.class.getSimpleName();
 
-    protected static DataManager sInstance; // singleton of the class
+    /**
+     * singleton of the class
+     */
+    protected static DataManager sInstance;
 
-    protected ServiceHelper mServiceHelper; // ServiceHelper to contact the DataLib
+    /**
+     * ServiceHelper to contact the DataLib
+     */
+    protected ServiceHelper mServiceHelper;
 
-    protected SparseArray<ArrayList<OnDataListener>> mListenersSparseArray; //List of listeners who will receive the responses from the DataLib
-    protected SparseArray<Bundle> mDataLibResponsesSparseArray; //List of responses stored into the DataManager
+    /**
+     * List of listeners who will receive the responses from the DataLib
+     */
+    protected SparseArray<ArrayList<OnDataListener>> mListenersSparseArray;
+    
+    /**
+     * List of responses stored into the DataManager
+     */
+    protected SparseArray<Bundle> mDataLibResponsesSparseArray;
 
-    protected ConnectivityManager mConnectivityManager; //Connectivity Manager to access to the network configuration
+    /**
+     * Connectivity Manager to access to the network configuration
+     */
+    protected ConnectivityManager mConnectivityManager;
 
     protected ContentResolver mContentResolver;
 
@@ -85,19 +101,6 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
     //Response returned by the "retrieve" functions
     public static final int DATACACHE_REQUEST = -1; //The request is a DataCache request
     public static final int BAD_REQUEST = -2; //An error exists in the function's parameters
-
-    /**
-     * Get the instance of the {@link DataManager}
-     * 
-     * @param context The context of execution. Any Context can be put here, the application context will be automatically used for the {@link DataManager}
-     * @return Returns the singleton
-     */
-    //	public static DataManager getInstance(Context context) {
-    //		if (sInstance == null) {
-    //			sInstance = new DataManager(context.getApplicationContext());
-    //		}
-    //		return sInstance;
-    //	}
 
     protected DataManager(final Context context) {
         //		mServiceHelper = ServiceHelper.getInstance(context);
@@ -142,7 +145,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
     public synchronized void addOnDataListener(final int requestId, final OnDataListener listener) {
 
         if (listener == null) {
-            Out.i(LOG_TAG, requestId + " Ajout du listener impossible : " + listener);
+            Out.i(LOG_TAG, requestId + " adding listener impossible: " + listener);
             return;
         }
         ArrayList<OnDataListener> listeners = mListenersSparseArray.get(requestId);
@@ -153,9 +156,9 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
 
         if (!listeners.contains(listener)) {
             listeners.add(listener);
-            Out.i(LOG_TAG, requestId + " Ajout du listener " + listener);
+            Out.i(LOG_TAG, requestId + " adding listener " + listener);
         } else {
-            Out.i(LOG_TAG, requestId + " Contient deja " + listener);
+            Out.i(LOG_TAG, requestId + " already contains " + listener);
         }
     }
 
@@ -173,9 +176,9 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
 
         if (listeners != null) {
             listeners.remove(listener);
-            Out.i(LOG_TAG, requestId + " Suppression du listener " + listener);
+            Out.i(LOG_TAG, requestId + " listener removed" + listener);
         } else {
-            Out.i(LOG_TAG, requestId + " Pas de liste de listeners");
+            Out.i(LOG_TAG, requestId + " no listener");
         }
     }
 

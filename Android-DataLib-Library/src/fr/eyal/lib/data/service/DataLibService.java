@@ -46,24 +46,59 @@ public abstract class DataLibService extends MultiThreadService implements Proce
     //different Service's possible actions
     public static final int COOKIES_FLUSH = 999999999;
 
+    
     //different information recieved by the Service
-    public static final String INTENT_EXTRA_PROCESSOR_TYPE = "processorType"; //web service type
-    public static final String INTENT_EXTRA_USER_AGENT = "userAgent"; //useragent to send
-    public static final String INTENT_EXTRA_URL = "url"; //web service url
-    public static final String INTENT_EXTRA_PARAMS = "params"; //parameters to send
-    public static final String INTENT_EXTRA_PATH = "path"; //web service path
-    public static final String INTENT_EXTRA_DATA = "data"; //web service data 
-    public static final String INTENT_EXTRA_CONTENT_TYPE = "contentType"; //web service data 
-    public static final String INTENT_EXTRA_REQUEST_OPTION = "optionRequest"; //options to add to the request
-    public static final String INTENT_EXTRA_PARSE_TYPE = "parseType"; //parsing type of the response
+    /**
+     * Intext extra content : Webservice type
+     */
+    public static final String INTENT_EXTRA_PROCESSOR_TYPE = "processorType";
+    /**
+     * Intext extra content : Useragent to send
+     */
+    public static final String INTENT_EXTRA_USER_AGENT = "userAgent";
+    /**
+     * Intext extra content : Webservice URL
+     */
+    public static final String INTENT_EXTRA_URL = "url";
+    /**
+     * Intext extra content : parameters to send
+     */
+    public static final String INTENT_EXTRA_PARAMS = "params";
+    /**
+     * Intext extra content : Webservice path
+     */
+    public static final String INTENT_EXTRA_PATH = "path";
+    /**
+     * Intext extra content : web service data
+     */
+    public static final String INTENT_EXTRA_DATA = "data"; 
+    /**
+     * Intext extra content : content type
+     */
+    public static final String INTENT_EXTRA_CONTENT_TYPE = "contentType"; 
+    /**
+     * Intext extra content : options to add to the request
+     */
+    public static final String INTENT_EXTRA_REQUEST_OPTION = "optionRequest";
+    /**
+     * Intext extra content : parsing type of the response
+     */
+    public static final String INTENT_EXTRA_PARSE_TYPE = "parseType";
 
-    protected static final String COOKIE_HEADER_TITLE = "Set-Cookie"; //title of the cookies' header
+    /**
+     * title of the cookies' header
+     */
+    protected static final String COOKIE_HEADER_TITLE = "Set-Cookie";
+
 
     protected ArrayList<Header> mHeaders; //Headers to send at every client request with NetworkConnection
     public static CookieStore mCookies = null; //Headers to send at every client request with NetworkConnection
     public static CookieSpecRegistry mCookiesSpec = null; //Headers returned by the server
 
-    protected ConnectivityManager mConnectivityManager; //Connectivity Manager to access to the network configuration
+    /**
+     * Connectivity Manager to access to the network configuration
+     */
+    protected ConnectivityManager mConnectivityManager;
 
     public DataLibService() {
         super(MAX_THREADS);

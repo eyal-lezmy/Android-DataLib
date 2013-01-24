@@ -118,17 +118,56 @@ public class DataLibRequest {
     public static final int HTTP_REST_DELETE = 3;
     public static final int HTTP_REST_HEAD = 4;
 
-    public String url; //host to contact
-    public String path; //host to contact
-    public ParameterMap params; //parameters to send
-    public String userAgent; //useragent to send to the distant server
-    public Intent intent; //Intent recu du ServiceHelper
-    public int option; //Valeur option de la requete. Permet la conservation du cookie retourné par le serveur
-    public int requestMethod; //request type (REST_GET, REST_POST, ..., SOAP)
-    public int parseType; //type de parsing pour la reponse
-    public String contentType; //content type of the data to send
-    public byte[] data; //data to send (for PUT or POST request)
+    /**
+     * Host to contact
+     */
+    public String url;
+    /**
+     * Path of the request
+     */
+    public String path;
+    
+    /**
+     * parameters to send
+     */
+    public ParameterMap params;
+    
+    /**
+     * useragent to send to the distant server
+     */
+    public String userAgent;
+    
+    /**
+     * Intent recu du ServiceHelper
+     */
+    public Intent intent;
+    
+    /**
+     * Request options
+     */
+    public int option;
+    
+    /**
+     * request type (REST_GET, REST_POST, ..., SOAP)
+     */
+    public int requestMethod;
+    
+    /**
+     * Format expected from the webservice (XML, JSON, IMAGE, ...)
+     */
+    public int parseType;
+    
+    /**
+     * content type of the data to send
+     */
+    public String contentType;
+    
+    /**
+     * data to send (for PUT or POST request)
+     */
+    public byte[] data;
 
+    
     public DataLibRequest() {
         option = OPTION_NO_OPTION;
         parseType = PARSE_TYPE_SAX_XML;

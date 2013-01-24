@@ -23,15 +23,45 @@ import fr.eyal.lib.data.model.ResponseBusinessObject;
  */
 public class BusinessResponse {
 
-    public static final int STATUS_OK = 0; //Value for a successful client request
-    public static final int STATUS_ERROR = 1; //Value for an error during the client request
-    public static final int RETURN_CODE_FALSE = -999; //Value for a false server's return code
+    /**
+     * Value for a successful client request
+     */
+    public static final int STATUS_OK = 0;
+    
+    /**
+     * Value for an error during the client request
+     */
+    public static final int STATUS_ERROR = 1;
+    
+    /**
+     * Value for a false server's return code
+     */
+    public static final int RETURN_CODE_FALSE = -999;
 
-    public ResponseBusinessObject response; //BusinessObject returned by the DataLib
-    public int status; //Status code of the request STATUS_OK | STATUS_ERROR
-    public int returnCode; //Code returned by the server with the response
-    public String statusMessage; //Eventual message relative to the status of the response
-    public int webserviceType; //Type of webservice concerned by the response
+    /**
+     * BusinessObject returned by the DataLib
+     */
+    public ResponseBusinessObject response;
+    
+    /**
+     * Status code of the request STATUS_OK | STATUS_ERROR
+     */
+    public int status;
+    
+    /**
+     * Code returned by the server with the response
+     */
+    public int returnCode;
+    
+    /**
+     * Eventual message relative to the status of the response
+     */
+    public String statusMessage;
+    
+    /**
+     * Type of webservice concerned by the response
+     */
+    public int webserviceType;
 
     public BusinessResponse() {
         super();
