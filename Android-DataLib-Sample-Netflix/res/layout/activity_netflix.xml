@@ -1,10 +1,17 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="fr.eyal.datalib.sample.netflix.fragment.SelectionFragment"
+    android:id="@+id/list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+<!-- <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <RelativeLayout
+ 
+ 	<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".NetflixActivity" >
@@ -21,13 +28,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/newReleases"
-            android:text="Autocomplete" />
+            android:text="Autocomplete 'chr'" />
+        
+        <Button
+            android:id="@+id/top100"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/autocomplete"
+            android:text="Top 100" />
+<
+        <Button
+            android:id="@+id/topGenre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top100"
+            android:text="Top Genre" />
 
         <Button
             android:id="@+id/getPeople"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/autocomplete"
+            android:layout_below="@+id/topGenre"
             android:text="getPeople" />
 
         <Button
@@ -70,7 +91,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:text="Search title chris" />
+            android:text="Search title 'chris'" />
+
     </RelativeLayout>
 
-</ScrollView>
+</ScrollView> -->
