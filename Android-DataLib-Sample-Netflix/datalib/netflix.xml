@@ -5,7 +5,7 @@
     datalib:package="fr.eyal.datalib.sample.netflix.data" 
     datalib:authority="fr.eyal.datalib.sample.netflix.datacache.provider"
     datalib:databaseName="datalib_cache"
-    datalib:databaseVersion="4">
+    datalib:databaseVersion="5">
     
 
         <!-- NEW RELEASES -->
@@ -33,15 +33,105 @@
     <link>string</link>
     <description>string</description>
     <language>string</language>
-    <item datalib:multiple="true">
+    <item datalib:multiple="true" datalib:name="ItemNewRelease">
       <title>Dredd</title>
-      <link>http://dvd.netflix.com/Movie/Dredd/70242801</link>
+      <link>string</link>
       <description>string</description>
     </item>
   </channel>
 </rss>
 	</datalib:webservice>
-    
+
+	<!-- MOVIE IMAGE -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="IMAGE"
+		datalib:name="MovieImage"
+		datalib:url="{0}">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>IMAGE</datalib:parseType>
+			<datalib:options>
+			    <!-- No option -->
+			</datalib:options>
+			<datalib:parameters>
+			    <url datalib:type="string" datalib:urlParameter="0" datalib:description="Image's URL"/>
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+	</datalib:webservice>
+	
+	
+	<!-- TOP 100 -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:name="Top100"
+		datalib:url="http://dvd.netflix.com/Top100RSS">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+			    <!-- No option -->
+			</datalib:options>
+			<datalib:parameters>
+			    <!-- No parameter -->
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<rss version="2.0">
+  <channel>
+    <title>string</title>
+    <ttl>int</ttl>
+    <link>string</link>
+    <description>string</description>
+    <language>string</language>
+    <item datalib:multiple="true" datalib:name="ItemTop100">
+      <title>Dredd</title>
+      <link>string</link>
+      <description>string</description>
+    </item>
+  </channel>
+</rss>
+	</datalib:webservice>
+
+	
+		<!-- TOP GENRE -->
+	<datalib:webservice
+		datalib:httpMethod="GET"
+		datalib:parseType="SAX"
+		datalib:name="TopGenre"
+		datalib:url="http://dvd.netflix.com/Top25RSS">
+		<!-- Configuration of the web service -->
+		<datalib:config>
+			<datalib:httpMethod>GET</datalib:httpMethod>
+			<datalib:parseType>SAX</datalib:parseType>
+			<datalib:options>
+			    <!-- No option -->
+			</datalib:options>
+			<datalib:parameters>
+			    <gid datalib:type="int" datalib:description="The Genre's ID you are looking for"/>
+			</datalib:parameters>
+		</datalib:config>
+		<!-- Content definition of the web service -->
+<rss version="2.0">
+  <channel>
+    <title>string</title>
+    <ttl>int</ttl>
+    <link>string</link>
+    <description>string</description>
+    <language>string</language>
+    <item datalib:multiple="true" datalib:name="ItemTopGenre">
+      <title>Dredd</title>
+      <link>string</link>
+      <description>string</description>
+    </item>
+  </channel>
+</rss>
+	</datalib:webservice>
+		
 
     <!-- AUTOCOMPLETE -->
 	<datalib:webservice
