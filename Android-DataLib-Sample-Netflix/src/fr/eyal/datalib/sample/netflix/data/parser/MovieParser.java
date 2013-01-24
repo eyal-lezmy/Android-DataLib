@@ -21,16 +21,16 @@ public class MovieParser extends DefaultHandler implements GenericHandler {
     public static final int UNKNOWN = -1;
 
 	//Movie
-	private static final int H1 = 51;
-	private static final int CATALOG_TITLE = 52;
-	private static final int CATALOG_TITLE_ID = 53;
-	private static final int CATALOG_TITLE_TITLE = 54;
-	private static final int CATALOG_TITLE_BOX_ART = 55;
-	private static final int CATALOG_TITLE_LINK = 56;
-	private static final int CATALOG_TITLE_RELEASE_YEAR = 57;
-	private static final int CATALOG_TITLE_CATEGORY = 58;
-	private static final int CATALOG_TITLE_RUNTIME = 59;
-	private static final int CATALOG_TITLE_AVERAGE_RATING = 60;
+	private static final int H1 = 76;
+	private static final int CATALOG_TITLE = 77;
+	private static final int CATALOG_TITLE_ID = 78;
+	private static final int CATALOG_TITLE_TITLE = 79;
+	private static final int CATALOG_TITLE_BOX_ART = 80;
+	private static final int CATALOG_TITLE_LINK = 81;
+	private static final int CATALOG_TITLE_RELEASE_YEAR = 82;
+	private static final int CATALOG_TITLE_CATEGORY = 83;
+	private static final int CATALOG_TITLE_RUNTIME = 84;
+	private static final int CATALOG_TITLE_AVERAGE_RATING = 85;
     
 	private int mState = UNKNOWN;
 

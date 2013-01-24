@@ -1,4 +1,4 @@
-package fr.eyal.datalib.sample.netflix.data.model.newreleases;
+package fr.eyal.datalib.sample.netflix.data.model.top100;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,9 +19,9 @@ import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.lib.util.Out;
 import fr.eyal.datalib.sample.netflix.data.model.NetflixProvider;
 
-public class NewReleasesBase extends ResponseBusinessObjectDAO {
+public class Top100Base extends ResponseBusinessObjectDAO {
 
-    private static final String TAG = NewReleasesBase.class.getSimpleName();
+    private static final String TAG = Top100Base.class.getSimpleName();
 
 	//list of attributes
 	public String attrVersion = "";
@@ -35,17 +35,17 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 	
 	
 	//list of childs
-	public ArrayList<ItemNewRelease> itemNewRelease;
+	public ArrayList<ItemTop100> itemTop100;
 
-    public NewReleasesBase() {
+    public Top100Base() {
         super();
     }
 
-    public NewReleasesBase(final long id) {
+    public Top100Base(final long id) {
         super(id);
     }
 
-    public NewReleasesBase(final String url) {
+    public Top100Base(final String url) {
         super(url);
     }
 
@@ -56,14 +56,14 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
     /**
      * Constants used with a ContentProvider's access
      */
-    public static final String CONTENT_PATH = "newreleases";
+    public static final String CONTENT_PATH = "top100";
     public static final String CONTENT_URL = NetflixProvider.PROVIDER_PREFIX + NetflixProvider.AUTHORITY + "/" + CONTENT_PATH;
     public static final Uri CONTENT_URI = Uri.parse(CONTENT_URL);
 
     /**
      * SQL databases table's name
      */
-    public static String DATABASE_TABLE_NAME = "newreleases";
+    public static String DATABASE_TABLE_NAME = "top100";
 
     /**
      * SQL database table's fields names
@@ -247,7 +247,7 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
     @Override
     protected void fillObjectFromCursor(final Cursor cursor) {
 		// we initialize the childs tabs
-        	itemNewRelease = new ArrayList<ItemNewRelease>();
+        	itemTop100 = new ArrayList<ItemTop100>();
 
 		// if we have a content
         if (!cursor.isClosed() && !cursor.isAfterLast()) {
@@ -298,8 +298,8 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 
 	@Override
 	protected int updateChildrenId(long[] ids, int index, int parentIndex) {
-        for (final ItemNewRelease itemNewReleaseElement : itemNewRelease) {
-            index = itemNewReleaseElement.updateId(ids, index, parentIndex);
+        for (final ItemTop100 itemTop100Element : itemTop100) {
+            index = itemTop100Element.updateId(ids, index, parentIndex);
         }
 
 		return index;
@@ -333,16 +333,16 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
-		for (final ItemNewRelease itemNewReleaseElement : itemNewRelease) {
-            itemNewReleaseElement.addIntoDatabase(batch, ItemNewRelease.CONTENT_URI, ItemNewRelease.FIELD__PARENT_ID, previousResult);
+		for (final ItemTop100 itemTop100Element : itemTop100) {
+            itemTop100Element.addIntoDatabase(batch, ItemTop100.CONTENT_URI, ItemTop100.FIELD__PARENT_ID, previousResult);
         }
     }
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
-		for (final ItemNewRelease itemNewReleaseElement : itemNewRelease) {
-            itemNewReleaseElement._parentId = _id;
-            itemNewReleaseElement.addIntoDatabase(batch, ItemNewRelease.CONTENT_URI);
+		for (final ItemTop100 itemTop100Element : itemTop100) {
+            itemTop100Element._parentId = _id;
+            itemTop100Element.addIntoDatabase(batch, ItemTop100.CONTENT_URI);
         }
     }
 
@@ -350,16 +350,16 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
     public void deleteChildsFromDatabase(final ArrayList<ContentProviderOperation> batch) {
         Out.d(TAG, "deleting childs of " + _id);
         // we first remove all the childs of the childs of the object
-        for (final ItemNewRelease itemNewReleaseElement : itemNewRelease) {
-            itemNewReleaseElement.deleteChildsFromDatabase(batch);
+        for (final ItemTop100 itemTop100Element : itemTop100) {
+            itemTop100Element.deleteChildsFromDatabase(batch);
         }
 
 		String whereClause = "";
 		final String[] argsClause = { _id + "" };
 
         // we delete all the child entries
-        whereClause = ItemNewRelease.FIELD__PARENT_ID + "=?"; // itemnewrelease_id=?
-        batch.add(ContentProviderOperation.newDelete(ItemNewRelease.CONTENT_URI)
+        whereClause = ItemTop100.FIELD__PARENT_ID + "=?"; // itemtop100_id=?
+        batch.add(ContentProviderOperation.newDelete(ItemTop100.CONTENT_URI)
                 .withSelection(whereClause, argsClause)
                 .build());
 
@@ -375,19 +375,19 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
         Cursor cursor;
 
         // we define the access conditions to the objects
-        columns = new String[ItemNewRelease.DATABASE_TABLE_FIELDS_NAMES.length];
-        for (int i = 0; i < ItemNewRelease.DATABASE_TABLE_FIELDS_NAMES.length; i++) {
-            columns[i] = ItemNewRelease.DATABASE_TABLE_FIELDS_NAMES[i];
+        columns = new String[ItemTop100.DATABASE_TABLE_FIELDS_NAMES.length];
+        for (int i = 0; i < ItemTop100.DATABASE_TABLE_FIELDS_NAMES.length; i++) {
+            columns[i] = ItemTop100.DATABASE_TABLE_FIELDS_NAMES[i];
         }
 
-        where = ItemNewRelease.FIELD__PARENT_ID + "=?";
+        where = ItemTop100.FIELD__PARENT_ID + "=?";
         args = new String[1];
         args[0] = _id + "";
 
         // we check the existence of the entry inside the database
-        cursor = mResolver.query(ItemNewRelease.CONTENT_URI,
+        cursor = mResolver.query(ItemTop100.CONTENT_URI,
                 columns, // all the columns of the object
-                where, // itemnewrelease_id=?
+                where, // itemtop100_id=?
                 args, // id of the object
                 null);
 
@@ -398,9 +398,9 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 
             do {
                 // we create and then fill the item with the Cursor
-                final ItemNewRelease itemItemNewRelease = new ItemNewRelease();
-                itemItemNewRelease.fillObjectFromCursor(cursor);
-                itemNewRelease.add(itemItemNewRelease); // we add a new object to the list
+                final ItemTop100 itemItemTop100 = new ItemTop100();
+                itemItemTop100.fillObjectFromCursor(cursor);
+                itemTop100.add(itemItemTop100); // we add a new object to the list
 
             } while (cursor.moveToNext());
         }
@@ -408,7 +408,7 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
     }
 
 	/**
-     * This function build an array of {@link NewReleasesBase} thanks to a Cursor
+     * This function build an array of {@link Top100Base} thanks to a Cursor
      * object received from the database.
      * 
      * @param c The cursor object.
@@ -418,16 +418,16 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
      *         of the Cursor. If the Cursor is empty, it returns an empty array.
      *  	   <b>The result of this function is return as ArrayList<?>. It has
      *  	   to be casted into the expected class to be useful.</b>
-     *  	   Ex: Cast to ArrayList<{@link NewReleases}> if you want it as {@link NewReleases}
+     *  	   Ex: Cast to ArrayList<{@link Top100}> if you want it as {@link Top100}
      */
     public static ArrayList<?> buildArrayFromCursor(final Cursor c, final boolean join) {
 
-        final ArrayList<NewReleasesBase> result = new ArrayList<NewReleasesBase>();
+        final ArrayList<Top100Base> result = new ArrayList<Top100Base>();
 
         if (c.moveToFirst()) {
             do {
                 // we create and fill the item
-                final NewReleasesBase newObject = new NewReleasesBase();
+                final Top100Base newObject = new Top100Base();
                 newObject.fillObjectFromCursor(c);
                 // if it's asked we fill the childs of the item
                 if (join) {
@@ -446,15 +446,15 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
      * PARCELABLE MANAGMENT
      */
 
-	public static final Parcelable.Creator<NewReleasesBase> CREATOR = new Parcelable.Creator<NewReleasesBase>() {
+	public static final Parcelable.Creator<Top100Base> CREATOR = new Parcelable.Creator<Top100Base>() {
 	    @Override
-	    public NewReleasesBase createFromParcel(final Parcel in) {
-	        return new NewReleasesBase(in);
+	    public Top100Base createFromParcel(final Parcel in) {
+	        return new Top100Base(in);
 	    }
 	
 	    @Override
-	    public NewReleasesBase[] newArray(final int size) {
-	        return new NewReleasesBase[size];
+	    public Top100Base[] newArray(final int size) {
+	        return new Top100Base[size];
 	    }
 	};
 	
@@ -484,10 +484,10 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 		dest.writeString(language);
 		
 		//list of childs
-		dest.writeParcelableArray(itemNewRelease.toArray(new ItemNewRelease[itemNewRelease.size()]), 0);
+		dest.writeParcelableArray(itemTop100.toArray(new ItemTop100[itemTop100.size()]), 0);
 	}
 
-	public NewReleasesBase(final Parcel in) {
+	public Top100Base(final Parcel in) {
 		// ResponseBusinessObject DAO
 		_ttl = in.readLong();
 		_url = in.readString();
@@ -509,10 +509,10 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 		
 		//list of children
 		Parcelable[] items; 
-		items = in.readParcelableArray(ItemNewRelease.class.getClassLoader());
-		itemNewRelease = new ArrayList<ItemNewRelease>();
+		items = in.readParcelableArray(ItemTop100.class.getClassLoader());
+		itemTop100 = new ArrayList<ItemTop100>();
 		for (final Parcelable parcelable : items) {
-		    itemNewRelease.add((ItemNewRelease) parcelable);
+		    itemTop100.add((ItemTop100) parcelable);
 		}
 		
 	}    

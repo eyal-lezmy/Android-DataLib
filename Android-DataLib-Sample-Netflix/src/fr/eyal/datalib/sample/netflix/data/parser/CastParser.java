@@ -21,13 +21,13 @@ public class CastParser extends DefaultHandler implements GenericHandler {
     public static final int UNKNOWN = -1;
 
 	//Cast
-	private static final int H1 = 65;
-	private static final int PEOPLE = 66;
-	private static final int PEOPLE_PERSON = 67;
-	private static final int PEOPLE_PERSON_ID = 68;
-	private static final int PEOPLE_PERSON_NAME = 69;
-	private static final int PEOPLE_PERSON_BIO = 70;
-	private static final int PEOPLE_PERSON_LINK = 71;
+	private static final int H1 = 90;
+	private static final int PEOPLE = 91;
+	private static final int PEOPLE_PERSON = 92;
+	private static final int PEOPLE_PERSON_ID = 93;
+	private static final int PEOPLE_PERSON_NAME = 94;
+	private static final int PEOPLE_PERSON_BIO = 95;
+	private static final int PEOPLE_PERSON_LINK = 96;
     
 	private int mState = UNKNOWN;
 

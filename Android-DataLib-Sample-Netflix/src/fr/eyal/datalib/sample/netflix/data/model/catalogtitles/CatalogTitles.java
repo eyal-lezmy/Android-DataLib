@@ -15,6 +15,5 @@ public class CatalogTitles extends CatalogTitlesBase {
         super(in);
     }
 
-
 }
 // End of user code

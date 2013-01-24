@@ -21,13 +21,13 @@ public class DirectorsParser extends DefaultHandler implements GenericHandler {
     public static final int UNKNOWN = -1;
 
 	//Directors
-	private static final int H1 = 73;
-	private static final int PEOPLE = 74;
-	private static final int PEOPLE_PERSON = 75;
-	private static final int PEOPLE_PERSON_ID = 76;
-	private static final int PEOPLE_PERSON_NAME = 77;
-	private static final int PEOPLE_PERSON_BIO = 78;
-	private static final int PEOPLE_PERSON_LINK = 79;
+	private static final int H1 = 98;
+	private static final int PEOPLE = 99;
+	private static final int PEOPLE_PERSON = 100;
+	private static final int PEOPLE_PERSON_ID = 101;
+	private static final int PEOPLE_PERSON_NAME = 102;
+	private static final int PEOPLE_PERSON_BIO = 103;
+	private static final int PEOPLE_PERSON_LINK = 104;
     
 	private int mState = UNKNOWN;
 

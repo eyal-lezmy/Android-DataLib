@@ -14,6 +14,9 @@ import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.ServiceHelper;
 import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.datalib.sample.netflix.data.model.newreleases.*;
+import fr.eyal.datalib.sample.netflix.data.model.movieimage.*;
+import fr.eyal.datalib.sample.netflix.data.model.top100.*;
+import fr.eyal.datalib.sample.netflix.data.model.topgenre.*;
 import fr.eyal.datalib.sample.netflix.data.model.autocomplete.*;
 import fr.eyal.datalib.sample.netflix.data.model.catalogtitles.*;
 import fr.eyal.datalib.sample.netflix.data.model.people.*;
@@ -24,13 +27,8 @@ import fr.eyal.datalib.sample.netflix.data.model.cast.*;
 import fr.eyal.datalib.sample.netflix.data.model.directors.*;
 import fr.eyal.datalib.sample.netflix.data.model.NetflixProvider;
 // Start of user code NetflixDataManager imports
-import java.util.Calendar;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import fr.eyal.datalib.sample.netflix.NetflixConfig;
-import fr.eyal.datalib.sample.netflix.NetflixUtils;
-import fr.eyal.datalib.sample.netflix.data.config.CatalogTitlesWebConfig;
-// End of user code
+// You can add here your personal imports
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 
 public class NetflixDataManager extends DataManager {
 
@@ -82,6 +80,10 @@ public class NetflixDataManager extends DataManager {
         switch (type) {
             case NetflixService.WEBSERVICE_NEWRELEASES:
             	return new NewReleases(url);
+            case NetflixService.WEBSERVICE_TOP100:
+            	return new Top100(url);
+            case NetflixService.WEBSERVICE_TOPGENRE:
+            	return new TopGenre(url);
             case NetflixService.WEBSERVICE_PEOPLE:
             	return new People(url);
             case NetflixService.WEBSERVICE_FILMOGRAPHY:
@@ -106,6 +108,10 @@ public class NetflixDataManager extends DataManager {
         switch (webserviceType) {
             case NetflixService.WEBSERVICE_NEWRELEASES:
             	return new NewReleases(id);
+            case NetflixService.WEBSERVICE_TOP100:
+            	return new Top100(id);
+            case NetflixService.WEBSERVICE_TOPGENRE:
+            	return new TopGenre(id);
             case NetflixService.WEBSERVICE_PEOPLE:
             	return new People(id);
             case NetflixService.WEBSERVICE_FILMOGRAPHY:
@@ -132,8 +138,18 @@ public class NetflixDataManager extends DataManager {
 			case NetflixProvider.CODE_NEWRELEASES:
 				return NetflixDataManager.this.retrieveDataNewReleases(where, whereArgs, order, join);
 			
-			case NetflixProvider.CODE_NEWRELEASES_ITEM:
-				return NetflixDataManager.this.retrieveDataItem(where, whereArgs, order);
+			case NetflixProvider.CODE_NEWRELEASES_ITEMNEWRELEASE:
+				return NetflixDataManager.this.retrieveDataItemNewRelease(where, whereArgs, order);
+			case NetflixProvider.CODE_TOP100:
+				return NetflixDataManager.this.retrieveDataTop100(where, whereArgs, order, join);
+			
+			case NetflixProvider.CODE_TOP100_ITEMTOP100:
+				return NetflixDataManager.this.retrieveDataItemTop100(where, whereArgs, order);
+			case NetflixProvider.CODE_TOPGENRE:
+				return NetflixDataManager.this.retrieveDataTopGenre(where, whereArgs, order, join);
+			
+			case NetflixProvider.CODE_TOPGENRE_ITEMTOPGENRE:
+				return NetflixDataManager.this.retrieveDataItemTopGenre(where, whereArgs, order);
 			case NetflixProvider.CODE_PEOPLE:
 				return NetflixDataManager.this.retrieveDataPeople(where, whereArgs, order, join);
 			
@@ -244,7 +260,7 @@ public class NetflixDataManager extends DataManager {
 	}
 	
 	/**
-	 * Get {@link Item} objects from the database thanks to standard SQL selectors.
+	 * Get {@link ItemNewRelease} objects from the database thanks to standard SQL selectors.
 	 * 
 	 * @param where A filter declaring which rows to return, formatted as an SQL WHERE
 	 * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
@@ -258,23 +274,23 @@ public class NetflixDataManager extends DataManager {
 	 * 
 	 * 
 	 * 
-	 * @return An {@link ArrayList} of the {@link Item} objects fetch in the database,
+	 * @return An {@link ArrayList} of the {@link ItemNewRelease} objects fetch in the database,
 	 * corresponding to the sent request.
 	 */
 	@SuppressWarnings("unchecked")
-	private ArrayList<Item> retrieveDataItem(final String where, final String[] whereArgs, final String order) {
-		final Cursor c = this.mContentResolver.query(Item.CONTENT_URI,
-				Item.DATABASE_TABLE_FIELDS_NAMES,
+	private ArrayList<ItemNewRelease> retrieveDataItemNewRelease(final String where, final String[] whereArgs, final String order) {
+		final Cursor c = this.mContentResolver.query(ItemNewRelease.CONTENT_URI,
+				ItemNewRelease.DATABASE_TABLE_FIELDS_NAMES,
 				where,
 				whereArgs,
 				order);
 	
-		return (ArrayList<Item>) Item.buildArrayFromCursor(c, false);
+		return (ArrayList<ItemNewRelease>) ItemNewRelease.buildArrayFromCursor(c, false);
 	
 	}
 	
 	/**
-	 * Get {@link Item} objects from the database asynchronously thanks to standard
+	 * Get {@link ItemNewRelease} objects from the database asynchronously thanks to standard
 	 * SQL selectors.
 	 * 
 	 * @param where A filter declaring which rows to return, formatted as an SQL WHERE
@@ -295,8 +311,249 @@ public class NetflixDataManager extends DataManager {
 	 * 
 	 * @see cancelRequest() To cancel this request before the response come.
 	 */
-	public synchronized int retrieveDataItemAsync(final String where, final String[] whereArgs, final String order, final OnDataListener listener){
-		return startDatabaseAsyncAccess(NetflixProvider.CODE_NEWRELEASES_ITEM,
+	public synchronized int retrieveDataItemNewReleaseAsync(final String where, final String[] whereArgs, final String order, final OnDataListener listener){
+		return startDatabaseAsyncAccess(NetflixProvider.CODE_NEWRELEASES_ITEMNEWRELEASE,
+				where, whereArgs, order, false, listener);
+	}	
+
+
+
+
+	/**
+	 * Get {@link Top100} objects from the database thanks to standard SQL selectors.
+	 * 
+	 * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+	 * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+	 * 
+	 * @param whereArgs You may include ?s in selection, which will be replaced by the values
+	 * from selectionArgs, in the order that they appear in the selection. The values will be
+	 * bound as Strings.
+	 * 
+	 * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+	 * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+	 * 
+	 * @param join Tells if the {@link Top100} objects returned have to get his children's
+	 * arrays filled thanks to the database.
+	 * 
+	 * 
+	 * @return An {@link ArrayList} of the {@link Top100} objects fetch in the database,
+	 * corresponding to the sent request.
+	 */
+	@SuppressWarnings("unchecked")
+	private ArrayList<Top100> retrieveDataTop100(final String where, final String[] whereArgs, final String order, final boolean join) {
+		final Cursor c = this.mContentResolver.query(Top100.CONTENT_URI,
+				Top100.DATABASE_TABLE_FIELDS_NAMES,
+				where,
+				whereArgs,
+				order);
+	
+		return (ArrayList<Top100>) Top100.buildArrayFromCursor(c, join);
+	
+	}
+	
+	/**
+	 * Get {@link Top100} objects from the database asynchronously thanks to standard
+	 * SQL selectors.
+	 * 
+	 * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+	 * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+	 * 
+	 * @param whereArgs You may include ?s in selection, which will be replaced by the values
+	 * from selectionArgs, in the order that they appear in the selection. The values will be
+	 * bound as Strings.
+	 * 
+	 * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+	 * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+	 * 
+	 * @param join Tells if the {@link Top100} objects returned have to get his children's
+	 * arrays filled thanks to the database.
+	 * 
+	 * @param listener The {@link OnDataListener} that will receive the {@link ArrayList} of fetched
+	 * objects.
+	 * 
+	 * @return The request id generated by the {@link DataManager}.
+	 * 
+	 * @see cancelRequest() To cancel this request before the response come.
+	 */
+	public synchronized int retrieveDataTop100Async(final String where, final String[] whereArgs, final String order, final boolean join, final OnDataListener listener){
+		return startDatabaseAsyncAccess(NetflixProvider.CODE_TOP100,
+				where, whereArgs, order, join, listener);
+	}
+	
+	/**
+	 * Get {@link ItemTop100} objects from the database thanks to standard SQL selectors.
+	 * 
+	 * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+	 * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+	 * 
+	 * @param whereArgs You may include ?s in selection, which will be replaced by the values
+	 * from selectionArgs, in the order that they appear in the selection. The values will be
+	 * bound as Strings.
+	 * 
+	 * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+	 * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+	 * 
+	 * 
+	 * 
+	 * @return An {@link ArrayList} of the {@link ItemTop100} objects fetch in the database,
+	 * corresponding to the sent request.
+	 */
+	@SuppressWarnings("unchecked")
+	private ArrayList<ItemTop100> retrieveDataItemTop100(final String where, final String[] whereArgs, final String order) {
+		final Cursor c = this.mContentResolver.query(ItemTop100.CONTENT_URI,
+				ItemTop100.DATABASE_TABLE_FIELDS_NAMES,
+				where,
+				whereArgs,
+				order);
+	
+		return (ArrayList<ItemTop100>) ItemTop100.buildArrayFromCursor(c, false);
+	
+	}
+	
+	/**
+	 * Get {@link ItemTop100} objects from the database asynchronously thanks to standard
+	 * SQL selectors.
+	 * 
+	 * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+	 * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+	 * 
+	 * @param whereArgs You may include ?s in selection, which will be replaced by the values
+	 * from selectionArgs, in the order that they appear in the selection. The values will be
+	 * bound as Strings.
+	 * 
+	 * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+	 * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+	 * 
+	 * 
+	 * @param listener The {@link OnDataListener} that will receive the {@link ArrayList} of fetched
+	 * objects.
+	 * 
+	 * @return The request id generated by the {@link DataManager}.
+	 * 
+	 * @see cancelRequest() To cancel this request before the response come.
+	 */
+	public synchronized int retrieveDataItemTop100Async(final String where, final String[] whereArgs, final String order, final OnDataListener listener){
+		return startDatabaseAsyncAccess(NetflixProvider.CODE_TOP100_ITEMTOP100,
+				where, whereArgs, order, false, listener);
+	}	
+
+
+
+	/**
+	 * Get {@link TopGenre} objects from the database thanks to standard SQL selectors.
+	 * 
+	 * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+	 * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+	 * 
+	 * @param whereArgs You may include ?s in selection, which will be replaced by the values
+	 * from selectionArgs, in the order that they appear in the selection. The values will be
+	 * bound as Strings.
+	 * 
+	 * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+	 * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+	 * 
+	 * @param join Tells if the {@link TopGenre} objects returned have to get his children's
+	 * arrays filled thanks to the database.
+	 * 
+	 * 
+	 * @return An {@link ArrayList} of the {@link TopGenre} objects fetch in the database,
+	 * corresponding to the sent request.
+	 */
+	@SuppressWarnings("unchecked")
+	private ArrayList<TopGenre> retrieveDataTopGenre(final String where, final String[] whereArgs, final String order, final boolean join) {
+		final Cursor c = this.mContentResolver.query(TopGenre.CONTENT_URI,
+				TopGenre.DATABASE_TABLE_FIELDS_NAMES,
+				where,
+				whereArgs,
+				order);
+	
+		return (ArrayList<TopGenre>) TopGenre.buildArrayFromCursor(c, join);
+	
+	}
+	
+	/**
+	 * Get {@link TopGenre} objects from the database asynchronously thanks to standard
+	 * SQL selectors.
+	 * 
+	 * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+	 * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+	 * 
+	 * @param whereArgs You may include ?s in selection, which will be replaced by the values
+	 * from selectionArgs, in the order that they appear in the selection. The values will be
+	 * bound as Strings.
+	 * 
+	 * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+	 * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+	 * 
+	 * @param join Tells if the {@link TopGenre} objects returned have to get his children's
+	 * arrays filled thanks to the database.
+	 * 
+	 * @param listener The {@link OnDataListener} that will receive the {@link ArrayList} of fetched
+	 * objects.
+	 * 
+	 * @return The request id generated by the {@link DataManager}.
+	 * 
+	 * @see cancelRequest() To cancel this request before the response come.
+	 */
+	public synchronized int retrieveDataTopGenreAsync(final String where, final String[] whereArgs, final String order, final boolean join, final OnDataListener listener){
+		return startDatabaseAsyncAccess(NetflixProvider.CODE_TOPGENRE,
+				where, whereArgs, order, join, listener);
+	}
+	
+	/**
+	 * Get {@link ItemTopGenre} objects from the database thanks to standard SQL selectors.
+	 * 
+	 * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+	 * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+	 * 
+	 * @param whereArgs You may include ?s in selection, which will be replaced by the values
+	 * from selectionArgs, in the order that they appear in the selection. The values will be
+	 * bound as Strings.
+	 * 
+	 * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+	 * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+	 * 
+	 * 
+	 * 
+	 * @return An {@link ArrayList} of the {@link ItemTopGenre} objects fetch in the database,
+	 * corresponding to the sent request.
+	 */
+	@SuppressWarnings("unchecked")
+	private ArrayList<ItemTopGenre> retrieveDataItemTopGenre(final String where, final String[] whereArgs, final String order) {
+		final Cursor c = this.mContentResolver.query(ItemTopGenre.CONTENT_URI,
+				ItemTopGenre.DATABASE_TABLE_FIELDS_NAMES,
+				where,
+				whereArgs,
+				order);
+	
+		return (ArrayList<ItemTopGenre>) ItemTopGenre.buildArrayFromCursor(c, false);
+	
+	}
+	
+	/**
+	 * Get {@link ItemTopGenre} objects from the database asynchronously thanks to standard
+	 * SQL selectors.
+	 * 
+	 * @param where A filter declaring which rows to return, formatted as an SQL WHERE
+	 * clause (excluding the WHERE itself). Passing null will return all rows for the given URI.
+	 * 
+	 * @param whereArgs You may include ?s in selection, which will be replaced by the values
+	 * from selectionArgs, in the order that they appear in the selection. The values will be
+	 * bound as Strings.
+	 * 
+	 * @param order How to order the rows, formatted as an SQL ORDER BY clause (excluding the
+	 * ORDER BY itself). Passing null will use the default sort order, which may be unordered.
+	 * 
+	 * 
+	 * @param listener The {@link OnDataListener} that will receive the {@link ArrayList} of fetched
+	 * objects.
+	 * 
+	 * @return The request id generated by the {@link DataManager}.
+	 * 
+	 * @see cancelRequest() To cancel this request before the response come.
+	 */
+	public synchronized int retrieveDataItemTopGenreAsync(final String where, final String[] whereArgs, final String order, final OnDataListener listener){
+		return startDatabaseAsyncAccess(NetflixProvider.CODE_TOPGENRE_ITEMTOPGENRE,
 				where, whereArgs, order, false, listener);
 	}	
 
@@ -1288,9 +1545,136 @@ public class NetflixDataManager extends DataManager {
 		final ParameterMap params = new ParameterMap();
 		
 		//we prepare the request's url
-		final String url =  NetflixServiceHelper.URL_NEWRELEASES;
+		final String __url =  NetflixServiceHelper.URL_NEWRELEASES;
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, url, NetflixService.WEBSERVICE_NEWRELEASES, NetflixService.class);
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_NEWRELEASES, NetflixService.class);
+
+		//we add the listener subscription for this request
+		if(datacacheListener != null)
+			this.addOnDataListener(requestId, datacacheListener);
+		
+		return requestId;
+    }
+
+
+
+	/**
+     * Retrieve the {@link MovieImage}
+     * 
+     * @param datacacheListener The listener who will receive the data from the cache.
+     * This parameter is optional butif you want to get the response back you have to subscribe to the
+     * request's response by using the function {@link DataManager#addOnDataListener(int requestId, OnDataListener listener)}.
+     * Since there is no listener for the request, the response is supposed to be stored in a cache. It is then removed once delivered.
+     * 
+     * @param url Image's URL
+     * 
+     * @param options The options added to the request. The list of constants to use in this filed
+     * can be found in {@link DataLibRequest} (ex: {@link DataLibRequest#OPTION_CONSERVE_COOKIE_ENABLED} 
+     * or {@link DataLibRequest#OPTION_DATABASE_CACHE_DISABLED}, ...).
+     * The options can be aggregated thanks to the pipe character '|' (ex: OPTION_CONSERVE_COOKIE_ENABLED |
+     * OPTION_DATABASE_CACHE_DISABLED).
+     * 
+     * @return Returns the request Id if it have been generated by the DataLib. If there is only
+     * a Datacache access, the id returned is the constant {@link DataManager#DATACHACHE_REQUEST}.
+     * In case of treatment error, it returns {@link DataManager#BAD_REQUEST}.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+	public synchronized int getMovieImage(final OnDataListener datacacheListener, final String url, final int options) throws UnsupportedEncodingException {
+		//we prepare the parameters
+		final ParameterMap params = new ParameterMap();
+		
+		//we prepare the request's url
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_MOVIEIMAGE, url);
+		
+
+		int requestId = mServiceHelper.launchRequest(options, NetflixService.WEBSERVICE_MOVIEIMAGE, params, NetflixService.class, __url);
+		
+		//we add the listener subscription for this request
+		if(datacacheListener != null)
+			this.addOnDataListener(requestId, datacacheListener);
+		
+		return requestId;
+    }
+
+
+    /**
+     * Retrieve the {@link Top100}
+     * 
+     * @param policy Give the policy context of the request using CACHE and/or NETWORK. Accepted values are : 
+     * {@link DataManager#TYPE_NETWORK}, {@link DataManager#TYPE_CACHE}, {@link DataManager#TYPE_CACHE_THEN_NETWORK}
+     * and {@link DataManager#TYPE_NETWORK_OTHERWISE_CACHE}
+     * 
+     * @param datacacheListener The listener who will receive the data from the cache.
+     * This parameter IS NEEDED in case of Datacache access (TYPE_CACHE, TYPE_CACHE_THEN_NETWORK
+     * and TYPE_NETWORK_OTHERWISE_CACHE). This listener won't be used to send DataLib's response.
+     * So, the addOnRequestFinishedListener call is still needed.
+     * 
+     * @param options The options added to the request. The list of constants to use in this filed
+     * can be found in {@link DataLibRequest} (ex: {@link DataLibRequest#OPTION_CONSERVE_COOKIE_ENABLED} 
+     * or {@link DataLibRequest#OPTION_DATABASE_CACHE_DISABLED}, ...).
+     * The options can be aggregated thanks to the pipe character '|' (ex: OPTION_CONSERVE_COOKIE_ENABLED |
+     * OPTION_DATABASE_CACHE_DISABLED).
+     * 
+     * @return Returns the request Id if it have been generated by the DataLib. If there is only
+     * a Datacache access, the id returned is the constant {@link DataManager#DATACHACHE_REQUEST}.
+     * In case of treatment error, it returns {@link DataManager#BAD_REQUEST}.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+	public synchronized int getTop100(final int policy, final OnDataListener datacacheListener,  final int options) throws UnsupportedEncodingException {
+		//we prepare the parameters
+		final ParameterMap params = new ParameterMap();
+		
+		//we prepare the request's url
+		final String __url =  NetflixServiceHelper.URL_TOP100;
+		
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_TOP100, NetflixService.class);
+
+		//we add the listener subscription for this request
+		if(datacacheListener != null)
+			this.addOnDataListener(requestId, datacacheListener);
+		
+		return requestId;
+    }
+
+
+
+    /**
+     * Retrieve the {@link TopGenre}
+     * 
+     * @param policy Give the policy context of the request using CACHE and/or NETWORK. Accepted values are : 
+     * {@link DataManager#TYPE_NETWORK}, {@link DataManager#TYPE_CACHE}, {@link DataManager#TYPE_CACHE_THEN_NETWORK}
+     * and {@link DataManager#TYPE_NETWORK_OTHERWISE_CACHE}
+     * 
+     * @param datacacheListener The listener who will receive the data from the cache.
+     * This parameter IS NEEDED in case of Datacache access (TYPE_CACHE, TYPE_CACHE_THEN_NETWORK
+     * and TYPE_NETWORK_OTHERWISE_CACHE). This listener won't be used to send DataLib's response.
+     * So, the addOnRequestFinishedListener call is still needed.
+     * 
+     * @param gid The Genre's ID you are looking for
+     * 
+     * @param options The options added to the request. The list of constants to use in this filed
+     * can be found in {@link DataLibRequest} (ex: {@link DataLibRequest#OPTION_CONSERVE_COOKIE_ENABLED} 
+     * or {@link DataLibRequest#OPTION_DATABASE_CACHE_DISABLED}, ...).
+     * The options can be aggregated thanks to the pipe character '|' (ex: OPTION_CONSERVE_COOKIE_ENABLED |
+     * OPTION_DATABASE_CACHE_DISABLED).
+     * 
+     * @return Returns the request Id if it have been generated by the DataLib. If there is only
+     * a Datacache access, the id returned is the constant {@link DataManager#DATACHACHE_REQUEST}.
+     * In case of treatment error, it returns {@link DataManager#BAD_REQUEST}.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+	public synchronized int getTopGenre(final int policy, final OnDataListener datacacheListener, final int gid, final int options) throws UnsupportedEncodingException {
+		//we prepare the parameters
+		final ParameterMap params = new ParameterMap();
+		params.put("gid", String.valueOf(gid));
+		
+		//we prepare the request's url
+		final String __url =  NetflixServiceHelper.URL_TOPGENRE;
+		
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_TOPGENRE, NetflixService.class);
 
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -1332,10 +1716,10 @@ public class NetflixDataManager extends DataManager {
 		params.put("term", term);
 		
 		//we prepare the request's url
-		final String url =  NetflixServiceHelper.URL_AUTOCOMPLETE;
+		final String __url =  NetflixServiceHelper.URL_AUTOCOMPLETE;
 		
 
-		int requestId = mServiceHelper.launchRequest(options, NetflixService.WEBSERVICE_AUTOCOMPLETE, params, NetflixService.class, url);
+		int requestId = mServiceHelper.launchRequest(options, NetflixService.WEBSERVICE_AUTOCOMPLETE, params, NetflixService.class, __url);
 		
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -1394,10 +1778,10 @@ public class NetflixDataManager extends DataManager {
 		params.put("oauth_signature", oauth_signature);
 		
 		//we prepare the request's url
-		final String url =  NetflixServiceHelper.URL_CATALOGTITLES;
+		final String __url =  NetflixServiceHelper.URL_CATALOGTITLES;
 		
 
-		int requestId = mServiceHelper.launchRequest(options, NetflixService.WEBSERVICE_CATALOGTITLES, params, NetflixService.class, url);
+		int requestId = mServiceHelper.launchRequest(options, NetflixService.WEBSERVICE_CATALOGTITLES, params, NetflixService.class, __url);
 		
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -1453,9 +1837,9 @@ public class NetflixDataManager extends DataManager {
 		params.put("oauth_signature", oauth_signature);
 		
 		//we prepare the request's url
-		final String url = MessageFormat.format(NetflixServiceHelper.URL_PEOPLE, person_id+"");
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_PEOPLE, person_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, url, NetflixService.WEBSERVICE_PEOPLE, NetflixService.class);
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_PEOPLE, NetflixService.class);
 
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -1512,9 +1896,9 @@ public class NetflixDataManager extends DataManager {
 		params.put("oauth_signature", oauth_signature);
 		
 		//we prepare the request's url
-		final String url = MessageFormat.format(NetflixServiceHelper.URL_FILMOGRAPHY, person_id+"");
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_FILMOGRAPHY, person_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, url, NetflixService.WEBSERVICE_FILMOGRAPHY, NetflixService.class);
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_FILMOGRAPHY, NetflixService.class);
 
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -1571,9 +1955,9 @@ public class NetflixDataManager extends DataManager {
 		params.put("oauth_signature", oauth_signature);
 		
 		//we prepare the request's url
-		final String url = MessageFormat.format(NetflixServiceHelper.URL_MOVIE, movie_id+"");
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_MOVIE, movie_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, url, NetflixService.WEBSERVICE_MOVIE, NetflixService.class);
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_MOVIE, NetflixService.class);
 
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -1630,9 +2014,9 @@ public class NetflixDataManager extends DataManager {
 		params.put("oauth_signature", oauth_signature);
 		
 		//we prepare the request's url
-		final String url = MessageFormat.format(NetflixServiceHelper.URL_SYNOPSIS, movie_id+"");
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_SYNOPSIS, movie_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, url, NetflixService.WEBSERVICE_SYNOPSIS, NetflixService.class);
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_SYNOPSIS, NetflixService.class);
 
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -1689,9 +2073,9 @@ public class NetflixDataManager extends DataManager {
 		params.put("oauth_signature", oauth_signature);
 		
 		//we prepare the request's url
-		final String url = MessageFormat.format(NetflixServiceHelper.URL_CAST, movie_id+"");
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_CAST, movie_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, url, NetflixService.WEBSERVICE_CAST, NetflixService.class);
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_CAST, NetflixService.class);
 
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -1748,9 +2132,9 @@ public class NetflixDataManager extends DataManager {
 		params.put("oauth_signature", oauth_signature);
 		
 		//we prepare the request's url
-		final String url = MessageFormat.format(NetflixServiceHelper.URL_DIRECTORS, movie_id+"");
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_DIRECTORS, movie_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, url, NetflixService.WEBSERVICE_DIRECTORS, NetflixService.class);
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_DIRECTORS, NetflixService.class);
 
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -1762,221 +2146,7 @@ public class NetflixDataManager extends DataManager {
 
 
 // Start of user code NetflixDataManager
-	
-	public void searchCatalogTitle(String term, OnDataListener dataListener, ArrayList<Integer> requestIds) {
-		
-		String nonce = NetflixUtils.getNonce();
-		int timestamp = (int) (Calendar.getInstance().getTimeInMillis()/1000);
-		String restAction = CatalogTitlesWebConfig.getInstance().getHttpTypeName();
-		String urlBase = NetflixServiceHelper.URL_CATALOGTITLES;
-		int maxResult = 20;
-		String consumerKey = NetflixConfig.CONSUMER_KEY;
-		String signatureMethod = NetflixUtils.HMACSHA1_NAME_WEB;
-		int startIndex = 0;
-		
-		ParameterMap params = new ParameterMap();
-		params.put("term", term);
-		params.put("max_results", String.valueOf(maxResult));
-        params.put("oauth_consumer_key", consumerKey);
-        params.put("oauth_nonce", nonce);
-        params.put("oauth_signature_method", signatureMethod);
-		params.put("oauth_timestamp", String.valueOf(timestamp));
-        params.put("start_index", String.valueOf(startIndex));
-		
-		try {
-			String signature = NetflixUtils.getOAuthSignature(restAction, urlBase, params);
-			int requestId = this.getCatalogTitles(dataListener, maxResult, consumerKey, nonce, signatureMethod, timestamp, startIndex, term, signature, DataLibRequest.OPTION_NO_OPTION);
-			requestIds.add(requestId);
-			
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-	}
-
-	
-	public void getCast(int movieId, OnDataListener dataListener, ArrayList<Integer> requestIds) {
-		
-		String nonce = NetflixUtils.getNonce();
-		int timestamp = (int) (Calendar.getInstance().getTimeInMillis()/1000);
-		String restAction = CatalogTitlesWebConfig.getInstance().getHttpTypeName();
-		String consumerKey = NetflixConfig.CONSUMER_KEY;
-		String signatureMethod = NetflixUtils.HMACSHA1_NAME_WEB;
-		String urlBase = MessageFormat.format(NetflixServiceHelper.URL_CAST, movieId+"");
-		
-		ParameterMap params = new ParameterMap();
-        params.put("oauth_consumer_key", consumerKey);
-        params.put("oauth_nonce", nonce);
-        params.put("oauth_signature_method", signatureMethod);
-		params.put("oauth_timestamp", String.valueOf(timestamp));
-		
-		try {
-			String signature = NetflixUtils.getOAuthSignature(restAction, urlBase, params);
-			int requestId = this.getCast(TYPE_NETWORK, dataListener, movieId, consumerKey, nonce, signatureMethod, timestamp, signature, DataLibRequest.OPTION_NO_OPTION);
-			requestIds.add(requestId);
-			
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void getDirectors(int movieId, OnDataListener dataListener, ArrayList<Integer> requestIds) {
-		
-		String nonce = NetflixUtils.getNonce();
-		int timestamp = (int) (Calendar.getInstance().getTimeInMillis()/1000);
-		String restAction = CatalogTitlesWebConfig.getInstance().getHttpTypeName();
-		String consumerKey = NetflixConfig.CONSUMER_KEY;
-		String signatureMethod = NetflixUtils.HMACSHA1_NAME_WEB;
-		String urlBase = MessageFormat.format(NetflixServiceHelper.URL_DIRECTORS, movieId+"");
-		
-		ParameterMap params = new ParameterMap();
-        params.put("oauth_consumer_key", consumerKey);
-        params.put("oauth_nonce", nonce);
-        params.put("oauth_signature_method", signatureMethod);
-		params.put("oauth_timestamp", String.valueOf(timestamp));
-		
-		try {
-			String signature = NetflixUtils.getOAuthSignature(restAction, urlBase, params);
-			int requestId = this.getDirectors(TYPE_NETWORK, dataListener, movieId, consumerKey, nonce, signatureMethod, timestamp, signature, DataLibRequest.OPTION_NO_OPTION);
-			requestIds.add(requestId);
-			
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void getMovie(int movieId, OnDataListener dataListener, ArrayList<Integer> requestIds) {
-		
-		String nonce = NetflixUtils.getNonce();
-		int timestamp = (int) (Calendar.getInstance().getTimeInMillis()/1000);
-		String restAction = CatalogTitlesWebConfig.getInstance().getHttpTypeName();
-		String consumerKey = NetflixConfig.CONSUMER_KEY;
-		String signatureMethod = NetflixUtils.HMACSHA1_NAME_WEB;
-		String urlBase = MessageFormat.format(NetflixServiceHelper.URL_MOVIE, movieId+"");
-		
-		ParameterMap params = new ParameterMap();
-        params.put("oauth_consumer_key", consumerKey);
-        params.put("oauth_nonce", nonce);
-        params.put("oauth_signature_method", signatureMethod);
-		params.put("oauth_timestamp", String.valueOf(timestamp));
-		
-		try {
-			String signature = NetflixUtils.getOAuthSignature(restAction, urlBase, params);
-			int requestId = this.getMovie(TYPE_NETWORK, dataListener, movieId, consumerKey, nonce, signatureMethod, timestamp, signature, DataLibRequest.OPTION_NO_OPTION);
-			requestIds.add(requestId);
-			
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-	}
-	
-
-	public void getSynopsis(int movieId, OnDataListener dataListener, ArrayList<Integer> requestIds) {
-		
-		String nonce = NetflixUtils.getNonce();
-		int timestamp = (int) (Calendar.getInstance().getTimeInMillis()/1000);
-		String restAction = CatalogTitlesWebConfig.getInstance().getHttpTypeName();
-		String consumerKey = NetflixConfig.CONSUMER_KEY;
-		String signatureMethod = NetflixUtils.HMACSHA1_NAME_WEB;
-		String urlBase = MessageFormat.format(NetflixServiceHelper.URL_SYNOPSIS, movieId+"");
-		
-		ParameterMap params = new ParameterMap();
-        params.put("oauth_consumer_key", consumerKey);
-        params.put("oauth_nonce", nonce);
-        params.put("oauth_signature_method", signatureMethod);
-		params.put("oauth_timestamp", String.valueOf(timestamp));
-		
-		try {
-			String signature = NetflixUtils.getOAuthSignature(restAction, urlBase, params);
-			int requestId = this.getSynopsis(TYPE_NETWORK, dataListener, movieId, consumerKey, nonce, signatureMethod, timestamp, signature, DataLibRequest.OPTION_NO_OPTION);
-			requestIds.add(requestId);
-			
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-	}
-
-	
-	public void getFilmography(int personId, OnDataListener dataListener, ArrayList<Integer> requestIds) {
-		
-		String nonce = NetflixUtils.getNonce();
-		int timestamp = (int) (Calendar.getInstance().getTimeInMillis()/1000);
-		String restAction = CatalogTitlesWebConfig.getInstance().getHttpTypeName();
-		String consumerKey = NetflixConfig.CONSUMER_KEY;
-		String signatureMethod = NetflixUtils.HMACSHA1_NAME_WEB;
-		String urlBase = MessageFormat.format(NetflixServiceHelper.URL_FILMOGRAPHY, personId+"");
-		
-		ParameterMap params = new ParameterMap();
-        params.put("oauth_consumer_key", consumerKey);
-        params.put("oauth_nonce", nonce);
-        params.put("oauth_signature_method", signatureMethod);
-		params.put("oauth_timestamp", String.valueOf(timestamp));
-		
-		try {
-			String signature = NetflixUtils.getOAuthSignature(restAction, urlBase, params);
-			int requestId = this.getFilmography(TYPE_NETWORK, dataListener, personId, consumerKey, nonce, signatureMethod, timestamp, signature, DataLibRequest.OPTION_NO_OPTION);
-			requestIds.add(requestId);
-			
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-	}
-
-
-	public void getPeople(int personId, OnDataListener dataListener, ArrayList<Integer> requestIds) {
-		
-		String nonce = NetflixUtils.getNonce();
-		int timestamp = (int) (Calendar.getInstance().getTimeInMillis()/1000);
-		String restAction = CatalogTitlesWebConfig.getInstance().getHttpTypeName();
-		String consumerKey = NetflixConfig.CONSUMER_KEY;
-		String signatureMethod = NetflixUtils.HMACSHA1_NAME_WEB;
-		String urlBase = MessageFormat.format(NetflixServiceHelper.URL_PEOPLE, personId+"");
-		
-		ParameterMap params = new ParameterMap();
-        params.put("oauth_consumer_key", consumerKey);
-        params.put("oauth_nonce", nonce);
-        params.put("oauth_signature_method", signatureMethod);
-		params.put("oauth_timestamp", String.valueOf(timestamp));
-		
-		try {
-			String signature = NetflixUtils.getOAuthSignature(restAction, urlBase, params);
-			int requestId = this.getPeople(TYPE_NETWORK, dataListener, personId, consumerKey, nonce, signatureMethod, timestamp, signature, DataLibRequest.OPTION_NO_OPTION);
-			requestIds.add(requestId);
-			
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-	}
-
-	
-	
-//End of user code
+// You can add here your personal content
+// DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 
 }

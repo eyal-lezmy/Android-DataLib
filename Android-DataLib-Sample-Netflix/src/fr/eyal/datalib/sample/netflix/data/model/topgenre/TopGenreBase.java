@@ -1,4 +1,4 @@
-package fr.eyal.datalib.sample.netflix.data.model.newreleases;
+package fr.eyal.datalib.sample.netflix.data.model.topgenre;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,9 +19,9 @@ import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.lib.util.Out;
 import fr.eyal.datalib.sample.netflix.data.model.NetflixProvider;
 
-public class NewReleasesBase extends ResponseBusinessObjectDAO {
+public class TopGenreBase extends ResponseBusinessObjectDAO {
 
-    private static final String TAG = NewReleasesBase.class.getSimpleName();
+    private static final String TAG = TopGenreBase.class.getSimpleName();
 
 	//list of attributes
 	public String attrVersion = "";
@@ -35,17 +35,17 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 	
 	
 	//list of childs
-	public ArrayList<ItemNewRelease> itemNewRelease;
+	public ArrayList<ItemTopGenre> itemTopGenre;
 
-    public NewReleasesBase() {
+    public TopGenreBase() {
         super();
     }
 
-    public NewReleasesBase(final long id) {
+    public TopGenreBase(final long id) {
         super(id);
     }
 
-    public NewReleasesBase(final String url) {
+    public TopGenreBase(final String url) {
         super(url);
     }
 
@@ -56,14 +56,14 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
     /**
      * Constants used with a ContentProvider's access
      */
-    public static final String CONTENT_PATH = "newreleases";
+    public static final String CONTENT_PATH = "topgenre";
     public static final String CONTENT_URL = NetflixProvider.PROVIDER_PREFIX + NetflixProvider.AUTHORITY + "/" + CONTENT_PATH;
     public static final Uri CONTENT_URI = Uri.parse(CONTENT_URL);
 
     /**
      * SQL databases table's name
      */
-    public static String DATABASE_TABLE_NAME = "newreleases";
+    public static String DATABASE_TABLE_NAME = "topgenre";
 
     /**
      * SQL database table's fields names
@@ -247,7 +247,7 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
     @Override
     protected void fillObjectFromCursor(final Cursor cursor) {
 		// we initialize the childs tabs
-        	itemNewRelease = new ArrayList<ItemNewRelease>();
+        	itemTopGenre = new ArrayList<ItemTopGenre>();
 
 		// if we have a content
         if (!cursor.isClosed() && !cursor.isAfterLast()) {
@@ -298,8 +298,8 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 
 	@Override
 	protected int updateChildrenId(long[] ids, int index, int parentIndex) {
-        for (final ItemNewRelease itemNewReleaseElement : itemNewRelease) {
-            index = itemNewReleaseElement.updateId(ids, index, parentIndex);
+        for (final ItemTopGenre itemTopGenreElement : itemTopGenre) {
+            index = itemTopGenreElement.updateId(ids, index, parentIndex);
         }
 
 		return index;
@@ -333,16 +333,16 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch, final int previousResult) {
-		for (final ItemNewRelease itemNewReleaseElement : itemNewRelease) {
-            itemNewReleaseElement.addIntoDatabase(batch, ItemNewRelease.CONTENT_URI, ItemNewRelease.FIELD__PARENT_ID, previousResult);
+		for (final ItemTopGenre itemTopGenreElement : itemTopGenre) {
+            itemTopGenreElement.addIntoDatabase(batch, ItemTopGenre.CONTENT_URI, ItemTopGenre.FIELD__PARENT_ID, previousResult);
         }
     }
 
     @Override
     public void addChildsIntoDatabase(final ArrayList<ContentProviderOperation> batch) {
-		for (final ItemNewRelease itemNewReleaseElement : itemNewRelease) {
-            itemNewReleaseElement._parentId = _id;
-            itemNewReleaseElement.addIntoDatabase(batch, ItemNewRelease.CONTENT_URI);
+		for (final ItemTopGenre itemTopGenreElement : itemTopGenre) {
+            itemTopGenreElement._parentId = _id;
+            itemTopGenreElement.addIntoDatabase(batch, ItemTopGenre.CONTENT_URI);
         }
     }
 
@@ -350,16 +350,16 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
     public void deleteChildsFromDatabase(final ArrayList<ContentProviderOperation> batch) {
         Out.d(TAG, "deleting childs of " + _id);
         // we first remove all the childs of the childs of the object
-        for (final ItemNewRelease itemNewReleaseElement : itemNewRelease) {
-            itemNewReleaseElement.deleteChildsFromDatabase(batch);
+        for (final ItemTopGenre itemTopGenreElement : itemTopGenre) {
+            itemTopGenreElement.deleteChildsFromDatabase(batch);
         }
 
 		String whereClause = "";
 		final String[] argsClause = { _id + "" };
 
         // we delete all the child entries
-        whereClause = ItemNewRelease.FIELD__PARENT_ID + "=?"; // itemnewrelease_id=?
-        batch.add(ContentProviderOperation.newDelete(ItemNewRelease.CONTENT_URI)
+        whereClause = ItemTopGenre.FIELD__PARENT_ID + "=?"; // itemtopgenre_id=?
+        batch.add(ContentProviderOperation.newDelete(ItemTopGenre.CONTENT_URI)
                 .withSelection(whereClause, argsClause)
                 .build());
 
@@ -375,19 +375,19 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
         Cursor cursor;
 
         // we define the access conditions to the objects
-        columns = new String[ItemNewRelease.DATABASE_TABLE_FIELDS_NAMES.length];
-        for (int i = 0; i < ItemNewRelease.DATABASE_TABLE_FIELDS_NAMES.length; i++) {
-            columns[i] = ItemNewRelease.DATABASE_TABLE_FIELDS_NAMES[i];
+        columns = new String[ItemTopGenre.DATABASE_TABLE_FIELDS_NAMES.length];
+        for (int i = 0; i < ItemTopGenre.DATABASE_TABLE_FIELDS_NAMES.length; i++) {
+            columns[i] = ItemTopGenre.DATABASE_TABLE_FIELDS_NAMES[i];
         }
 
-        where = ItemNewRelease.FIELD__PARENT_ID + "=?";
+        where = ItemTopGenre.FIELD__PARENT_ID + "=?";
         args = new String[1];
         args[0] = _id + "";
 
         // we check the existence of the entry inside the database
-        cursor = mResolver.query(ItemNewRelease.CONTENT_URI,
+        cursor = mResolver.query(ItemTopGenre.CONTENT_URI,
                 columns, // all the columns of the object
-                where, // itemnewrelease_id=?
+                where, // itemtopgenre_id=?
                 args, // id of the object
                 null);
 
@@ -398,9 +398,9 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 
             do {
                 // we create and then fill the item with the Cursor
-                final ItemNewRelease itemItemNewRelease = new ItemNewRelease();
-                itemItemNewRelease.fillObjectFromCursor(cursor);
-                itemNewRelease.add(itemItemNewRelease); // we add a new object to the list
+                final ItemTopGenre itemItemTopGenre = new ItemTopGenre();
+                itemItemTopGenre.fillObjectFromCursor(cursor);
+                itemTopGenre.add(itemItemTopGenre); // we add a new object to the list
 
             } while (cursor.moveToNext());
         }
@@ -408,7 +408,7 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
     }
 
 	/**
-     * This function build an array of {@link NewReleasesBase} thanks to a Cursor
+     * This function build an array of {@link TopGenreBase} thanks to a Cursor
      * object received from the database.
      * 
      * @param c The cursor object.
@@ -418,16 +418,16 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
      *         of the Cursor. If the Cursor is empty, it returns an empty array.
      *  	   <b>The result of this function is return as ArrayList<?>. It has
      *  	   to be casted into the expected class to be useful.</b>
-     *  	   Ex: Cast to ArrayList<{@link NewReleases}> if you want it as {@link NewReleases}
+     *  	   Ex: Cast to ArrayList<{@link TopGenre}> if you want it as {@link TopGenre}
      */
     public static ArrayList<?> buildArrayFromCursor(final Cursor c, final boolean join) {
 
-        final ArrayList<NewReleasesBase> result = new ArrayList<NewReleasesBase>();
+        final ArrayList<TopGenreBase> result = new ArrayList<TopGenreBase>();
 
         if (c.moveToFirst()) {
             do {
                 // we create and fill the item
-                final NewReleasesBase newObject = new NewReleasesBase();
+                final TopGenreBase newObject = new TopGenreBase();
                 newObject.fillObjectFromCursor(c);
                 // if it's asked we fill the childs of the item
                 if (join) {
@@ -446,15 +446,15 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
      * PARCELABLE MANAGMENT
      */
 
-	public static final Parcelable.Creator<NewReleasesBase> CREATOR = new Parcelable.Creator<NewReleasesBase>() {
+	public static final Parcelable.Creator<TopGenreBase> CREATOR = new Parcelable.Creator<TopGenreBase>() {
 	    @Override
-	    public NewReleasesBase createFromParcel(final Parcel in) {
-	        return new NewReleasesBase(in);
+	    public TopGenreBase createFromParcel(final Parcel in) {
+	        return new TopGenreBase(in);
 	    }
 	
 	    @Override
-	    public NewReleasesBase[] newArray(final int size) {
-	        return new NewReleasesBase[size];
+	    public TopGenreBase[] newArray(final int size) {
+	        return new TopGenreBase[size];
 	    }
 	};
 	
@@ -484,10 +484,10 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 		dest.writeString(language);
 		
 		//list of childs
-		dest.writeParcelableArray(itemNewRelease.toArray(new ItemNewRelease[itemNewRelease.size()]), 0);
+		dest.writeParcelableArray(itemTopGenre.toArray(new ItemTopGenre[itemTopGenre.size()]), 0);
 	}
 
-	public NewReleasesBase(final Parcel in) {
+	public TopGenreBase(final Parcel in) {
 		// ResponseBusinessObject DAO
 		_ttl = in.readLong();
 		_url = in.readString();
@@ -509,10 +509,10 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 		
 		//list of children
 		Parcelable[] items; 
-		items = in.readParcelableArray(ItemNewRelease.class.getClassLoader());
-		itemNewRelease = new ArrayList<ItemNewRelease>();
+		items = in.readParcelableArray(ItemTopGenre.class.getClassLoader());
+		itemTopGenre = new ArrayList<ItemTopGenre>();
 		for (final Parcelable parcelable : items) {
-		    itemNewRelease.add((ItemNewRelease) parcelable);
+		    itemTopGenre.add((ItemTopGenre) parcelable);
 		}
 		
 	}    

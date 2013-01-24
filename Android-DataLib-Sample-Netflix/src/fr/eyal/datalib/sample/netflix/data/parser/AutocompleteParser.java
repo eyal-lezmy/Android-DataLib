@@ -21,10 +21,10 @@ public class AutocompleteParser extends DefaultHandler implements GenericHandler
     public static final int UNKNOWN = -1;
 
 	//Autocomplete
-	private static final int H1 = 13;
-	private static final int AUTOCOMPLETE = 14;
-	private static final int AUTOCOMPLETE_AUTOCOMPLETE_ITEM = 15;
-	private static final int AUTOCOMPLETE_AUTOCOMPLETE_ITEM_TITLE = 16;
+	private static final int H1 = 38;
+	private static final int AUTOCOMPLETE = 39;
+	private static final int AUTOCOMPLETE_AUTOCOMPLETE_ITEM = 40;
+	private static final int AUTOCOMPLETE_AUTOCOMPLETE_ITEM_TITLE = 41;
     
 	private int mState = UNKNOWN;
 

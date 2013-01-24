@@ -7,6 +7,9 @@ import fr.eyal.lib.data.processor.Processor;
 import fr.eyal.lib.data.service.DataLibService;
 import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.datalib.sample.netflix.data.config.NewReleasesWebConfig;
+import fr.eyal.datalib.sample.netflix.data.config.MovieImageWebConfig;
+import fr.eyal.datalib.sample.netflix.data.config.Top100WebConfig;
+import fr.eyal.datalib.sample.netflix.data.config.TopGenreWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.AutocompleteWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.CatalogTitlesWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.PeopleWebConfig;
@@ -16,6 +19,9 @@ import fr.eyal.datalib.sample.netflix.data.config.SynopsisWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.CastWebConfig;
 import fr.eyal.datalib.sample.netflix.data.config.DirectorsWebConfig;
 import fr.eyal.datalib.sample.netflix.data.parser.NewReleasesParser;
+import fr.eyal.datalib.sample.netflix.data.parser.MovieImageParser;
+import fr.eyal.datalib.sample.netflix.data.parser.Top100Parser;
+import fr.eyal.datalib.sample.netflix.data.parser.TopGenreParser;
 import fr.eyal.datalib.sample.netflix.data.parser.AutocompleteParser;
 import fr.eyal.datalib.sample.netflix.data.parser.CatalogTitlesParser;
 import fr.eyal.datalib.sample.netflix.data.parser.PeopleParser;
@@ -32,14 +38,17 @@ public class NetflixService extends DataLibService {
 
     //different Service's possible actions
 	public static final int WEBSERVICE_NEWRELEASES = 1; 
-	public static final int WEBSERVICE_AUTOCOMPLETE = 2; 
-	public static final int WEBSERVICE_CATALOGTITLES = 3; 
-	public static final int WEBSERVICE_PEOPLE = 4; 
-	public static final int WEBSERVICE_FILMOGRAPHY = 5; 
-	public static final int WEBSERVICE_MOVIE = 6; 
-	public static final int WEBSERVICE_SYNOPSIS = 7; 
-	public static final int WEBSERVICE_CAST = 8; 
-	public static final int WEBSERVICE_DIRECTORS = 9;
+	public static final int WEBSERVICE_MOVIEIMAGE = 2; 
+	public static final int WEBSERVICE_TOP100 = 3; 
+	public static final int WEBSERVICE_TOPGENRE = 4; 
+	public static final int WEBSERVICE_AUTOCOMPLETE = 5; 
+	public static final int WEBSERVICE_CATALOGTITLES = 6; 
+	public static final int WEBSERVICE_PEOPLE = 7; 
+	public static final int WEBSERVICE_FILMOGRAPHY = 8; 
+	public static final int WEBSERVICE_MOVIE = 9; 
+	public static final int WEBSERVICE_SYNOPSIS = 10; 
+	public static final int WEBSERVICE_CAST = 11; 
+	public static final int WEBSERVICE_DIRECTORS = 12;
 
     public NetflixService() {
         super();
@@ -57,6 +66,18 @@ public class NetflixService extends DataLibService {
 			case WEBSERVICE_NEWRELEASES:
 			    NewReleasesWebConfig.applyToRequest(request, NewReleasesWebConfig.getInstance());
 			    handler = new NewReleasesParser();
+			    break;
+			case WEBSERVICE_MOVIEIMAGE:
+			    MovieImageWebConfig.applyToRequest(request, MovieImageWebConfig.getInstance());
+			    handler = new MovieImageParser();
+			    break;
+			case WEBSERVICE_TOP100:
+			    Top100WebConfig.applyToRequest(request, Top100WebConfig.getInstance());
+			    handler = new Top100Parser();
+			    break;
+			case WEBSERVICE_TOPGENRE:
+			    TopGenreWebConfig.applyToRequest(request, TopGenreWebConfig.getInstance());
+			    handler = new TopGenreParser();
 			    break;
 			case WEBSERVICE_AUTOCOMPLETE:
 			    AutocompleteWebConfig.applyToRequest(request, AutocompleteWebConfig.getInstance());

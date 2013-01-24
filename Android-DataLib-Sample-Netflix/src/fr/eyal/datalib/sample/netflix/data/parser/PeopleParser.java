@@ -21,11 +21,11 @@ public class PeopleParser extends DefaultHandler implements GenericHandler {
     public static final int UNKNOWN = -1;
 
 	//People
-	private static final int H1 = 33;
-	private static final int PERSON = 34;
-	private static final int PERSON_ID = 35;
-	private static final int PERSON_NAME = 36;
-	private static final int PERSON_LINK = 37;
+	private static final int H1 = 58;
+	private static final int PERSON = 59;
+	private static final int PERSON_ID = 60;
+	private static final int PERSON_NAME = 61;
+	private static final int PERSON_LINK = 62;
     
 	private int mState = UNKNOWN;
 

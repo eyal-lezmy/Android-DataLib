@@ -2,24 +2,24 @@ package fr.eyal.datalib.sample.netflix.data.config;
 
 import fr.eyal.lib.data.service.DataLibWebConfig;
 import fr.eyal.lib.data.service.model.DataLibRequest;
-// Start of user code MoviesConfig imports
+// Start of user code Top100Config imports
 // You can add here your personal imports
 // DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 
-public class MoviesWebConfig extends DataLibWebConfig {
+public class Top100WebConfig extends DataLibWebConfig {
 
-    protected static MoviesWebConfig sInstance; //Singleton of the WebConfig
+    protected static Top100WebConfig sInstance; //Singleton of the WebConfig
 
-    public static MoviesWebConfig getInstance() {
-        synchronized (MoviesWebConfig.class) {
+    public static Top100WebConfig getInstance() {
+        synchronized (Top100WebConfig.class) {
 	        if (sInstance == null) {
-	            sInstance = new MoviesWebConfig();
+	            sInstance = new Top100WebConfig();
 	        }
 		}
-        return (MoviesWebConfig) sInstance;
+        return (Top100WebConfig) sInstance;
     }
 
-    private MoviesWebConfig() {}
+    private Top100WebConfig() {}
 
     private int httpType = DataLibRequest.HTTP_REST_GET;
 	private int requestOptions = DataLibRequest.OPTION_NO_OPTION;
@@ -44,7 +44,7 @@ public class MoviesWebConfig extends DataLibWebConfig {
         return requestOptions;
     }
 
-// Start of user code MoviesConfig
+// Start of user code Top100Config
 // You can add here your personal content
 // DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 

@@ -4,6 +4,8 @@ import android.content.UriMatcher;
 import android.net.Uri;
 import fr.eyal.lib.data.model.provider.BusinessObjectProvider;
 import fr.eyal.datalib.sample.netflix.data.model.newreleases.*;
+import fr.eyal.datalib.sample.netflix.data.model.top100.*;
+import fr.eyal.datalib.sample.netflix.data.model.topgenre.*;
 import fr.eyal.datalib.sample.netflix.data.model.people.*;
 import fr.eyal.datalib.sample.netflix.data.model.filmography.*;
 import fr.eyal.datalib.sample.netflix.data.model.movie.*;
@@ -23,39 +25,49 @@ public class NetflixProvider extends BusinessObjectProvider {
      * Tables' Codes
      */
 	public static final int CODE_NEWRELEASES = 0;
-	public static final int CODE_NEWRELEASES_ITEM = 8;
+	public static final int CODE_NEWRELEASES_ITEMNEWRELEASE = 8;
 	
-	public static final int CODE_PEOPLE = 32;
-	public static final int CODE_PEOPLE_PEOPLELINK = 37;
+	public static final int CODE_TOP100 = 13;
+	public static final int CODE_TOP100_ITEMTOP100 = 21;
 	
-	public static final int CODE_FILMOGRAPHY = 38;
-	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM = 41;
-	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM_FILMOGRAPHYLINK = 45;
-	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM_FILMOGRAPHYCATEGORY = 47;
+	public static final int CODE_TOPGENRE = 25;
+	public static final int CODE_TOPGENRE_ITEMTOPGENRE = 33;
 	
-	public static final int CODE_MOVIE = 50;
-	public static final int CODE_MOVIE_MOVIELINK = 56;
-	public static final int CODE_MOVIE_MOVIECATEGORY = 58;
+	public static final int CODE_PEOPLE = 57;
+	public static final int CODE_PEOPLE_PEOPLELINK = 62;
 	
-	public static final int CODE_SYNOPSIS = 61;
+	public static final int CODE_FILMOGRAPHY = 63;
+	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM = 66;
+	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM_FILMOGRAPHYLINK = 70;
+	public static final int CODE_FILMOGRAPHY_FILMOGRAPHY_ITEM_FILMOGRAPHYCATEGORY = 72;
 	
-	public static final int CODE_CAST = 64;
-	public static final int CODE_CAST_CASTPERSON = 67;
-	public static final int CODE_CAST_CASTPERSON_CASTLINK = 71;
+	public static final int CODE_MOVIE = 75;
+	public static final int CODE_MOVIE_MOVIELINK = 81;
+	public static final int CODE_MOVIE_MOVIECATEGORY = 83;
 	
-	public static final int CODE_DIRECTORS = 72;
-	public static final int CODE_DIRECTORS_DIRECTOR = 75;
-	public static final int CODE_DIRECTORS_DIRECTOR_DIRECTORLINK = 79;
+	public static final int CODE_SYNOPSIS = 86;
+	
+	public static final int CODE_CAST = 89;
+	public static final int CODE_CAST_CASTPERSON = 92;
+	public static final int CODE_CAST_CASTPERSON_CASTLINK = 96;
+	
+	public static final int CODE_DIRECTORS = 97;
+	public static final int CODE_DIRECTORS_DIRECTOR = 100;
+	public static final int CODE_DIRECTORS_DIRECTOR_DIRECTORLINK = 104;
 
     static {
 
         DATABASE_NAME = "datalib_cache";
-        DATABASE_VERSION = 4;
+        DATABASE_VERSION = 5;
 
         //Tables' names list
         String[] LOCAL_DATABASE_TABLES_NAMES = {
 				NewReleases.DATABASE_TABLE_NAME,
-				Item.DATABASE_TABLE_NAME,
+				ItemNewRelease.DATABASE_TABLE_NAME,
+				Top100.DATABASE_TABLE_NAME,
+				ItemTop100.DATABASE_TABLE_NAME,
+				TopGenre.DATABASE_TABLE_NAME,
+				ItemTopGenre.DATABASE_TABLE_NAME,
 				People.DATABASE_TABLE_NAME,
 				PeopleLink.DATABASE_TABLE_NAME,
 				Filmography.DATABASE_TABLE_NAME,
@@ -78,7 +90,11 @@ public class NetflixProvider extends BusinessObjectProvider {
         //Tables' fields' names list
         String[][] LOCAL_DATABASE_TABLES_FIELDS_NAMES = {
                 NewReleases.DATABASE_TABLE_FIELDS_NAMES,
-                Item.DATABASE_TABLE_FIELDS_NAMES,
+                ItemNewRelease.DATABASE_TABLE_FIELDS_NAMES,
+                Top100.DATABASE_TABLE_FIELDS_NAMES,
+                ItemTop100.DATABASE_TABLE_FIELDS_NAMES,
+                TopGenre.DATABASE_TABLE_FIELDS_NAMES,
+                ItemTopGenre.DATABASE_TABLE_FIELDS_NAMES,
                 People.DATABASE_TABLE_FIELDS_NAMES,
                 PeopleLink.DATABASE_TABLE_FIELDS_NAMES,
                 Filmography.DATABASE_TABLE_FIELDS_NAMES,
@@ -101,7 +117,11 @@ public class NetflixProvider extends BusinessObjectProvider {
         //Tables' fields' names list
         String[] LOCAL_CREATE_TABLES = {
 				NewReleases.CREATE_TABLE,
-				Item.CREATE_TABLE,
+				ItemNewRelease.CREATE_TABLE,
+				Top100.CREATE_TABLE,
+				ItemTop100.CREATE_TABLE,
+				TopGenre.CREATE_TABLE,
+				ItemTopGenre.CREATE_TABLE,
 				People.CREATE_TABLE,
 				PeopleLink.CREATE_TABLE,
 				Filmography.CREATE_TABLE,
@@ -126,7 +146,11 @@ public class NetflixProvider extends BusinessObjectProvider {
 
         //We add each URIs into the matcher
 		matcher.addURI(AUTHORITY, NewReleases.CONTENT_PATH, CODE_NEWRELEASES);
-		matcher.addURI(AUTHORITY, Item.CONTENT_PATH, CODE_NEWRELEASES_ITEM);
+		matcher.addURI(AUTHORITY, ItemNewRelease.CONTENT_PATH, CODE_NEWRELEASES_ITEMNEWRELEASE);
+		matcher.addURI(AUTHORITY, Top100.CONTENT_PATH, CODE_TOP100);
+		matcher.addURI(AUTHORITY, ItemTop100.CONTENT_PATH, CODE_TOP100_ITEMTOP100);
+		matcher.addURI(AUTHORITY, TopGenre.CONTENT_PATH, CODE_TOPGENRE);
+		matcher.addURI(AUTHORITY, ItemTopGenre.CONTENT_PATH, CODE_TOPGENRE_ITEMTOPGENRE);
 		matcher.addURI(AUTHORITY, People.CONTENT_PATH, CODE_PEOPLE);
 		matcher.addURI(AUTHORITY, PeopleLink.CONTENT_PATH, CODE_PEOPLE_PEOPLELINK);
 		matcher.addURI(AUTHORITY, Filmography.CONTENT_PATH, CODE_FILMOGRAPHY);
@@ -150,8 +174,18 @@ public class NetflixProvider extends BusinessObjectProvider {
         switch (match) {
 			case CODE_NEWRELEASES:
 			    return NewReleases.DATABASE_TABLE_NAME;
-			case CODE_NEWRELEASES_ITEM:
-			    return Item.DATABASE_TABLE_NAME;
+			case CODE_NEWRELEASES_ITEMNEWRELEASE:
+			    return ItemNewRelease.DATABASE_TABLE_NAME;
+			
+			case CODE_TOP100:
+			    return Top100.DATABASE_TABLE_NAME;
+			case CODE_TOP100_ITEMTOP100:
+			    return ItemTop100.DATABASE_TABLE_NAME;
+			
+			case CODE_TOPGENRE:
+			    return TopGenre.DATABASE_TABLE_NAME;
+			case CODE_TOPGENRE_ITEMTOPGENRE:
+			    return ItemTopGenre.DATABASE_TABLE_NAME;
 			
 			case CODE_PEOPLE:
 			    return People.DATABASE_TABLE_NAME;
@@ -202,8 +236,19 @@ public class NetflixProvider extends BusinessObjectProvider {
         switch (sUriMatcher.match(uri)) {
 			case CODE_NEWRELEASES:
 			    return NewReleases.CONTENT_URL;
-			case CODE_NEWRELEASES_ITEM:
-			    return Item.CONTENT_URL;
+			case CODE_NEWRELEASES_ITEMNEWRELEASE:
+			    return ItemNewRelease.CONTENT_URL;
+			
+			
+			case CODE_TOP100:
+			    return Top100.CONTENT_URL;
+			case CODE_TOP100_ITEMTOP100:
+			    return ItemTop100.CONTENT_URL;
+			
+			case CODE_TOPGENRE:
+			    return TopGenre.CONTENT_URL;
+			case CODE_TOPGENRE_ITEMTOPGENRE:
+			    return ItemTopGenre.CONTENT_URL;
 			
 			
 			

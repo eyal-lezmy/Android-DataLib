@@ -8,45 +8,45 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.parser.GenericHandler;
-import fr.eyal.datalib.sample.netflix.data.model.newreleases.*;
-// Start of user code NewReleasesParser imports
+import fr.eyal.datalib.sample.netflix.data.model.topgenre.*;
+// Start of user code TopGenreParser imports
 // You can add here your personal imports
 // DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 
 
-public class NewReleasesParser extends DefaultHandler implements GenericHandler {
+public class TopGenreParser extends DefaultHandler implements GenericHandler {
 
-    private static final String TAG = NewReleasesParser.class.getSimpleName();
+    private static final String TAG = TopGenreParser.class.getSimpleName();
 
     public static final int UNKNOWN = -1;
 
-	//NewReleases
-	private static final int RSS = 1;
-	private static final int RSS_CHANNEL = 2;
-	private static final int RSS_CHANNEL_TITLE = 3;
-	private static final int RSS_CHANNEL_TTL = 4;
-	private static final int RSS_CHANNEL_LINK = 5;
-	private static final int RSS_CHANNEL_DESCRIPTION = 6;
-	private static final int RSS_CHANNEL_LANGUAGE = 7;
-	private static final int RSS_CHANNEL_ITEM = 8;
-	private static final int RSS_CHANNEL_ITEM_TITLE = 9;
-	private static final int RSS_CHANNEL_ITEM_LINK = 10;
-	private static final int RSS_CHANNEL_ITEM_DESCRIPTION = 11;
+	//TopGenre
+	private static final int RSS = 26;
+	private static final int RSS_CHANNEL = 27;
+	private static final int RSS_CHANNEL_TITLE = 28;
+	private static final int RSS_CHANNEL_TTL = 29;
+	private static final int RSS_CHANNEL_LINK = 30;
+	private static final int RSS_CHANNEL_DESCRIPTION = 31;
+	private static final int RSS_CHANNEL_LANGUAGE = 32;
+	private static final int RSS_CHANNEL_ITEM = 33;
+	private static final int RSS_CHANNEL_ITEM_TITLE = 34;
+	private static final int RSS_CHANNEL_ITEM_LINK = 35;
+	private static final int RSS_CHANNEL_ITEM_DESCRIPTION = 36;
     
 	private int mState = UNKNOWN;
 
     private final StringBuilder mBuilder = new StringBuilder();
-	private NewReleases newReleases;
-	private ItemNewRelease itemNewRelease;
+	private TopGenre topGenre;
+	private ItemTopGenre itemTopGenre;
 
-    public NewReleasesParser() {
-	newReleases = new NewReleases();
-	newReleases.itemNewRelease = new ArrayList<ItemNewRelease>();
+    public TopGenreParser() {
+	topGenre = new TopGenre();
+	topGenre.itemTopGenre = new ArrayList<ItemTopGenre>();
 	}
 
     @Override
     public ResponseBusinessObject getParsedData() {
-        return newReleases;
+        return topGenre;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class NewReleasesParser extends DefaultHandler implements GenericHandler 
 			    }
 				else if (qName.equals("item")) {
 			        mState = RSS_CHANNEL_ITEM;
-			        itemNewRelease = new ItemNewRelease();
+			        itemTopGenre = new ItemTopGenre();
 					
 			    }
 			    break;
@@ -148,56 +148,56 @@ public class NewReleasesParser extends DefaultHandler implements GenericHandler 
 			case RSS_CHANNEL_TITLE:
 			    if (qName.equals("title")) {
 			        mState = RSS_CHANNEL;
-					newReleases.title = mBuilder.toString();
+					topGenre.title = mBuilder.toString();
 			    }
 			    break;
 			case RSS_CHANNEL_TTL:
 			    if (qName.equals("ttl")) {
 			        mState = RSS_CHANNEL;
-					newReleases.ttl = Integer.parseInt(mBuilder.toString());
+					topGenre.ttl = Integer.parseInt(mBuilder.toString());
 			    }
 			    break;
 			case RSS_CHANNEL_LINK:
 			    if (qName.equals("link")) {
 			        mState = RSS_CHANNEL;
-					newReleases.link = mBuilder.toString();
+					topGenre.link = mBuilder.toString();
 			    }
 			    break;
 			case RSS_CHANNEL_DESCRIPTION:
 			    if (qName.equals("description")) {
 			        mState = RSS_CHANNEL;
-					newReleases.description = mBuilder.toString();
+					topGenre.description = mBuilder.toString();
 			    }
 			    break;
 			case RSS_CHANNEL_LANGUAGE:
 			    if (qName.equals("language")) {
 			        mState = RSS_CHANNEL;
-					newReleases.language = mBuilder.toString();
+					topGenre.language = mBuilder.toString();
 			    }
 			    break;
 			case RSS_CHANNEL_ITEM:
 			    if (qName.equals("item")) {
 			        mState = RSS_CHANNEL;
-					newReleases.itemNewRelease.add(itemNewRelease);
+					topGenre.itemTopGenre.add(itemTopGenre);
 			    }
 			    break;
 			
 			case RSS_CHANNEL_ITEM_TITLE:
 			    if (qName.equals("title")) {
 			        mState = RSS_CHANNEL_ITEM;
-					itemNewRelease.title = mBuilder.toString();
+					itemTopGenre.title = mBuilder.toString();
 			    }
 			    break;
 			case RSS_CHANNEL_ITEM_LINK:
 			    if (qName.equals("link")) {
 			        mState = RSS_CHANNEL_ITEM;
-					itemNewRelease.link = mBuilder.toString();
+					itemTopGenre.link = mBuilder.toString();
 			    }
 			    break;
 			case RSS_CHANNEL_ITEM_DESCRIPTION:
 			    if (qName.equals("description")) {
 			        mState = RSS_CHANNEL_ITEM;
-					itemNewRelease.description = mBuilder.toString();
+					itemTopGenre.description = mBuilder.toString();
 			    }
 			    break;
 
@@ -212,7 +212,7 @@ public class NewReleasesParser extends DefaultHandler implements GenericHandler 
         // TODO Auto-generated method stub
     }
 
-// Start of user code NewReleasesParser
+// Start of user code TopGenreParser
 // You can add here your personal content
 // DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code
 

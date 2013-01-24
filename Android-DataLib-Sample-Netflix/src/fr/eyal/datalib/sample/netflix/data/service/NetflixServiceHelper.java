@@ -1,6 +1,7 @@
 package fr.eyal.datalib.sample.netflix.data.service;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 
 import android.content.Context;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
@@ -14,6 +15,9 @@ import fr.eyal.lib.data.service.model.DataLibRequest;
 public class NetflixServiceHelper extends ServiceHelper {
 
 	    public static final String URL_NEWRELEASES = "http://dvd.netflix.com/NewReleasesRSS";
+	    public static final String URL_MOVIEIMAGE = "{0}";
+	    public static final String URL_TOP100 = "http://dvd.netflix.com/Top100RSS";
+	    public static final String URL_TOPGENRE = "http://dvd.netflix.com/Top25RSS";
 	    public static final String URL_AUTOCOMPLETE = "http://api-public.netflix.com/catalog/titles/autocomplete";
 	    public static final String URL_CATALOGTITLES = "http://api-public.netflix.com/catalog/titles";
 	    public static final String URL_PEOPLE = "http://api-public.netflix.com/catalog/people/{0}";
@@ -71,11 +75,81 @@ public class NetflixServiceHelper extends ServiceHelper {
      * @throws UnsupportedEncodingException
      */
 	public int getNewReleases( final int options) throws UnsupportedEncodingException {
-
+		
 		//we prepare the parameters
-        final ParameterMap params = new ParameterMap();
+		final ParameterMap params = new ParameterMap();
+		
+		//we prepare the request's url
+		final String __url =  NetflixServiceHelper.URL_NEWRELEASES;
+		
         
-        return launchRequest(options, NetflixService.WEBSERVICE_NEWRELEASES, params, NetflixService.class, URL_NEWRELEASES);
+        return launchRequest(options, NetflixService.WEBSERVICE_NEWRELEASES, params, NetflixService.class, __url);
+    }
+    
+
+    /**
+     * Start {@link MovieImage} request
+     * 
+     * @param url Image's URL. To disable the adding of it, just define it as null
+     *
+     * @return the request's id. If the request have already been sent, it returns the id previously generated. Otherwise it provide a new one that have to be stored.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+	public int getMovieImage(final String url,  final int options) throws UnsupportedEncodingException {
+		
+		//we prepare the parameters
+		final ParameterMap params = new ParameterMap();
+		
+		//we prepare the request's url
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_MOVIEIMAGE, url);
+		
+        
+        return launchRequest(options, NetflixService.WEBSERVICE_MOVIEIMAGE, params, NetflixService.class, __url);
+    }
+    
+
+    /**
+     * Start {@link Top100} request
+     * 
+     *
+     * @return the request's id. If the request have already been sent, it returns the id previously generated. Otherwise it provide a new one that have to be stored.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+	public int getTop100( final int options) throws UnsupportedEncodingException {
+		
+		//we prepare the parameters
+		final ParameterMap params = new ParameterMap();
+		
+		//we prepare the request's url
+		final String __url =  NetflixServiceHelper.URL_TOP100;
+		
+        
+        return launchRequest(options, NetflixService.WEBSERVICE_TOP100, params, NetflixService.class, __url);
+    }
+    
+
+    /**
+     * Start {@link TopGenre} request
+     * 
+     * @param gid The Genre's ID you are looking for. To disable the adding of it, just define it as null
+     *
+     * @return the request's id. If the request have already been sent, it returns the id previously generated. Otherwise it provide a new one that have to be stored.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+	public int getTopGenre(final int gid,  final int options) throws UnsupportedEncodingException {
+		
+		//we prepare the parameters
+		final ParameterMap params = new ParameterMap();
+		params.put("gid", String.valueOf(gid));
+		
+		//we prepare the request's url
+		final String __url =  NetflixServiceHelper.URL_TOPGENRE;
+		
+        
+        return launchRequest(options, NetflixService.WEBSERVICE_TOPGENRE, params, NetflixService.class, __url);
     }
     
 
@@ -90,15 +164,17 @@ public class NetflixServiceHelper extends ServiceHelper {
      * @throws UnsupportedEncodingException
      */
 	public int getAutocomplete(final String oauth_consumer_key, final String term,  final int options) throws UnsupportedEncodingException {
-
+		
 		//we prepare the parameters
-        final ParameterMap params = new ParameterMap();
-        if (oauth_consumer_key != null)
-        	params.put("oauth_consumer_key", oauth_consumer_key);
-        if (term != null)
-        	params.put("term", term);
+		final ParameterMap params = new ParameterMap();
+		params.put("oauth_consumer_key", oauth_consumer_key);
+		params.put("term", term);
+		
+		//we prepare the request's url
+		final String __url =  NetflixServiceHelper.URL_AUTOCOMPLETE;
+		
         
-        return launchRequest(options, NetflixService.WEBSERVICE_AUTOCOMPLETE, params, NetflixService.class, URL_AUTOCOMPLETE);
+        return launchRequest(options, NetflixService.WEBSERVICE_AUTOCOMPLETE, params, NetflixService.class, __url);
     }
     
 
@@ -119,24 +195,23 @@ public class NetflixServiceHelper extends ServiceHelper {
      * @throws UnsupportedEncodingException
      */
 	public int getCatalogTitles(final int max_results, final String oauth_consumer_key, final String oauth_nonce, final String oauth_signature_method, final int oauth_timestamp, final int start_index, final String term, final String oauth_signature,  final int options) throws UnsupportedEncodingException {
-
+		
 		//we prepare the parameters
-        final ParameterMap params = new ParameterMap();
+		final ParameterMap params = new ParameterMap();
 		params.put("max_results", String.valueOf(max_results));
-        if (oauth_consumer_key != null)
-        	params.put("oauth_consumer_key", oauth_consumer_key);
-        if (oauth_nonce != null)
-        	params.put("oauth_nonce", oauth_nonce);
-        if (oauth_signature_method != null)
-        	params.put("oauth_signature_method", oauth_signature_method);
+		params.put("oauth_consumer_key", oauth_consumer_key);
+		params.put("oauth_nonce", oauth_nonce);
+		params.put("oauth_signature_method", oauth_signature_method);
 		params.put("oauth_timestamp", String.valueOf(oauth_timestamp));
 		params.put("start_index", String.valueOf(start_index));
-        if (term != null)
-        	params.put("term", term);
-        if (oauth_signature != null)
-        	params.put("oauth_signature", oauth_signature);
+		params.put("term", term);
+		params.put("oauth_signature", oauth_signature);
+		
+		//we prepare the request's url
+		final String __url =  NetflixServiceHelper.URL_CATALOGTITLES;
+		
         
-        return launchRequest(options, NetflixService.WEBSERVICE_CATALOGTITLES, params, NetflixService.class, URL_CATALOGTITLES);
+        return launchRequest(options, NetflixService.WEBSERVICE_CATALOGTITLES, params, NetflixService.class, __url);
     }
     
 
@@ -155,21 +230,20 @@ public class NetflixServiceHelper extends ServiceHelper {
      * @throws UnsupportedEncodingException
      */
 	public int getPeople(final int person_id, final String oauth_consumer_key, final String oauth_nonce, final String oauth_signature_method, final int oauth_timestamp, final String oauth_signature,  final int options) throws UnsupportedEncodingException {
-
+		
 		//we prepare the parameters
-        final ParameterMap params = new ParameterMap();
-		params.put("person_id", String.valueOf(person_id));
-        if (oauth_consumer_key != null)
-        	params.put("oauth_consumer_key", oauth_consumer_key);
-        if (oauth_nonce != null)
-        	params.put("oauth_nonce", oauth_nonce);
-        if (oauth_signature_method != null)
-        	params.put("oauth_signature_method", oauth_signature_method);
+		final ParameterMap params = new ParameterMap();
+		params.put("oauth_consumer_key", oauth_consumer_key);
+		params.put("oauth_nonce", oauth_nonce);
+		params.put("oauth_signature_method", oauth_signature_method);
 		params.put("oauth_timestamp", String.valueOf(oauth_timestamp));
-        if (oauth_signature != null)
-        	params.put("oauth_signature", oauth_signature);
+		params.put("oauth_signature", oauth_signature);
+		
+		//we prepare the request's url
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_PEOPLE, person_id+"");
+		
         
-        return launchRequest(options, NetflixService.WEBSERVICE_PEOPLE, params, NetflixService.class, URL_PEOPLE);
+        return launchRequest(options, NetflixService.WEBSERVICE_PEOPLE, params, NetflixService.class, __url);
     }
     
 
@@ -188,21 +262,20 @@ public class NetflixServiceHelper extends ServiceHelper {
      * @throws UnsupportedEncodingException
      */
 	public int getFilmography(final int person_id, final String oauth_consumer_key, final String oauth_nonce, final String oauth_signature_method, final int oauth_timestamp, final String oauth_signature,  final int options) throws UnsupportedEncodingException {
-
+		
 		//we prepare the parameters
-        final ParameterMap params = new ParameterMap();
-		params.put("person_id", String.valueOf(person_id));
-        if (oauth_consumer_key != null)
-        	params.put("oauth_consumer_key", oauth_consumer_key);
-        if (oauth_nonce != null)
-        	params.put("oauth_nonce", oauth_nonce);
-        if (oauth_signature_method != null)
-        	params.put("oauth_signature_method", oauth_signature_method);
+		final ParameterMap params = new ParameterMap();
+		params.put("oauth_consumer_key", oauth_consumer_key);
+		params.put("oauth_nonce", oauth_nonce);
+		params.put("oauth_signature_method", oauth_signature_method);
 		params.put("oauth_timestamp", String.valueOf(oauth_timestamp));
-        if (oauth_signature != null)
-        	params.put("oauth_signature", oauth_signature);
+		params.put("oauth_signature", oauth_signature);
+		
+		//we prepare the request's url
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_FILMOGRAPHY, person_id+"");
+		
         
-        return launchRequest(options, NetflixService.WEBSERVICE_FILMOGRAPHY, params, NetflixService.class, URL_FILMOGRAPHY);
+        return launchRequest(options, NetflixService.WEBSERVICE_FILMOGRAPHY, params, NetflixService.class, __url);
     }
     
 
@@ -221,21 +294,20 @@ public class NetflixServiceHelper extends ServiceHelper {
      * @throws UnsupportedEncodingException
      */
 	public int getMovie(final int movie_id, final String oauth_consumer_key, final String oauth_nonce, final String oauth_signature_method, final int oauth_timestamp, final String oauth_signature,  final int options) throws UnsupportedEncodingException {
-
+		
 		//we prepare the parameters
-        final ParameterMap params = new ParameterMap();
-		params.put("movie_id", String.valueOf(movie_id));
-        if (oauth_consumer_key != null)
-        	params.put("oauth_consumer_key", oauth_consumer_key);
-        if (oauth_nonce != null)
-        	params.put("oauth_nonce", oauth_nonce);
-        if (oauth_signature_method != null)
-        	params.put("oauth_signature_method", oauth_signature_method);
+		final ParameterMap params = new ParameterMap();
+		params.put("oauth_consumer_key", oauth_consumer_key);
+		params.put("oauth_nonce", oauth_nonce);
+		params.put("oauth_signature_method", oauth_signature_method);
 		params.put("oauth_timestamp", String.valueOf(oauth_timestamp));
-        if (oauth_signature != null)
-        	params.put("oauth_signature", oauth_signature);
+		params.put("oauth_signature", oauth_signature);
+		
+		//we prepare the request's url
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_MOVIE, movie_id+"");
+		
         
-        return launchRequest(options, NetflixService.WEBSERVICE_MOVIE, params, NetflixService.class, URL_MOVIE);
+        return launchRequest(options, NetflixService.WEBSERVICE_MOVIE, params, NetflixService.class, __url);
     }
     
 
@@ -254,21 +326,20 @@ public class NetflixServiceHelper extends ServiceHelper {
      * @throws UnsupportedEncodingException
      */
 	public int getSynopsis(final int movie_id, final String oauth_consumer_key, final String oauth_nonce, final String oauth_signature_method, final int oauth_timestamp, final String oauth_signature,  final int options) throws UnsupportedEncodingException {
-
+		
 		//we prepare the parameters
-        final ParameterMap params = new ParameterMap();
-		params.put("movie_id", String.valueOf(movie_id));
-        if (oauth_consumer_key != null)
-        	params.put("oauth_consumer_key", oauth_consumer_key);
-        if (oauth_nonce != null)
-        	params.put("oauth_nonce", oauth_nonce);
-        if (oauth_signature_method != null)
-        	params.put("oauth_signature_method", oauth_signature_method);
+		final ParameterMap params = new ParameterMap();
+		params.put("oauth_consumer_key", oauth_consumer_key);
+		params.put("oauth_nonce", oauth_nonce);
+		params.put("oauth_signature_method", oauth_signature_method);
 		params.put("oauth_timestamp", String.valueOf(oauth_timestamp));
-        if (oauth_signature != null)
-        	params.put("oauth_signature", oauth_signature);
+		params.put("oauth_signature", oauth_signature);
+		
+		//we prepare the request's url
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_SYNOPSIS, movie_id+"");
+		
         
-        return launchRequest(options, NetflixService.WEBSERVICE_SYNOPSIS, params, NetflixService.class, URL_SYNOPSIS);
+        return launchRequest(options, NetflixService.WEBSERVICE_SYNOPSIS, params, NetflixService.class, __url);
     }
     
 
@@ -287,21 +358,20 @@ public class NetflixServiceHelper extends ServiceHelper {
      * @throws UnsupportedEncodingException
      */
 	public int getCast(final int movie_id, final String oauth_consumer_key, final String oauth_nonce, final String oauth_signature_method, final int oauth_timestamp, final String oauth_signature,  final int options) throws UnsupportedEncodingException {
-
+		
 		//we prepare the parameters
-        final ParameterMap params = new ParameterMap();
-		params.put("movie_id", String.valueOf(movie_id));
-        if (oauth_consumer_key != null)
-        	params.put("oauth_consumer_key", oauth_consumer_key);
-        if (oauth_nonce != null)
-        	params.put("oauth_nonce", oauth_nonce);
-        if (oauth_signature_method != null)
-        	params.put("oauth_signature_method", oauth_signature_method);
+		final ParameterMap params = new ParameterMap();
+		params.put("oauth_consumer_key", oauth_consumer_key);
+		params.put("oauth_nonce", oauth_nonce);
+		params.put("oauth_signature_method", oauth_signature_method);
 		params.put("oauth_timestamp", String.valueOf(oauth_timestamp));
-        if (oauth_signature != null)
-        	params.put("oauth_signature", oauth_signature);
+		params.put("oauth_signature", oauth_signature);
+		
+		//we prepare the request's url
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_CAST, movie_id+"");
+		
         
-        return launchRequest(options, NetflixService.WEBSERVICE_CAST, params, NetflixService.class, URL_CAST);
+        return launchRequest(options, NetflixService.WEBSERVICE_CAST, params, NetflixService.class, __url);
     }
     
 
@@ -320,21 +390,20 @@ public class NetflixServiceHelper extends ServiceHelper {
      * @throws UnsupportedEncodingException
      */
 	public int getDirectors(final int movie_id, final String oauth_consumer_key, final String oauth_nonce, final String oauth_signature_method, final int oauth_timestamp, final String oauth_signature,  final int options) throws UnsupportedEncodingException {
-
+		
 		//we prepare the parameters
-        final ParameterMap params = new ParameterMap();
-		params.put("movie_id", String.valueOf(movie_id));
-        if (oauth_consumer_key != null)
-        	params.put("oauth_consumer_key", oauth_consumer_key);
-        if (oauth_nonce != null)
-        	params.put("oauth_nonce", oauth_nonce);
-        if (oauth_signature_method != null)
-        	params.put("oauth_signature_method", oauth_signature_method);
+		final ParameterMap params = new ParameterMap();
+		params.put("oauth_consumer_key", oauth_consumer_key);
+		params.put("oauth_nonce", oauth_nonce);
+		params.put("oauth_signature_method", oauth_signature_method);
 		params.put("oauth_timestamp", String.valueOf(oauth_timestamp));
-        if (oauth_signature != null)
-        	params.put("oauth_signature", oauth_signature);
+		params.put("oauth_signature", oauth_signature);
+		
+		//we prepare the request's url
+		final String __url = MessageFormat.format(NetflixServiceHelper.URL_DIRECTORS, movie_id+"");
+		
         
-        return launchRequest(options, NetflixService.WEBSERVICE_DIRECTORS, params, NetflixService.class, URL_DIRECTORS);
+        return launchRequest(options, NetflixService.WEBSERVICE_DIRECTORS, params, NetflixService.class, __url);
     }
     
 

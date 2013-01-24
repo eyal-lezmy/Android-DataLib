@@ -16,7 +16,7 @@ import android.os.RemoteException;
 import fr.eyal.lib.data.model.BusinessObjectDAO;
 import fr.eyal.datalib.sample.netflix.data.model.NetflixProvider;
 
-public class ItemBase extends BusinessObjectDAO {
+public class ItemNewReleaseBase extends BusinessObjectDAO {
 
     protected long _parentId = ID_INVALID;
 
@@ -25,11 +25,11 @@ public class ItemBase extends BusinessObjectDAO {
 	public String link;
 	public String description;
 
-    public ItemBase() {
+    public ItemNewReleaseBase() {
         super();
     }
 
-    public ItemBase(final long id) {
+    public ItemNewReleaseBase(final long id) {
         super(id);
     }
 
@@ -45,14 +45,14 @@ public class ItemBase extends BusinessObjectDAO {
     /**
      * Constants used with a ContentProvider's access
      */
-    public static final String CONTENT_PATH = "item";
+    public static final String CONTENT_PATH = "itemnewrelease";
     public static final String CONTENT_URL = NetflixProvider.PROVIDER_PREFIX + NetflixProvider.AUTHORITY + "/" + CONTENT_PATH;
     public static final Uri CONTENT_URI = Uri.parse(CONTENT_URL);
 
     /**
      * SQL databases table's name
      */
-    public static String DATABASE_TABLE_NAME = "item";
+    public static String DATABASE_TABLE_NAME = "itemnewrelease";
 
     /**
      * SQL database table's fields names
@@ -155,7 +155,7 @@ public class ItemBase extends BusinessObjectDAO {
         final String[] args = { id + "" };
 
         // we check the existence inside the database
-        final Cursor cursor = mResolver.query(CONTENT_URI, // item
+        final Cursor cursor = mResolver.query(CONTENT_URI, // ItemNewRelease
                 columns, // id
                 where, // id=?
                 args, // id
@@ -278,7 +278,7 @@ public class ItemBase extends BusinessObjectDAO {
     }
 
 	/**
-     * This function build an array of {@link ItemBase} thanks to a Cursor
+     * This function build an array of {@link ItemNewReleaseBase} thanks to a Cursor
      * object received from the database.
      * 
      * @param c The cursor object.
@@ -288,16 +288,16 @@ public class ItemBase extends BusinessObjectDAO {
      *         of the Cursor. If the Cursor is empty, it returns an empty array.
      *  	   <b>The result of this function is return as ArrayList<?>. It has
      *  	   to be casted into the expected class to be useful.</b>
-     *  	   Ex: Cast to ArrayList<{@link Item}> if you want it as {@link Item}
+     *  	   Ex: Cast to ArrayList<{@link ItemNewRelease}> if you want it as {@link ItemNewRelease}
      */
     public static ArrayList<?> buildArrayFromCursor(final Cursor c, final boolean join) {
 
-        final ArrayList<ItemBase> result = new ArrayList<ItemBase>();
+        final ArrayList<ItemNewReleaseBase> result = new ArrayList<ItemNewReleaseBase>();
 
         if (c.moveToFirst()) {
             do {
                 // we create and fill the item
-                final ItemBase newObject = new ItemBase();
+                final ItemNewReleaseBase newObject = new ItemNewReleaseBase();
                 newObject.fillObjectFromCursor(c);
                 // if it's asked we fill the childs of the item
                 if (join) {
@@ -316,15 +316,15 @@ public class ItemBase extends BusinessObjectDAO {
      * PARCELABLE MANAGMENT
      */
 
-	public static final Parcelable.Creator<ItemBase> CREATOR = new Parcelable.Creator<ItemBase>() {
+	public static final Parcelable.Creator<ItemNewReleaseBase> CREATOR = new Parcelable.Creator<ItemNewReleaseBase>() {
 	    @Override
-	    public ItemBase createFromParcel(final Parcel in) {
-	        return new ItemBase(in);
+	    public ItemNewReleaseBase createFromParcel(final Parcel in) {
+	        return new ItemNewReleaseBase(in);
 	    }
 	
 	    @Override
-	    public ItemBase[] newArray(final int size) {
-	        return new ItemBase[size];
+	    public ItemNewReleaseBase[] newArray(final int size) {
+	        return new ItemNewReleaseBase[size];
 	    }
 	};
 	
@@ -346,7 +346,7 @@ public class ItemBase extends BusinessObjectDAO {
 		
 	}
 
-	public ItemBase(final Parcel in) {
+	public ItemNewReleaseBase(final Parcel in) {
 		// Business Object DAO
 		_id = in.readLong();
 		_updatedAt = Calendar.getInstance();
