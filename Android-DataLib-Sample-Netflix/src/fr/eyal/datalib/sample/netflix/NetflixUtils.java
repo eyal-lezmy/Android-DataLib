@@ -27,6 +27,27 @@ public class NetflixUtils {
 	public static final int MAX_NONCE_SIZE = 20;
 	public static final int MIN_NONCE_SIZE = 5;
 
+	public static final int GENRE_ACTION = 296;
+	public static final int GENRE_ANIMATION = 623;
+	public static final int GENRE_BLURAY = 2444;
+	public static final int GENRE_CHILDREN = 302;
+	public static final int GENRE_CLASSIC = 306;
+	public static final int GENRE_COMEDY = 307;
+	public static final int GENRE_DOCUMENTARY = 864;
+	public static final int GENRE_DRAMA = 315;
+	public static final int GENRE_FAITH = 2108;
+	public static final int GENRE_FOREIGN = 2514;
+	public static final int GENRE_GAY = 330;
+	public static final int GENRE_HORROR = 338;
+	public static final int GENRE_INDEPENDENT = 343;
+	public static final int GENRE_MUSIC = 2310;
+	public static final int GENRE_ROMANCE = 371;
+	public static final int GENRE_SCIFI = 373;
+	public static final int GENRE_SPECIAL = 2223;
+	public static final int GENRE_SPORT = 2190;
+	public static final int GENRE_TELEVISION = 2197;
+	public static final int GENRE_THRILLER = 387;
+
 	
 	public static String getNonce(){
 		Random random = new Random();
