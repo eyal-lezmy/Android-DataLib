@@ -34,7 +34,7 @@ public abstract class NetflixFragment extends Fragment implements OnDataListener
 
 	@Override
 	public void onResume() {
-		// we launch the request's data receiving
+		// we launch the request's data reception
 		for (final int requestId : mRequestIds) {
 			mDataManager.addOnDataListener(requestId, this);
 		}
@@ -43,7 +43,7 @@ public abstract class NetflixFragment extends Fragment implements OnDataListener
 	
 	@Override
 	public void onPause() {
-		// we stop the request's data receiving
+		// we stop the request's data reception
 		for (final int requestId : mRequestIds) {
 			mDataManager.removeOnDataListener(requestId, this);
 		}
