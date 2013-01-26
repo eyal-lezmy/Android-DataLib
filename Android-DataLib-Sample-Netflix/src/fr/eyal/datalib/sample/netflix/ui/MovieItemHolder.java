@@ -18,21 +18,22 @@ public class MovieItemHolder implements OnDataListener {
 	@Override
 	public void onRequestFinished(int requestId, boolean suceed, BusinessResponse response) {
 
+		if(!suceed)
+			return;
+
 		switch (response.webserviceType) {
 		
 		case NetflixService.WEBSERVICE_MOVIEIMAGE:
 			
 			MovieImage img = (MovieImage) response.response;
 			image.setImageBitmap(img.image);
-			
 			break;
 
 		default:
 			break;
 		}
-
-		
 	}
+	
 	@Override
 	public void onCacheRequestFinished(ResponseBusinessObjectDAO response) {
 		// TODO Auto-generated method stub
