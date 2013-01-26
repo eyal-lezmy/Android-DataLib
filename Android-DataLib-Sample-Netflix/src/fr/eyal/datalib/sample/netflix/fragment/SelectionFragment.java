@@ -3,7 +3,22 @@ package fr.eyal.datalib.sample.netflix.fragment;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-import fr.eyal.datalib.sample.netflix.data.model.movieimage.MovieImage;
+import android.content.Context;
+import android.graphics.Point;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
+import android.view.LayoutInflater;
+import fr.eyal.datalib.sample.netflix.ui.GridLayout;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import fr.eyal.datalib.sample.netflix.R;
 import fr.eyal.datalib.sample.netflix.data.model.top100.ItemTop100;
 import fr.eyal.datalib.sample.netflix.data.model.top100.Top100;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixDataManager;
@@ -13,22 +28,6 @@ import fr.eyal.lib.data.model.ResponseBusinessObjectDAO;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.model.BusinessResponse;
 import fr.eyal.lib.data.service.model.DataLibRequest;
-import fr.eyal.datalib.sample.netflix.R;
-import android.content.Context;
-import android.graphics.Point;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.GridLayout;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 public class SelectionFragment extends NetflixFragment {
 
@@ -102,6 +101,9 @@ public class SelectionFragment extends NetflixFragment {
 
 	@Override
 	public void onRequestFinished(int requestId, boolean suceed, BusinessResponse response) {
+		
+		if(!suceed)
+			return;
 		
 		switch (response.webserviceType) {
 		
