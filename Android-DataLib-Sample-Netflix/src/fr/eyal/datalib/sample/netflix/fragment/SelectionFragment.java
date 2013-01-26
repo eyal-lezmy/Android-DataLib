@@ -33,8 +33,6 @@ public class SelectionFragment extends NetflixFragment {
 
 	public static final String TAG = SelectionFragment.class.getSimpleName(); 
 	
-	NetflixDataManager mDataManager;
-	
 	public static final int DEFAULT_SCREEN_WIDTH = 360;
 	public static final int DEFAULT_WIDTH = 170;
 	public static final int DEFAULT_HEIGHT = 80;
@@ -49,8 +47,6 @@ public class SelectionFragment extends NetflixFragment {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
-		mDataManager = NetflixDataManager.getInstance(getActivity());
 		
 		WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
