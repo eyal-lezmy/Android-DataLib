@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_height">249dp</dimen>
+	<dimen name="item_height_small">128dp</dimen>
+	<dimen name="item_font_size_small">24sp</dimen>
+    <dimen name="item_font_size">36sp</dimen>
+    <dimen name="item_margin_column">4dp</dimen>
+    <dimen name="item_margin_row">4dp</dimen>
+    	
+</resources>
