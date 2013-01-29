@@ -164,7 +164,7 @@ public class Processor {
                 break;
         }
         HttpResponse httpResponse = httpClient.execute(httpRequest);
-        Out.d(TAG, httpResponse.getBodyAsString());
+        Out.d(TAG, "" + httpResponse.getBodyAsString());
         return httpResponse;
     }
 }
