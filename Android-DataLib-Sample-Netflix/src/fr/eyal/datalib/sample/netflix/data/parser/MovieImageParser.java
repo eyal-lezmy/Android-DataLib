@@ -1,5 +1,8 @@
 package fr.eyal.datalib.sample.netflix.data.parser;
 
+import java.lang.ref.SoftReference;
+
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.parser.GenericHandler;
@@ -29,7 +32,7 @@ public class MovieImageParser implements GenericHandler {
 	public void parse(Object content) {
 		
 		byte[] data = (byte[]) content;
-		movieImage.image = BitmapFactory.decodeByteArray(data, 0, data.length);
+		movieImage.image = new SoftReference<Bitmap>(BitmapFactory.decodeByteArray(data, 0, data.length));
 	}
 	
 
