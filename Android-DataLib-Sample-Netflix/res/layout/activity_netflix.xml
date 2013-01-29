@@ -1,8 +1,8 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:name="fr.eyal.datalib.sample.netflix.fragment.SelectionFragment"
+    android:name="fr.eyal.datalib.sample.netflix.fragment.Top100Fragment"
     android:id="@+id/list"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="match_parent" />
 
 <!-- <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
