@@ -130,7 +130,8 @@ public abstract class DataLibService extends MultiThreadService implements Proce
         request.url = intent.getStringExtra(INTENT_EXTRA_URL);
         request.params = intent.getParcelableExtra(INTENT_EXTRA_PARAMS);
         request.parseType = intent.getIntExtra(INTENT_EXTRA_PARSE_TYPE, DataLibRequest.PARSE_TYPE_SAX_XML);
-
+        request.context = getApplicationContext();
+        
         //we get the options to apply
         int option = intent.getIntExtra(INTENT_EXTRA_REQUEST_OPTION, DataLibRequest.OPTION_NO_OPTION);
         DataLibWebConfig.applyToRequest(request, option, true);

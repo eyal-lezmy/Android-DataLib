@@ -19,6 +19,7 @@ package fr.eyal.lib.data.service.model;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import android.content.Context;
 import android.content.Intent;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
 import fr.eyal.lib.data.service.ServiceHelper;
@@ -166,6 +167,11 @@ public class DataLibRequest {
      * data to send (for PUT or POST request)
      */
     public byte[] data;
+
+    /**
+     * The application's context of execution
+     */
+    public Context context;
 
     
     public DataLibRequest() {
@@ -316,6 +322,18 @@ public class DataLibRequest {
         }
 
         return builder.toString();
+    }
+    
+    /**
+     * Get the filename of the request
+     * 
+     * @return the file name contained on the path
+     */
+    public String getRequestFileName(){
+    	String[] elements = url.split("/");
+    	
+    	//we return the last element of the path
+		return elements[elements.length-1];
     }
 
     /**

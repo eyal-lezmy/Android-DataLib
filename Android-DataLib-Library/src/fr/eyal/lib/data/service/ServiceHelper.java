@@ -421,5 +421,14 @@ public class ServiceHelper {
 
         return urlBase + "?" + params.urlEncode();
     }
+    
+    /**
+     * Get the application context
+     * 
+     * @return returns the application context if defined or <code>null</code>
+     */
+    public Context getApplicationContext(){
+    	return mContext;
+    }
 
 }
