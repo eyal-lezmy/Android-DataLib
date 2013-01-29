@@ -2,6 +2,7 @@ package fr.eyal.datalib.sample.netflix.ui;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import fr.eyal.datalib.sample.netflix.data.model.movieimage.MovieImage;
@@ -26,7 +27,9 @@ public class MovieItemHolder implements OnDataListener {
 		case NetflixService.WEBSERVICE_MOVIEIMAGE:
 			
 			MovieImage img = (MovieImage) response.response;
-			image.setImageBitmap(img.image);
+			Bitmap bitmap = img.image.get();
+			if(bitmap != null)
+				image.setImageBitmap(img.image.get());
 			break;
 
 		default:
