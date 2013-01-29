@@ -32,11 +32,14 @@ import android.os.Environment;
  */
 public class FileManager {
 
-    private static final String TAG = "FileManager";
+    private static final String TAG = FileManager.class.getSimpleName();
 
     private static final String DEFAULT_EXTENSION = ".jpg";
     private static final String NOMEDIA_FILENAME = ".nomedia";
 
+    private static StringBuilder sStringBuilder = new StringBuilder();
+
+    
     /**
      * Returns whether a file exists on the sdcard
      * 
@@ -67,18 +70,22 @@ public class FileManager {
     }
 
     /**
-     * Save a Bitmap in the default application directory into SDCard
+     * Save a Bitmap in the default application directory into SD card
      * 
      * @param filename the file name.
      * @param packageName the name of the package
-     * @param bitmap the Bitmap to save.
-     * @param compressionQuality the quality for compression.
+     * @param bitmap the Bitmap to save
+     * @param compressionQuality the quality for compression. Hint to the compressor, 0-100. 0 meaning compress for small size, 100 meaning compress for max quality. Some formats, like PNG which is lossless, will ignore the quality setting.
+     * 
+     * @return returns the file created path or <code>null</code> if an error occurs
      */
-    public static void saveOnSdCard(final String filename, final String packageName, final Bitmap bitmap, final int compressionQuality) {
+    public static String saveOnSdCard(final String fileName, final String packageName, final Bitmap bitmap, final int compressionQuality) {
 
+    	if(bitmap == null)
+    		return null;
+    	
         final String directory = getExternalStorageFileDirectory(packageName);
-        final String name = filename;
-        final File imageFile = new File(directory, name);
+        final File imageFile = new File(directory, fileName);
         final File imageDir = new File(directory);
         if (!imageDir.isDirectory()) {
             imageDir.mkdirs();
@@ -87,29 +94,35 @@ public class FileManager {
                 noMediaFile.createNewFile();
             } catch (final IOException e) {
                 Out.e(TAG, "Error while creating .nomedia file", e);
+                return null;
             }
         }
 
+        
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(imageFile);
 
-            if (getFileExtension(name).equals(DEFAULT_EXTENSION)) {
+            if (getFileExtension(fileName).equals(DEFAULT_EXTENSION)) {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, compressionQuality, fos);
             } else {
                 bitmap.compress(Bitmap.CompressFormat.PNG, compressionQuality, fos);
             }
         } catch (final IOException e) {
             e.printStackTrace();
+            return null;
         } finally {
             if (fos != null) {
                 try {
                     fos.close();
                 } catch (final IOException e) {
                     e.printStackTrace();
+                    return null;
                 }
             }
         }
+        String filePath = directory + File.pathSeparator + fileName;
+        return filePath;
     }
 
     /**
@@ -117,16 +130,21 @@ public class FileManager {
      * storage
      * 
      * @param context the application context
-     * @param filename the file name.
-     * @param bitmap the Bitmap to save.
-     * @param compressionQuality the quality for compression.
+     * @param filename the file name
+     * @param bitmap the Bitmap to save
+     * @param compressionQuality the quality for compression. Hint to the compressor, 0-100. 0 meaning compress for small size, 100 meaning compress for max quality. Some formats, like PNG which is lossless, will ignore the quality setting
+     * 
+     * @return returns <code>true</code> if the storage has been successful or <code>false</code> if an error occurred
      */
-    public static void saveInInternalStorage(final Context context, final String filename, final Bitmap bitmap, final int compressionQuality) {
+    public static boolean saveInInternalStorage(final Context context, final String filename, final Bitmap bitmap, final int compressionQuality) {
 
+    	if(bitmap == null)
+    		return false;
+    	
         FileOutputStream fos = null;
         try {
             fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
-
+            
             if (getFileExtension(filename).equals(DEFAULT_EXTENSION)) {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, compressionQuality, fos);
             } else {
@@ -134,18 +152,102 @@ public class FileManager {
             }
         } catch (final IOException e) {
             e.printStackTrace();
+            return false;
         } finally {
             if (fos != null) {
                 try {
                     fos.close();
                 } catch (final IOException e) {
                     e.printStackTrace();
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     /**
+     * Save a Bitmap in the default application directory into the internal cache storage
+     * 
+     * @param context the application context
+     * @param directory the child directory where to put the file. This parameter can contains {@link File#separator} character
+     * @param filename the file name
+     * @param bitmap the Bitmap to save
+     * @param compressionQuality the quality for compression. Hint to the compressor, 0-100. 0 meaning compress for small size, 100 meaning compress for max quality. Some formats, like PNG which is lossless, will ignore the quality setting
+     * 
+     * @return returns the file created path or <code>null</code> if an error occurs
+     */
+    public static String saveInInternalCache(final Context context, final String filename, final Bitmap bitmap, final int compressionQuality) {
+    	return saveInInternalCache(context, null, filename, bitmap, compressionQuality);
+    }
+
+    /**
+     * Save a Bitmap in the default application directory into the internal cache storage
+     * 
+     * @param context the application context
+     * @param directory the child directory where to put the file. This parameter can contains {@link File#separator} character
+     * @param filename the file name
+     * @param bitmap the Bitmap to save
+     * @param compressionQuality the quality for compression. Hint to the compressor, 0-100. 0 meaning compress for small size, 100 meaning compress for max quality. Some formats, like PNG which is lossless, will ignore the quality setting
+     * 
+     * @return returns the file created path or <code>null</code> if an error occurs
+     */
+    public static String saveInInternalCache(final Context context, final String directory, final String filename, final Bitmap bitmap, final int compressionQuality) {
+
+    	if(bitmap == null)
+    		return null;
+    	
+    	//we get the root cache folder
+    	File cacheDir = context.getCacheDir();
+    	
+    	//we eventually go through the specified directory
+    	if(directory != null){
+    		cacheDir = new File(cacheDir.getAbsoluteFile() + File.separator + directory);
+    		if(!cacheDir.isDirectory())
+    			cacheDir.mkdirs();
+    	}
+    	
+    	//we open the new file
+    	final File cacheFile = new File(cacheDir, filename);
+        try {
+        	cacheFile.createNewFile();
+        } catch (final IOException e) {
+            Out.e(TAG, "Error while creating cache file " + filename, e);
+            return null;
+        }
+    	
+        //we fill and save the file
+        FileOutputStream fos = null;
+        try {
+        	fos = new FileOutputStream(cacheFile);
+        	fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+
+            if (getFileExtension(filename).equals(DEFAULT_EXTENSION)) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, compressionQuality, fos);
+            } else {
+                bitmap.compress(Bitmap.CompressFormat.PNG, compressionQuality, fos);
+            }
+            
+        } catch (final IOException e) {
+            e.printStackTrace();
+            return null;
+            
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        }
+        
+        return cacheFile.getAbsolutePath();
+    }
+
+    
+	/**
      * Returns a Bitmap image from device SDCard or null if image not found.
      * This function reach the cache directory of the SD card, i-e
      * Android/data/<package>/file/ folder.
@@ -157,8 +259,6 @@ public class FileManager {
     public static Bitmap getPictureFromSDCard(final String filename, final String packageName) {
         return getPictureFromSDCard("", filename, packageName);
     }
-
-    private static StringBuilder sStringBuilder = new StringBuilder();
 
     /**
      * Returns a Bitmap image from device SDCard or null if image not found.
@@ -216,6 +316,25 @@ public class FileManager {
     /**
      * Returns a Bitmap image from internal storage or null if image not found.
      * 
+     * @param path the file path for this Bitmap.
+     * @param context the application context
+     * @return the bitmap save on the internal storage
+     */
+    public static Bitmap getPictureFromInternalCache(final String path, final Context context) {
+
+        try {
+        	final File f = new File(path);
+            final FileInputStream fis = new FileInputStream(f);
+            return BitmapFactory.decodeStream(fis);
+
+        } catch (final FileNotFoundException e) {
+            return null;
+        }
+    }
+    
+    /**
+     * Returns a Bitmap image from internal storage or null if image not found.
+     * 
      * @param filename the file name for this Bitmap.
      * @param context the application context
      * @return the bitmap save on the internal storage
@@ -230,6 +349,7 @@ public class FileManager {
             return null;
         }
     }
+    
 
     public static void deletePrefixedFilesFromDirectoryInSDCard(final String packageName, final String prefix) {
         final String path = getExternalStorageFileDirectory(packageName);
@@ -274,7 +394,7 @@ public class FileManager {
      * @param filename the file name
      * @return the file extension
      */
-    private static String getFileExtension(final String filename) {
+    public static String getFileExtension(final String filename) {
         String extension;
         final int dotPos = filename.lastIndexOf(".");
         if (dotPos != -1 || (dotPos != filename.length() - 1)) {
