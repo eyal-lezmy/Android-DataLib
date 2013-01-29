@@ -12,6 +12,9 @@ _directory:String = getDirectoryFromPackage(_package);
 [file (_directory + aBusinessObject.javaName.toUpperFirst() + 'Parser.java', false, 'UTF-8')]
 package [_package/];
 
+import java.lang.ref.SoftReference;
+
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.parser.GenericHandler;
@@ -42,7 +45,7 @@ public class [aBusinessObject.javaName.toUpperFirst()/]Parser implements Generic
 	public void parse(Object content) {
 		
 		byte['['/]] data = (byte['['/]]) content;
-		[aBusinessObject.javaName.toLowerFirst()/].image = BitmapFactory.decodeByteArray(data, 0, data.length);
+		[aBusinessObject.javaName.toLowerFirst()/].image = new SoftReference<Bitmap>(BitmapFactory.decodeByteArray(data, 0, data.length));
 	}
 	
 
