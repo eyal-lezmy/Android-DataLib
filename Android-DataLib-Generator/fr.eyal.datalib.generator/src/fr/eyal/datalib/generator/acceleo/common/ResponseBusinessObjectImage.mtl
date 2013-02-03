@@ -21,6 +21,10 @@ public class [_class/] extends [_class/]Base {
     public [_class/]() {
         super();
     }
+	
+	public [_class/](final String fingerprint) {
+        super(fingerprint);
+    }
 
     public [_class/](final Parcel in) {
         super(in);
