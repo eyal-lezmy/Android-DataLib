@@ -35,6 +35,7 @@ import fr.eyal.lib.data.service.model.BusinessResponse;
 import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.lib.data.service.model.DataLibResponse;
 import fr.eyal.lib.service.MultiThreadService;
+import fr.eyal.lib.util.FileManager;
 import fr.eyal.lib.util.Out;
 
 public abstract class DataLibService extends MultiThreadService implements ProcessorResponseHandler {
@@ -112,6 +113,8 @@ public abstract class DataLibService extends MultiThreadService implements Proce
     @Override
     public void onCreate() {
         mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        //we initialize the FileManager
+        FileManager.getInstance(getApplicationContext());
         super.onCreate();
     }
 
