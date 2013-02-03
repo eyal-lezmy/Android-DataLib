@@ -22,22 +22,80 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import fr.eyal.lib.data.service.DataLibService;
+import fr.eyal.lib.data.service.ServiceHelper;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 
 /**
+ * 
+ * This class help to manage the storage access (internal, external, files and cache).<br>
+ * This class can be used statically through the its different functions but can also be 
+ * used as a singleton. The singleton is useful when you want to access the internal storage
+ * that use {@link Context} functions ({@link Context#getCacheDir()} or 
+ * {@link Context#openFileInput(String)}, ...). <br>
+ * Once the singleton is initialized (thanks to {@link FileManager#getInstance(Context)}), 
+ * it is ready to use everywhere you need, even if you don't have access to the execution's context.
+ * <br><br>
+ * If you use the Android DataLib, this class is initialized on the {@link ServiceHelper} and the 
+ * {@link DataLibService} constructors.
+ * So it is ready to use everywhere on the application if you use the project's ServiceHelper or DataManager
+ * or if you use add your project DataLib service on you Manifest.xml.
+ * 
  * @author Eyal LEZMY
  */
 public class FileManager {
-
+	
+	
     private static final String TAG = FileManager.class.getSimpleName();
+
+    private static FileManager sInstance = null;
 
     private static final String DEFAULT_EXTENSION = ".jpg";
     private static final String NOMEDIA_FILENAME = ".nomedia";
 
     private static StringBuilder sStringBuilder = new StringBuilder();
+
+    private Context mContext;    
+    
+    /**
+     * Get the instance of the {@link NetflixDataManager}
+     * 
+     * @param context The context of execution. Any Context can be put here, the application context
+     * will be automatically used for the {@link NetflixDataManager}
+     * 
+     * @return Returns the singleton
+     */
+    public static FileManager getInstance(final Context context) {
+        synchronized (FileManager.class) {
+			if (sInstance == null) {
+            	sInstance = new FileManager(context.getApplicationContext());
+        	}
+		}
+        return sInstance;
+    }
+
+    /**
+     * Get the instance of the {@link FileManager}
+     *  
+     * @return Returns the singleton <b>only if</b> the instance have already been create by the call to 
+     * <code>{@linkplain FileManager#getInstance(Context)}</code>. If it has not been called, this 
+     * function returns <b>null</b>
+     */
+    public static FileManager getInstance() {
+		if (sInstance == null) {
+        	return null;
+    	}
+        return sInstance;
+    }
+
+
+    protected FileManager(final Context context){
+    	mContext = context;
+    }
 
     
     /**
@@ -55,10 +113,10 @@ public class FileManager {
     }
 
     /**
-     * Get the fullpath for a given package name
+     * Get the full path for a given package name
      * 
      * @param packageName the name of the package
-     * @return the fullpath for a given package name
+     * @return the full path for a given package name
      */
     private static String getExternalStorageFileDirectory(final String packageName) {
         final StringBuilder sb = new StringBuilder();
@@ -126,6 +184,19 @@ public class FileManager {
     }
 
     /**
+     * Save a Bitmap in the default application directory into the internal storage
+     * 
+     * @param filename the file name
+     * @param bitmap the Bitmap to save
+     * @param compressionQuality the quality for compression. Hint to the compressor, 0-100. 0 meaning compress for small size, 100 meaning compress for max quality. Some formats, like PNG which is lossless, will ignore the quality setting
+     * 
+     * @return returns <code>true</code> if the storage has been successful or <code>false</code> if an error occurred
+     */
+    public boolean saveInInternalStorage(final String filename, final Bitmap bitmap, final int compressionQuality) {
+    	return saveInInternalStorage(mContext, filename, bitmap, compressionQuality);
+    }
+
+    /**
      * Save a Bitmap in the default application directory into the internal
      * storage
      * 
@@ -169,6 +240,21 @@ public class FileManager {
     /**
      * Save a Bitmap in the default application directory into the internal cache storage
      * 
+     * @param directory the child directory where to put the file. This parameter can contains {@link File#separator} character
+     * @param filename the file name
+     * @param bitmap the Bitmap to save
+     * @param compressionQuality the quality for compression. Hint to the compressor, 0-100. 0 meaning compress for small size, 100 meaning compress for max quality. Some formats, like PNG which is lossless, will ignore the quality setting
+     * 
+     * @return returns the file created path or <code>null</code> if an error occurs
+     */
+    public String saveInInternalCache(final String filename, final String extension, final Bitmap bitmap, final int compressionQuality) {
+    	return saveInInternalCache(mContext, filename, extension, bitmap, compressionQuality);
+    }
+
+    
+    /**
+     * Save a Bitmap in the default application directory into the internal cache storage
+     * 
      * @param context the application context
      * @param directory the child directory where to put the file. This parameter can contains {@link File#separator} character
      * @param filename the file name
@@ -177,8 +263,23 @@ public class FileManager {
      * 
      * @return returns the file created path or <code>null</code> if an error occurs
      */
-    public static String saveInInternalCache(final Context context, final String filename, final Bitmap bitmap, final int compressionQuality) {
-    	return saveInInternalCache(context, null, filename, bitmap, compressionQuality);
+    public static String saveInInternalCache(final Context context, final String filename, final String extension, final Bitmap bitmap, final int compressionQuality) {
+    	return FileManager.saveInInternalCache(context, null, filename, extension, bitmap, compressionQuality);
+    }
+
+
+    /**
+     * Save a Bitmap in the default application directory into the internal cache storage
+     * 
+     * @param directory the child directory where to put the file. This parameter can contains {@link File#separator} character
+     * @param filename the file name
+     * @param bitmap the Bitmap to save
+     * @param compressionQuality the quality for compression. Hint to the compressor, 0-100. 0 meaning compress for small size, 100 meaning compress for max quality. Some formats, like PNG which is lossless, will ignore the quality setting
+     * 
+     * @return returns the file created path or <code>null</code> if an error occurs
+     */
+    public String saveInInternalCache(final String directory, final String filename, final String extension, final Bitmap bitmap, final int compressionQuality) {
+    	return FileManager.saveInInternalCache(mContext, directory, filename, extension, bitmap, compressionQuality);
     }
 
     /**
@@ -192,20 +293,12 @@ public class FileManager {
      * 
      * @return returns the file created path or <code>null</code> if an error occurs
      */
-    public static String saveInInternalCache(final Context context, final String directory, final String filename, final Bitmap bitmap, final int compressionQuality) {
+    public static String saveInInternalCache(final Context context, final String directory, final String filename, String extension, final Bitmap bitmap, final int compressionQuality) {
 
     	if(bitmap == null)
     		return null;
     	
-    	//we get the root cache folder
-    	File cacheDir = context.getCacheDir();
-    	
-    	//we eventually go through the specified directory
-    	if(directory != null){
-    		cacheDir = new File(cacheDir.getAbsoluteFile() + File.separator + directory);
-    		if(!cacheDir.isDirectory())
-    			cacheDir.mkdirs();
-    	}
+    	File cacheDir = getInternalCacheDirectory(directory, context);
     	
     	//we open the new file
     	final File cacheFile = new File(cacheDir, filename);
@@ -220,9 +313,11 @@ public class FileManager {
         FileOutputStream fos = null;
         try {
         	fos = new FileOutputStream(cacheFile);
-        	fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
 
-            if (getFileExtension(filename).equals(DEFAULT_EXTENSION)) {
+        	if(extension == null || extension.length() == 0)
+        		extension = getFileExtension(filename);
+        		
+            if (extension.compareToIgnoreCase(DEFAULT_EXTENSION) == 0) {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, compressionQuality, fos);
             } else {
                 bitmap.compress(Bitmap.CompressFormat.PNG, compressionQuality, fos);
@@ -316,22 +411,81 @@ public class FileManager {
     /**
      * Returns a Bitmap image from internal storage or null if image not found.
      * 
+     * @param directory the directory following the cache directory. This parameter can contains {@link File#separator} character
+     * @param path the file path for this Bitmap.
+     * @return the bitmap save on the internal storage
+     */
+    public Bitmap getPictureFromInternalCache(final String directory, final String filename) {
+    	return FileManager.getPictureFromInternalCache(directory, filename, mContext);
+    }
+
+    /**
+     * Returns the file's path from internal storage or null if image not found.
+     * 
+     * @param directory the directory following the cache directory. This parameter can contains {@link File#separator} character
+     * @param path the file path for this file.
+     * @return the bitmap save on the internal storage
+     */
+    public String getPathFromInternalCache(final String directory, final String filename) {
+    	
+    	return FileManager.getInternalCacheDirectory(directory, mContext).getAbsolutePath() + File.separator + filename;
+    }
+
+    
+    /**
+     * Returns a Bitmap image from internal storage or null if image not found.
+     * 
+     * @param directory the directory following the cache directory. This parameter can contains {@link File#separator} character
      * @param path the file path for this Bitmap.
      * @param context the application context
      * @return the bitmap save on the internal storage
      */
-    public static Bitmap getPictureFromInternalCache(final String path, final Context context) {
+    public static Bitmap getPictureFromInternalCache(final String directory, final String filename, final Context context) {
 
-        try {
-        	final File f = new File(path);
-            final FileInputStream fis = new FileInputStream(f);
-            return BitmapFactory.decodeStream(fis);
-
-        } catch (final FileNotFoundException e) {
-            return null;
-        }
+    	File cacheDir = getInternalCacheDirectory(directory, context);
+    	
+        return BitmapFactory.decodeFile(cacheDir.getAbsolutePath() + File.separator + filename);
     }
+
     
+	private static File getInternalCacheDirectory(final String directory, final Context context) {
+		//we get the root cache folder
+    	File cacheDir = context.getCacheDir();
+
+    	//we eventually go through the specified directory
+    	if(directory != null){
+    		cacheDir = new File(cacheDir.getAbsoluteFile() + File.separator + directory);
+    		if(!cacheDir.isDirectory())
+    			cacheDir.mkdirs();
+    	}
+		return cacheDir;
+	}
+
+
+    
+    /**
+     * Returns a Bitmap image from internal storage or null if image not found.
+     * 
+     * @param path the file path for this Bitmap.
+     * @return the bitmap save on the internal storage
+     */
+    public static Bitmap getPictureFromFile(final String path) {
+    	BitmapFactory.Options options = new BitmapFactory.Options();
+    	options.inJustDecodeBounds = true;
+    	options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        return BitmapFactory.decodeFile(path, options);
+    }
+
+    /**
+     * Returns a Bitmap image from internal storage or null if image not found.
+     * 
+     * @param filename the file name for this Bitmap.
+     * @return the bitmap save on the internal storage
+     */
+    public Bitmap getPictureFromInternalStorage(final String filename) {
+    	return FileManager.getPictureFromInternalStorage(filename, mContext);
+    }
+
     /**
      * Returns a Bitmap image from internal storage or null if image not found.
      * 
