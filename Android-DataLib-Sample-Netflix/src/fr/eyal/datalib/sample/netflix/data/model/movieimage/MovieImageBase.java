@@ -13,19 +13,32 @@ import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.lib.util.FileManager;
 
 
-
 public class MovieImageBase implements ResponseBusinessObject {
 
     private static final String TAG = MovieImageBase.class.getSimpleName();
 
-    private static String CACHE_DIRECTORY = "movieimage";
+    protected static String CACHE_DIRECTORY = "movieimage";
 
 	public SoftReference<Bitmap> image;
 	public String imagePath;
+
+	protected FileManager mFileManager = null;
+
 	
     public MovieImageBase() {
         super();
     }
+
+    /**
+     * Constructor to build the image 
+     * 
+     * @param fingerprint
+     */
+    public MovieImageBase(String fingerprint) {
+        super();
+        loadFromCache(fingerprint);
+    }
+
 
     /**
      * PARCELABLE MANAGMENT
@@ -59,14 +72,25 @@ public class MovieImageBase implements ResponseBusinessObject {
 
     @Override
     public void save(final DataLibRequest request) throws RemoteException, OperationApplicationException {
-		String name = request.getRequestFileName();
-    	String extension = FileManager.getFileExtension(name);
-    	
-    	if(name.lastIndexOf(extension) != name.length() - extension.length())
-    		name = name.concat(extension);
-    	Context context = request.context;
-    	imagePath = FileManager.saveInInternalCache(context, CACHE_DIRECTORY, name, image.get(), 100);
+		if((mFileManager = FileManager.getInstance()) == null)
+    		return;
+
+    	String extension = FileManager.getFileExtension(request.url);
+		String name = request.getFingerprint();
+
+    	imagePath = mFileManager.saveInInternalCache(CACHE_DIRECTORY, name, image.get(), 100);
     }
 
+	/**
+     * Load the associated cached file thanks to its request's fingerprint
+     * 
+     * @param fingerprint
+     */
+    protected void loadFromCache(String fingerprint){
+    	if((mFileManager = FileManager.getInstance()) == null)
+    		return;
+    	image = new SoftReference<Bitmap>(mFileManager.getPictureFromInternalCache(CACHE_DIRECTORY, fingerprint));
+    	imagePath = mFileManager.getPathFromInternalCache(CACHE_DIRECTORY, fingerprint);
+    }
 }
 

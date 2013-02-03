@@ -3,13 +3,9 @@ package fr.eyal.datalib.sample.netflix.data.model.top100;
 
 import java.lang.ref.SoftReference;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Parcel;
-import android.util.SparseArray;
-import android.widget.GridView;
-import fr.eyal.datalib.sample.netflix.fragment.NewReleasesAdapter;
+import fr.eyal.datalib.sample.netflix.data.model.movieimage.MovieImage;
 import fr.eyal.lib.util.FileManager;
 
 public class ItemTop100 extends ItemTop100Base {
@@ -19,21 +15,17 @@ public class ItemTop100 extends ItemTop100Base {
     /**
      * Image's reference
      */
-    public SoftReference<Bitmap> image;
-    
-    /**
-     * Path of the stored image
-     */
-    public String imagePath;
+    public MovieImage image = null;
 
     /**
      * Image's url of the Top100 item
      */
     public String imageUrl = null;
     
-    
+
     public ItemTop100() {
         super();
+        
     }
 
     public ItemTop100(final Parcel in) {
@@ -51,20 +43,28 @@ public class ItemTop100 extends ItemTop100Base {
      * 
      * @return return a {@link Bitmap} corresponding to the movie's poster or <code>null</code> whether there is no loaded image.
      */
-    public Bitmap getPoster(Context context){
-    	if(image == null)
+    public Bitmap getPoster(){
+    	if(image == null || image.image == null)
     		return null;
     	
-    	Bitmap result = image.get();
+    	Bitmap result = image.image.get();
     	
-    	if(result == null)
-    		image = new SoftReference<Bitmap>(BitmapFactory.decodeFile(imagePath));
-    	else if(imagePath != null && context != null)
-    		image = new SoftReference<Bitmap>(FileManager.getPictureFromInternalCache(imagePath, context));
+    	if(result == null){
+    		image.image = new SoftReference<Bitmap>(FileManager.getPictureFromFile(image.imagePath));
+    		result = image.image.get();
+    	}
     	
     	return result;
     }
 
+    public String getPosterPath(){
+    	if(image == null)
+    		return null;
+
+    	return image.imagePath;
+    }
+    
+    
     /**
      * Get the HD image's url of the item
      * 
@@ -82,6 +82,6 @@ public class ItemTop100 extends ItemTop100Base {
     	}
     	return imageUrl;
     }
-
+    
 }
 // End of user code

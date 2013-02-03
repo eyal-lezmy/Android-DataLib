@@ -11,6 +11,10 @@ public class MovieImage extends MovieImageBase {
         super();
     }
 
+    public MovieImage(String fingerprint) {
+        super(fingerprint);
+    }
+
     public MovieImage(final Parcel in) {
         super(in);
     }
