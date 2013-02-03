@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import fr.eyal.datalib.sample.netflix.data.service.NetflixDataLibActivity;
+import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.model.ResponseBusinessObjectDAO;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.model.BusinessResponse;
@@ -174,7 +175,7 @@ public class NetflixActivity extends NetflixDataLibActivity {
 	}
 
 	@Override
-	public void onCacheRequestFinished(ResponseBusinessObjectDAO response) {
+	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
 		// TODO Auto-generated method stub
 		
 	}

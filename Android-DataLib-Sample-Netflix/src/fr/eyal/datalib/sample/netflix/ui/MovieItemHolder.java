@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import fr.eyal.datalib.sample.netflix.data.model.movieimage.MovieImage;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixService;
-import fr.eyal.lib.data.model.ResponseBusinessObjectDAO;
+import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.service.DataManager.OnDataListener;
 import fr.eyal.lib.data.service.model.BusinessResponse;
 
@@ -38,7 +38,7 @@ public class MovieItemHolder implements OnDataListener {
 	}
 	
 	@Override
-	public void onCacheRequestFinished(ResponseBusinessObjectDAO response) {
+	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
 		// TODO Auto-generated method stub
 		
 	}

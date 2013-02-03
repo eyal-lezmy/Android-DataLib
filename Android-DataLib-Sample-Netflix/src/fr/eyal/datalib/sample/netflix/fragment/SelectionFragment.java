@@ -24,6 +24,7 @@ import fr.eyal.datalib.sample.netflix.data.model.top100.Top100;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixDataManager;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixService;
 import fr.eyal.datalib.sample.netflix.ui.MovieItemHolder;
+import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.model.ResponseBusinessObjectDAO;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.model.BusinessResponse;
@@ -86,7 +87,7 @@ public class SelectionFragment extends NetflixFragment {
 	}
 
 	@Override
-	public void onCacheRequestFinished(ResponseBusinessObjectDAO response) {
+	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
 		
 	}
 
@@ -118,7 +119,7 @@ public class SelectionFragment extends NetflixFragment {
 
 				//we ask for movie's picture
 				//the movie item holder will handle the bitmap received 
-				mDataManager.getMovieImage(mMovies.get(i), movies.get(i).getImageUrl(), DataLibRequest.OPTION_NO_OPTION);
+				mDataManager.getMovieImage(DataManager.TYPE_NETWORK, mMovies.get(i), movies.get(i).getImageUrl(), DataLibRequest.OPTION_NO_OPTION);
 				
 				}
 			} catch (UnsupportedEncodingException e) {

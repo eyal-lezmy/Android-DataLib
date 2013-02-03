@@ -8,6 +8,7 @@ import fr.eyal.datalib.sample.netflix.data.model.movieimage.MovieImage;
 import fr.eyal.datalib.sample.netflix.data.model.newreleases.ItemNewRelease;
 import fr.eyal.datalib.sample.netflix.data.model.newreleases.NewReleases;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixService;
+import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.model.ResponseBusinessObjectDAO;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.model.BusinessResponse;
@@ -60,7 +61,7 @@ public class NewFragment extends NetflixFragment {
 	
 	public void getMoviePoster(ItemNewRelease item){
 		try {
-			int requestId = mDataManager.getMovieImage(this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION);
+			int requestId = mDataManager.getMovieImage(DataManager.TYPE_NETWORK, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION);
 			mRequestIds.add(requestId);
 			mPendingNewRleases.append(requestId, item);
 			
@@ -70,7 +71,7 @@ public class NewFragment extends NetflixFragment {
 	}
 	
 	@Override
-	public void onCacheRequestFinished(ResponseBusinessObjectDAO response) {
+	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
 		// TODO Auto-generated method stub
 		
 	}
