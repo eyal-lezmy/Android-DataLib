@@ -76,31 +76,36 @@ public class Processor {
                 //we send the request on the network and get the result
                 final HttpResponse result = doNetwork(request, context);
 
-                //we clear the cookie manager id needed 
-                if (!request.isConservingTheCookies())
-                    AndroidHttpClient.flushCookieManager();
+                if(result == null){
+                	response.status = BusinessResponse.STATUS_ERROR;
+                	response.statusMessage = CONNECTIVITY_ERROR_MESSAGE;
+                	
+                } else {
+                	//we clear the cookie manager id needed 
+                	if (!request.isConservingTheCookies())
+                		AndroidHttpClient.flushCookieManager();
 
-                response.returnCode = result.getStatus();
+                	response.returnCode = result.getStatus();
 
-                ResponseBusinessObject businessObjectNetwork = null;
+                	ResponseBusinessObject businessObjectNetwork = null;
 
-                //we parse the result to get a BusinessResponse
-                final GenericParser parser = new GenericParser(handler);
+                	//we parse the result to get a BusinessResponse
+                	final GenericParser parser = new GenericParser(handler);
 
-                parser.parseSheet(result.getBody(), request.parseType);
+                	parser.parseSheet(result.getBody(), request.parseType);
 
-                //we finish to fill the BusinessObject and save it
-                businessObjectNetwork = handler.getParsedData();
+                	//we finish to fill the BusinessObject and save it
+                	businessObjectNetwork = handler.getParsedData();
 
-                //if we have to save the result
-                if (request.isDatabaseCacheEnabled())
-                    businessObjectNetwork.save(request);
+                	//if we have to save the result
+                	if (request.isDatabaseCacheEnabled())
+                		businessObjectNetwork.save(request);
 
-                //we build the response to return
-                response.headers = result.getHeaders();
-                response.status = BusinessResponse.STATUS_OK;
-                response.response = businessObjectNetwork;
-
+                	//we build the response to return
+                	response.headers = result.getHeaders();
+                	response.status = BusinessResponse.STATUS_OK;
+                	response.response = businessObjectNetwork;
+                }
             } catch (final Exception e) {
                 e.printStackTrace();
                 response.status = BusinessResponse.STATUS_ERROR;
@@ -164,7 +169,7 @@ public class Processor {
                 break;
         }
         HttpResponse httpResponse = httpClient.execute(httpRequest);
-        Out.d(TAG, "" + httpResponse.getBodyAsString());
+        if(httpResponse != null) Out.d(TAG, httpResponse.getBodyAsString());
         return httpResponse;
     }
 }
