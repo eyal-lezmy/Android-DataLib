@@ -4,15 +4,19 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import fr.eyal.datalib.sample.netflix.R;
 import fr.eyal.datalib.sample.netflix.data.model.top100.ItemTop100;
+import fr.eyal.lib.util.Out;
 
 /**
  * @author Eyal LEZMY
@@ -23,11 +27,16 @@ public class Top100Adapter extends BaseAdapter {
 	ArrayList<ItemTop100> mArray;
 	Top100Fragment mFragment;
 	GridView mGridParent = null;
+	UpdateContent mUpdateContentRunnable = new UpdateContent();
+//	Animation mFadeIn;
+
 	
 	public Top100Adapter(Top100Fragment top100Fragment) {
 		super();
 		mFragment = top100Fragment;
 		mArray = new ArrayList<ItemTop100>();
+//		mFadeIn = new AlphaAnimation(0, 1);
+//		mFadeIn.setDuration(1000);
 	}
 
 	@Override
@@ -71,7 +80,7 @@ public class Top100Adapter extends BaseAdapter {
 		
 		if(item != null){
 			holder.text.setText((position+1) + ". " + item.title);
-			Bitmap bitmap = item.getPoster(mFragment.getActivity());
+			Bitmap bitmap = item.getPoster();
 			if(bitmap != null)
 				holder.image.setImageBitmap(bitmap);
 			else {
@@ -105,13 +114,53 @@ public class Top100Adapter extends BaseAdapter {
 				if(v == null) 
 					return;
 				ItemViewHolder holder = (ItemViewHolder) v.getTag();
-				Bitmap bmp = movie.image.get();
+				Bitmap bmp = movie.getPoster();
 				if(bmp != null){
-					holder.image.setImageBitmap(bmp);
-					holder.image.invalidate();
+					holder.image.post(new UpdatePoster(bmp, holder.image));
 				}
 			}
 		}
+	}
+
+	/**
+	 * This override manage to launch the action on the UI thread
+	 */
+	@Override
+	public void notifyDataSetChanged() {
+		if(Looper.myLooper() == Looper.getMainLooper())
+			super.notifyDataSetChanged();
+		else
+			mFragment.getActivity().runOnUiThread(mUpdateContentRunnable);
+	}
+	
+	public class UpdatePoster implements Runnable {
+
+		Bitmap mImage;
+		ImageView mView;
+		
+		public UpdatePoster(Bitmap image, ImageView view){
+			mImage = image;
+			mView = view;
+		}
+		
+		@Override
+		public void run() {
+			mView.setImageBitmap(mImage);
+//			mView.startAnimation(mFadeIn);
+			mView.invalidate();
+		}
+	}
+
+	public class UpdateContent implements Runnable {
+
+		public UpdateContent(){
+		}
+		
+		@Override
+		public void run() {
+			notifyDataSetChanged();
+		}
 		
 	}
+
 }

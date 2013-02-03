@@ -18,7 +18,7 @@ import fr.eyal.datalib.sample.netflix.data.model.top100.ItemTop100;
 import fr.eyal.datalib.sample.netflix.data.model.top100.Top100;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixService;
 import fr.eyal.datalib.sample.netflix.fragment.Top100Adapter.ItemViewHolder;
-import fr.eyal.lib.data.model.ResponseBusinessObjectDAO;
+import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.model.BusinessResponse;
 import fr.eyal.lib.data.service.model.DataLibRequest;
@@ -27,17 +27,19 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 
 	GridView mGridView;
 	Top100Adapter mAdapter;
-	SparseArray<ItemTop100> mPendingNewRleases;
+	SparseArray<ItemTop100> mPendingItem;
+	ArrayList<ItemTop100> mPendingItemCache;
 	int mScrollState;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		mAdapter = new Top100Adapter(this);
-		mPendingNewRleases = new SparseArray<ItemTop100>();
+		mPendingItem = new SparseArray<ItemTop100>();
+		mPendingItemCache = new ArrayList<ItemTop100>();
 		super.onCreate(savedInstanceState);
 		
 		try {
-			int requestId = mDataManager.getTop100(DataManager.TYPE_NETWORK, this, DataLibRequest.OPTION_NO_OPTION);
+			int requestId = mDataManager.getTop100(DataManager.TYPE_CACHE_THEN_NETWORK, this, DataLibRequest.OPTION_NO_OPTION);
 			mRequestIds.add(requestId);
 
 		} catch (UnsupportedEncodingException e) {
@@ -63,31 +65,67 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 	}
 	
 	
+	/**
+	 * Ask to download the movie's poster
+	 * 
+	 * @param item
+	 */
 	public void getMoviePoster(ItemTop100 item){
 		
 		if(mScrollState == OnScrollListener.SCROLL_STATE_FLING)
 			return;
+				
+		synchronized (mPendingItemCache) {
+			//we set the request type
+			int type = DataManager.TYPE_NETWORK;
+			if(item.image != null)
+				type = DataManager.TYPE_CACHE;
+
+			if(type == DataManager.TYPE_CACHE && mPendingItemCache.contains(item)){
+				return;
+			}
 		
-		try {
-			int requestId = mDataManager.getMovieImage(this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION);
-			mRequestIds.add(requestId);
-			mPendingNewRleases.append(requestId, item);
-			
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			try {
+				int requestId = mDataManager.getMovieImage(type, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION);
+				mRequestIds.add(requestId);
+				mPendingItem.append(requestId, item);
+
+				if(type == DataManager.TYPE_CACHE){
+					mPendingItemCache.add(item);	
+				}
+
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
+	
+	/*
+	 * OnDataListener management
+	 */
+	
 	@Override
-	public void onCacheRequestFinished(ResponseBusinessObjectDAO response) {
-		// TODO Auto-generated method stub
+	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
 		
+		if(response instanceof Top100){
+			updateTop100((Top100) response);			
+			
+		} else if(response instanceof MovieImage){
+			ItemTop100 item = updateTop100Image(requestId, (MovieImage) response);
+			
+			if(item != null){
+				synchronized (mPendingItemCache) {
+					mPendingItemCache.remove(item);
+				}
+			}
+
+		}		
 	}
 
 	@Override
 	public void onDataFromDatabase(int code, ArrayList<?> data) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -98,37 +136,64 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 		switch (response.webserviceType) {
 
 		case NetflixService.WEBSERVICE_TOP100:
-			Top100 newReleases = (Top100) response.response;
-			mAdapter.mArray = newReleases.itemTop100;
-			mAdapter.notifyDataSetChanged();
+			updateTop100((Top100) response.response);
 			break;
 			
 		case NetflixService.WEBSERVICE_MOVIEIMAGE:
-			//we update the object
-			ItemTop100 item = mPendingNewRleases.get(requestId);
-			MovieImage image = (MovieImage) response.response;
-			item.image = image.image;
-			item.imagePath = image.imagePath;
-			//we update the current displayed list
-			mAdapter.updatePoster(item);
+			updateTop100Image(requestId, (MovieImage) response.response);
 			break;
 
 		default:
 			break;
 		}
-		
 	}
 
+	/*
+	 * Content update
+	 */
+	
+	/**
+	 * Update the movies list
+	 * 
+	 * @param response the {@link Top100} content
+	 */
+	private void updateTop100(Top100 response) {
+		mAdapter.mArray = response.itemTop100;
+		mAdapter.notifyDataSetChanged();
+	}
+
+
+	/**
+	 * Update the movie image
+	 * 
+	 * @param requestId the request id to find the corresponding movie item
+	 * @param response the {@link MovieImage} received
+	 * 
+	 * @return the {@link ItemTop100} item concerned by the updating or null if it is not found
+	 */
+	private ItemTop100 updateTop100Image(int requestId, MovieImage response) {
+		//we update the object
+		ItemTop100 item = mPendingItem.get(requestId);
+		if(item == null || response == null)
+			return null;
+		item.image = response;
+		//we update the current displayed list
+		mAdapter.updatePoster(item);
+		mPendingItem.remove(requestId);
+		return item;
+	}
+
+	
+	/*
+	 * Scroll management
+	 */
+	
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 	}
 
 	@Override
 	public  void  onScrollStateChanged(AbsListView view, int scrollState) {
-//		if(scrollState == OnScrollListener.SCROLL_STATE_FLING)
-//			mGridView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-//		else
-//			mGridView.setLayerType(View.LAYER_TYPE_NONE, null);
 			
 		//if the list finish a fling
 		if(mScrollState == OnScrollListener.SCROLL_STATE_FLING && scrollState != mScrollState){
@@ -144,7 +209,7 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 					if(v != null){
 						Top100Adapter.ItemViewHolder holder = (ItemViewHolder) v.getTag();
 						if(holder != null){
-							Bitmap bitmap = item.getPoster(getActivity());
+							Bitmap bitmap = item.getPoster();
 							if(bitmap != null)
 								holder.image.setImageBitmap(bitmap);
 							else
@@ -155,7 +220,6 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 
 			}
 		}
-		
 		mScrollState = scrollState;
 	}
 }
