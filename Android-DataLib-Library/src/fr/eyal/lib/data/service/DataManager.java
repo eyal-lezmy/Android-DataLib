@@ -29,7 +29,6 @@ import fr.eyal.lib.data.communication.rest.ParameterMap;
 import fr.eyal.lib.data.model.BusinessObject;
 import fr.eyal.lib.data.model.BusinessObjectDAO;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
-import fr.eyal.lib.data.model.ResponseBusinessObjectDAO;
 import fr.eyal.lib.data.model.provider.BusinessObjectProvider;
 import fr.eyal.lib.data.service.ServiceHelper.OnRequestFinishedListener;
 import fr.eyal.lib.data.service.ServiceHelper.OnRequestFinishedRelayer;
@@ -69,11 +68,21 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
      */
     protected ConnectivityManager mConnectivityManager;
 
+    /**
+     * The content resolver of the application
+     */
     protected ContentResolver mContentResolver;
 
+    /**
+     * The cache request ids
+     */
     protected SparseArray<Object> mDataCacheRequestIds;
 
-    //different types of policies for the request
+    
+    /*
+     * different types of policies for the request
+     */
+    
     /**
      * <b>Network only</b> This value defines a DataManager request as a "network only" treatment. The DataManager have only to use the DataLib to get the
      * response.
@@ -122,7 +131,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
          * 
          * @param response is the response returned by the cache.
          */
-        public void onCacheRequestFinished(ResponseBusinessObjectDAO response);
+        public void onCacheRequestFinished(int requestId, ResponseBusinessObject response);
 
         /**
          * Event fired when a database query is finished.
@@ -321,11 +330,12 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
      * @return Returns the id to return to the launcher of the retrieve function
      */
     protected int sendDataCache(final OnDataListener listener, final String url, final int type) {
-        //we create and launch the database access
-        final DataCacheRunnable runnable = new DataCacheRunnable(url, type, listener);
+        //we create and launch the data cache access
+        final int requestId = ServiceHelper.generateRequestId();
+    	final DataCacheRunnable runnable = new DataCacheRunnable(requestId, url, type, listener);
         final Thread thread = new Thread(runnable);
         thread.start();
-        return DATACACHE_REQUEST;
+        return requestId;
     }
     
     /**
@@ -365,14 +375,20 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
 
             case TYPE_CACHE:
                 //we create and launch the database access
-                if (datacacheListener != null)
-                    return sendDataCache(datacacheListener, url, webService);
+                if (datacacheListener != null){
+                	//TODO maybe improve the fingerprint process
+                	DataLibRequest request = new DataLibRequest(url, params);
+                	return sendDataCache(datacacheListener, request.getFingerprint(), webService);
+                }
                 break;
 
             case TYPE_CACHE_THEN_NETWORK:
                 //we create and launch the database access
-                if (datacacheListener != null)
-                    sendDataCache(datacacheListener, url, webService);
+                if (datacacheListener != null){
+                	//TODO maybe improve the fingerprint process
+                	DataLibRequest request = new DataLibRequest(url, params);
+                	sendDataCache(datacacheListener, request.getFingerprint(), webService);
+                }
                 //we launch the network request
     			return serviceHelper.launchRequest(options, webService, params, serviceClass, url);
 
@@ -388,8 +404,9 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
         			return serviceHelper.launchRequest(options, webService, params, serviceClass, url);
 
                 } else if (datacacheListener != null) {
-                    //we create and launch the database access
-                    return sendDataCache(datacacheListener, url, webService);
+                	//TODO maybe improve the fingerprint process
+                	DataLibRequest request = new DataLibRequest(url, params);
+                	return sendDataCache(datacacheListener, request.getFingerprint(), webService);
                 }
                 break;
 
@@ -408,12 +425,14 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
      */
     private class DataCacheRunnable implements Runnable {
 
+        protected int mRequestId;
         protected String mId;
         protected int mType;
         protected OnDataListener mListener;
 
-        protected DataCacheRunnable(final String id, final int type, final OnDataListener listener) {
+        protected DataCacheRunnable(final int requestId, final String id, final int type, final OnDataListener listener) {
             super();
+            mRequestId = requestId;
             mId = id;
             mType = type;
             mListener = listener;
@@ -423,7 +442,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
         public void run() {
 
             //we reach the data from cache
-            final ResponseBusinessObjectDAO data = (ResponseBusinessObjectDAO) getBusinessObjectFromCacheByUrl(mType, mId);
+            final ResponseBusinessObject data = (ResponseBusinessObject) getBusinessObjectFromCacheByUrl(mType, mId);
 
             //			OLD CODE PROVIDED TO GIVE AN EXAMPLE INSIDE A IMPLEMENTED CLASS
             //
@@ -438,7 +457,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
             //			}
 
             //we return the result to the listener
-            mListener.onCacheRequestFinished(data);
+            mListener.onCacheRequestFinished(mRequestId, data);
         }
     }
 
@@ -450,7 +469,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
      *            
      * @return returns the {@code BusinessObjectDAO} if exists or null if the asked webservice don't implements the cache process
      */
-    public abstract BusinessObjectDAO getBusinessObjectFromCacheByUrl(int type, String url);
+    public abstract ResponseBusinessObject getBusinessObjectFromCacheByUrl(int type, String url);
 
     /**
      * FUNCTIONS TO GET INFORMATION DIRECTLY FROM THE DATABASE
@@ -478,7 +497,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
             return BAD_REQUEST;
 
         //we manage the request's id
-        final int requestId = mServiceHelper.generateRequestId();
+        final int requestId = ServiceHelper.generateRequestId();
         mDataCacheRequestIds.append(requestId, null);
 
         //we build and start the process to launch

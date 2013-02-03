@@ -29,6 +29,7 @@ import android.util.SparseArray;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.service.model.BusinessResponse;
+import fr.eyal.lib.util.FileManager;
 import fr.eyal.lib.util.Out;
 
 /**
@@ -39,7 +40,7 @@ public class ServiceHelper {
     private static final String LOG_TAG = ServiceHelper.class.getSimpleName();
 
     private static final int MAX_RANDOM_REQUEST_ID = Integer.MAX_VALUE;
-    private int REQUEST_ID_CPT = 0;
+    private static int REQUEST_ID_CPT = 0;
 
     /**
      * Singleton of the ServiceHelper
@@ -109,6 +110,8 @@ public class ServiceHelper {
         mRequestSparseArray = new SparseArray<Intent>();
         mListenersSparseArray = new SparseArray<ArrayList<OnRequestFinishedListener>>();
         mRelayersArray = new ArrayList<OnRequestFinishedRelayer>();
+        //we initialize the FileManager
+        FileManager.getInstance(context);
     }
 
     /**
@@ -326,7 +329,7 @@ public class ServiceHelper {
         mContext.startService(i);
     }
 
-    public synchronized int generateRequestId() {
+    public synchronized static int generateRequestId() {
         int id = REQUEST_ID_CPT++;
         if (id > MAX_RANDOM_REQUEST_ID)
             REQUEST_ID_CPT = 0;
