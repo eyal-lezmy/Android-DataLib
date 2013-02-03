@@ -179,7 +179,14 @@ public class DataLibRequest {
         parseType = PARSE_TYPE_SAX_XML;
     }
 
-    /**
+    public DataLibRequest(String url, ParameterMap params) {
+    	option = OPTION_NO_OPTION;
+        parseType = PARSE_TYPE_SAX_XML;
+        this.url = url;
+        this.params = params;
+	}
+
+	/**
      * This function tells if the DataLibRequest ask to conserve the cookie returned by the server
      * 
      * @return return true if the cookie have to be conserved or false if not
