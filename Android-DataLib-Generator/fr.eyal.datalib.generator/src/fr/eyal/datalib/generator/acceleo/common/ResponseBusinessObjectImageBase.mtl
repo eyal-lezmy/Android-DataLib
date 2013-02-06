@@ -89,7 +89,7 @@ public class [_class/]Base implements ResponseBusinessObject {
     	String extension = FileManager.getFileExtension(request.url);
 		String name = request.getFingerprint();
 
-    	imagePath = mFileManager.saveInInternalCache(CACHE_DIRECTORY, name, image.get(), 100);
+    	imagePath = mFileManager.saveInInternalCache(CACHE_DIRECTORY, name, extension, image.get(), 100);
     }
 
 	/**
