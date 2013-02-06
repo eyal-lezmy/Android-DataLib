@@ -444,18 +444,6 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
             //we reach the data from cache
             final ResponseBusinessObject data = (ResponseBusinessObject) getBusinessObjectFromCacheByUrl(mType, mId);
 
-            //			OLD CODE PROVIDED TO GIVE AN EXAMPLE INSIDE A IMPLEMENTED CLASS
-            //
-            //			switch (mType) {
-            //
-            //			case DataLibService.WEBSERVICE_PREVISION_METEO:
-            //				PrevisionMeteo previsionMeteoCache = new PrevisionMeteo(this.mId);
-            //				break;
-            //
-            //			default:
-            //				break;
-            //			}
-
             //we return the result to the listener
             mListener.onCacheRequestFinished(mRequestId, data);
         }
