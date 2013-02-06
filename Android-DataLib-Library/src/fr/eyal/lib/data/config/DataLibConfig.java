@@ -16,6 +16,8 @@
 
 package fr.eyal.lib.data.config;
 
+import fr.eyal.datalib.BuildConfig;
+
 /**
  * @author Eyal LEZMY
  */
@@ -24,7 +26,7 @@ public class DataLibConfig {
     /**
      * if true, show the log messages inside the dataLib
      */
-    public static final boolean SHOW_LOG = true;
+    public static boolean SHOW_LOG = BuildConfig.DEBUG;
 
     /**
      * if true, it imposes to verify the validity of the code returned by the server (have to be between 200 and 299 to be returned)
