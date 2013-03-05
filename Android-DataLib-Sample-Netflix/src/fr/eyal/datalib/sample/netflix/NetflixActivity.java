@@ -1,19 +1,13 @@
 package fr.eyal.datalib.sample.netflix;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
-import fr.eyal.datalib.sample.netflix.data.service.NetflixDataLibActivity;
-import fr.eyal.lib.data.model.ResponseBusinessObject;
-import fr.eyal.lib.data.model.ResponseBusinessObjectDAO;
-import fr.eyal.lib.data.service.DataManager;
-import fr.eyal.lib.data.service.model.BusinessResponse;
-import fr.eyal.lib.data.service.model.DataLibRequest;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
+import fr.eyal.datalib.sample.netflix.data.service.NetflixDataLibActivity;
+import fr.eyal.lib.data.model.ResponseBusinessObject;
+import fr.eyal.lib.data.service.model.BusinessResponse;
 
 public class NetflixActivity extends NetflixDataLibActivity {
 
@@ -28,6 +22,8 @@ public class NetflixActivity extends NetflixDataLibActivity {
 	Button mBtnGetMovie;
 	Button mBtnGetDirectors;
 	Button mBtnGetCast;
+	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
