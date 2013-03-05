@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/gridview"
-    android:numColumns="2"
+    android:numColumns="3"
     android:drawSelectorOnTop="true"
     android:padding="8dp"
     android:horizontalSpacing="4dp"
