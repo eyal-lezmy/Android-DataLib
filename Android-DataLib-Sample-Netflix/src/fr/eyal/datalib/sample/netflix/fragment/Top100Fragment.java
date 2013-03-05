@@ -156,8 +156,6 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 			if(movieImage.image != null && movieImage.image.get() != null)
 				unscaledBmp = movieImage.image.get();
 			
-			Out.e("", "Size " + unscaledBmp);
-			
 			//if the cache object does not contains the good information
 			if(unscaledBmp == null){
 
@@ -182,14 +180,11 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 				}
 				
 			} else {
-				Out.d("", "SIZE CACHE " + movieImage.image.get().getHeight() + " - " + movieImage.image.get().getWidth() + " " + movieImage.image.get().getDensity());
-				Out.d("", "SIZE HEIGHT " + getResources().getDimension(R.dimen.item_height_small));
 								
 				float ratio = (float)unscaledBmp.getWidth()/unscaledBmp.getHeight();
 				
 				Bitmap scaledBmp = scaleBitmap(unscaledBmp, ratio*mItemHeight, mItemHeight, ScalingLogic.FIT);
 				unscaledBmp.recycle();
-				Out.d("", "SIZE SCALED " + scaledBmp.getHeight() + " - " + scaledBmp.getWidth() + " " + scaledBmp.getDensity());
 				
 				movieImage.image = new SoftReference<Bitmap>(scaledBmp);
 				//we ask to update the ImageView

@@ -122,9 +122,6 @@ public class Top100Adapter extends BaseAdapter implements OnScrollListener, Recy
 			CacheableBitmapDrawable cacheBitmap = mBitmapCache.get(item.getPosterName());
 			if(cacheBitmap != null){
 				cacheBitmap.setBeingUsed(true); //we set the bitmap as used by the application
-				Out.d("", "SIZE Drawable " + cacheBitmap.getIntrinsicHeight() + " - " + cacheBitmap.getIntrinsicWidth());
-				Out.d("", "SIZE Image " + cacheBitmap.getBitmap().getHeight() + " - " + cacheBitmap.getBitmap().getWidth());
-				Out.d("", "SIZE View " + holder.image.getHeight() + " - " + holder.image.getWidth());
 				holder.image.setImageDrawable(cacheBitmap);
 				return true;
 			}
@@ -241,8 +238,6 @@ public class Top100Adapter extends BaseAdapter implements OnScrollListener, Recy
 				mView.setImageDrawable(mImage);
 				mImage.setBeingUsed(true);
 				anim.startNow();
-				Out.d("", "SIZE Image" + mImage.getIntrinsicHeight() + " - " + mImage.getIntrinsicWidth());
-				Out.d("", "SIZE View" + mView.getHeight() + " - " + mView.getWidth());
 			} else {
 				mView.setImageDrawable(mImage);
 				mView.startAnimation(mFadeIn);
