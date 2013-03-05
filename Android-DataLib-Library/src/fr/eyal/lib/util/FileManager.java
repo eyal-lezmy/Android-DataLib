@@ -413,10 +413,12 @@ public class FileManager {
      * 
      * @param directory the directory following the cache directory. This parameter can contains {@link File#separator} character
      * @param path the file path for this Bitmap.
+     * @param options {@link BitmapFactory.Options} to use for the {@link BitmapFactory#decodeFile(String, android.graphics.BitmapFactory.Options)} function
+     * 
      * @return the bitmap save on the internal storage
      */
-    public Bitmap getPictureFromInternalCache(final String directory, final String filename) {
-    	return FileManager.getPictureFromInternalCache(directory, filename, mContext);
+    public Bitmap getPictureFromInternalCache(final String directory, final String filename, BitmapFactory.Options options) {
+    	return FileManager.getPictureFromInternalCache(directory, filename, mContext, options);
     }
 
     /**
@@ -441,10 +443,27 @@ public class FileManager {
      * @return the bitmap save on the internal storage
      */
     public static Bitmap getPictureFromInternalCache(final String directory, final String filename, final Context context) {
+    	return FileManager.getPictureFromInternalCache(directory, filename, context, null);
+    }
+
+
+    /**
+     * Returns a Bitmap image from internal storage or null if image not found.
+     * 
+     * @param directory the directory following the cache directory. This parameter can contains {@link File#separator} character
+     * @param path the file path for this Bitmap.
+     * @param context the application context
+     * @param options {@link BitmapFactory.Options} to use for the {@link BitmapFactory#decodeFile(String, android.graphics.BitmapFactory.Options)} function
+     * 
+     * @return the bitmap save on the internal storage
+     */
+    public static Bitmap getPictureFromInternalCache(final String directory, final String filename, final Context context, BitmapFactory.Options options) {
 
     	File cacheDir = getInternalCacheDirectory(directory, context);
     	
-        return BitmapFactory.decodeFile(cacheDir.getAbsolutePath() + File.separator + filename);
+//    	options.inSampleSize = 1;
+//    	Out.d("", "POSTER " + opts.inSampleSize);
+        return BitmapFactory.decodeFile(cacheDir.getAbsolutePath() + File.separator + filename, options);
     }
 
     
@@ -467,12 +486,13 @@ public class FileManager {
      * Returns a Bitmap image from internal storage or null if image not found.
      * 
      * @param path the file path for this Bitmap.
+     * @param options {@link BitmapFactory.Options} to use for the {@link BitmapFactory#decodeFile(String, android.graphics.BitmapFactory.Options)} function
+     * 
      * @return the bitmap save on the internal storage
      */
-    public static Bitmap getPictureFromFile(final String path) {
-    	BitmapFactory.Options options = new BitmapFactory.Options();
-    	options.inJustDecodeBounds = true;
-    	options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    public static Bitmap getPictureFromFile(final String path, BitmapFactory.Options options) {
+//    	BitmapFactory.Options options = new BitmapFactory.Options();
+//    	options.inSampleSize = 1;
         return BitmapFactory.decodeFile(path, options);
     }
 
