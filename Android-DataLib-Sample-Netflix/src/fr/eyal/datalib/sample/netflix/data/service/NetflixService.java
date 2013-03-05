@@ -65,52 +65,52 @@ public class NetflixService extends DataLibService {
 
 			case WEBSERVICE_NEWRELEASES:
 			    NewReleasesWebConfig.applyToRequest(request, NewReleasesWebConfig.getInstance());
-			    handler = new NewReleasesParser();
-			    break;
+				handler = new NewReleasesParser();
+				break;
 			case WEBSERVICE_MOVIEIMAGE:
 			    MovieImageWebConfig.applyToRequest(request, MovieImageWebConfig.getInstance());
-			    handler = new MovieImageParser();
-			    break;
+			    handler = new MovieImageParser(request.complexOptions);
+				break;
 			case WEBSERVICE_TOP100:
 			    Top100WebConfig.applyToRequest(request, Top100WebConfig.getInstance());
-			    handler = new Top100Parser();
-			    break;
+				handler = new Top100Parser();
+				break;
 			case WEBSERVICE_TOPGENRE:
 			    TopGenreWebConfig.applyToRequest(request, TopGenreWebConfig.getInstance());
-			    handler = new TopGenreParser();
-			    break;
+				handler = new TopGenreParser();
+				break;
 			case WEBSERVICE_AUTOCOMPLETE:
 			    AutocompleteWebConfig.applyToRequest(request, AutocompleteWebConfig.getInstance());
-			    handler = new AutocompleteParser();
-			    break;
+				handler = new AutocompleteParser();
+				break;
 			case WEBSERVICE_CATALOGTITLES:
 			    CatalogTitlesWebConfig.applyToRequest(request, CatalogTitlesWebConfig.getInstance());
-			    handler = new CatalogTitlesParser();
-			    break;
+				handler = new CatalogTitlesParser();
+				break;
 			case WEBSERVICE_PEOPLE:
 			    PeopleWebConfig.applyToRequest(request, PeopleWebConfig.getInstance());
-			    handler = new PeopleParser();
-			    break;
+				handler = new PeopleParser();
+				break;
 			case WEBSERVICE_FILMOGRAPHY:
 			    FilmographyWebConfig.applyToRequest(request, FilmographyWebConfig.getInstance());
-			    handler = new FilmographyParser();
-			    break;
+				handler = new FilmographyParser();
+				break;
 			case WEBSERVICE_MOVIE:
 			    MovieWebConfig.applyToRequest(request, MovieWebConfig.getInstance());
-			    handler = new MovieParser();
-			    break;
+				handler = new MovieParser();
+				break;
 			case WEBSERVICE_SYNOPSIS:
 			    SynopsisWebConfig.applyToRequest(request, SynopsisWebConfig.getInstance());
-			    handler = new SynopsisParser();
-			    break;
+				handler = new SynopsisParser();
+				break;
 			case WEBSERVICE_CAST:
 			    CastWebConfig.applyToRequest(request, CastWebConfig.getInstance());
-			    handler = new CastParser();
-			    break;
+				handler = new CastParser();
+				break;
 			case WEBSERVICE_DIRECTORS:
 			    DirectorsWebConfig.applyToRequest(request, DirectorsWebConfig.getInstance());
-			    handler = new DirectorsParser();
-			    break;
+				handler = new DirectorsParser();
+				break;
 			default:
             	return;
         }

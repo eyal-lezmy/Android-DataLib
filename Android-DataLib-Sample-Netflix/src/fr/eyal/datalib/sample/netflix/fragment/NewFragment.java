@@ -35,7 +35,7 @@ public class NewFragment extends NetflixFragment {
 		super.onCreate(savedInstanceState);
 		
 		try {
-			int requestId = mDataManager.getNewReleases(DataManager.TYPE_NETWORK, this, DataLibRequest.OPTION_NO_OPTION);
+			int requestId = mDataManager.getNewReleases(DataManager.TYPE_NETWORK, this, DataLibRequest.OPTION_NO_OPTION, null, null);
 			mRequestIds.add(requestId);
 
 		} catch (UnsupportedEncodingException e) {
@@ -61,7 +61,7 @@ public class NewFragment extends NetflixFragment {
 	
 	public void getMoviePoster(ItemNewRelease item){
 		try {
-			int requestId = mDataManager.getMovieImage(DataManager.TYPE_NETWORK, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION);
+			int requestId = mDataManager.getMovieImage(DataManager.TYPE_NETWORK, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION, null, null);
 			mRequestIds.add(requestId);
 			mPendingNewRleases.append(requestId, item);
 			

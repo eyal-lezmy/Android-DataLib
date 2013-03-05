@@ -2,6 +2,7 @@
 package fr.eyal.datalib.sample.netflix.data.model.movieimage;
 
 import android.os.Parcel;
+import fr.eyal.lib.data.service.model.ComplexOptions;
 
 public class MovieImage extends MovieImageBase {
 
@@ -11,13 +12,13 @@ public class MovieImage extends MovieImageBase {
         super();
     }
 
-    public MovieImage(String fingerprint) {
-        super(fingerprint);
+    public MovieImage(String fingerprint, ComplexOptions complexOptions) {
+        super(fingerprint, complexOptions);
     }
 
     public MovieImage(final Parcel in) {
         super(in);
     }
-
+    
 }
 // End of user code

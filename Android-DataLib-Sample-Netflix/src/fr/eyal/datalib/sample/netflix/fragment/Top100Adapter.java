@@ -2,6 +2,7 @@ package fr.eyal.datalib.sample.netflix.fragment;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Looper;
@@ -10,10 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AbsListView.RecyclerListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import fr.eyal.datalib.sample.cache.BitmapMemoryLruCache;
+import fr.eyal.datalib.sample.cache.CacheableBitmapDrawable;
 import fr.eyal.datalib.sample.netflix.R;
 import fr.eyal.datalib.sample.netflix.data.model.top100.ItemTop100;
 import fr.eyal.lib.util.Out;
@@ -22,31 +28,37 @@ import fr.eyal.lib.util.Out;
  * @author Eyal LEZMY
  *
  */
-public class Top100Adapter extends BaseAdapter {
+public class Top100Adapter extends BaseAdapter implements OnScrollListener, RecyclerListener{
 
-	ArrayList<ItemTop100> mArray;
+	ArrayList<ItemTop100> mArray = new ArrayList<ItemTop100>();
 	Top100Fragment mFragment;
 	GridView mGridParent = null;
 	UpdateContent mUpdateContentRunnable = new UpdateContent();
-//	Animation mFadeIn;
-
+	int mListFirst = 0;
+	int mListCount = -1;
+	boolean mListScrolled = false;
+	BitmapMemoryLruCache mBitmapCache;
 	
 	public Top100Adapter(Top100Fragment top100Fragment) {
 		super();
 		mFragment = top100Fragment;
 		mArray = new ArrayList<ItemTop100>();
-//		mFadeIn = new AlphaAnimation(0, 1);
-//		mFadeIn.setDuration(1000);
+		final int maxMemory = (int) Runtime.getRuntime().maxMemory()/8;
+		mBitmapCache = new BitmapMemoryLruCache(maxMemory);
 	}
-
+	
 	@Override
 	public int getCount() {
-		return mArray.size();
+		if(mArray != null)
+			return mArray.size();
+		return 0;
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mArray.get(position);
+		if(mArray != null)
+			return mArray.get(position);
+		return null;
 	}
 
 	@Override
@@ -59,8 +71,11 @@ public class Top100Adapter extends BaseAdapter {
 		
 		ItemViewHolder holder;
 		
-		if(mGridParent == null)
+		if(mGridParent == null) {
 			mGridParent = (GridView) parent;
+			mGridParent.setOnScrollListener(this);
+			mGridParent.setRecyclerListener(this);
+		}
 		
 		if(convertView == null){
 			LayoutInflater inflater = (LayoutInflater) mFragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -77,51 +92,119 @@ public class Top100Adapter extends BaseAdapter {
         }
 
 		ItemTop100 item = mArray.get(position);
-		
+		holder.item = item;
+
 		if(item != null){
-			holder.text.setText((position+1) + ". " + item.title);
-			Bitmap bitmap = item.getPoster();
-			if(bitmap != null)
-				holder.image.setImageBitmap(bitmap);
-			else {
-				holder.image.setImageResource(R.drawable.movie);
-				mFragment.getMoviePoster(item);
+			
+			//we create the title
+			String title = (position+1) + ". " + item.title;
+
+			holder.text.setText(title);
+
+			
+			boolean isImageSet = setImageFromItemOrCache(holder, item);
+			
+			//if the image is not set we ask for a poster request
+			if(!isImageSet) {
+				holder.image.setImageResource(R.drawable.movie_back);
+				mFragment.loadMoviePoster(item);
 			}
 		}
 		
 		return convertView;
 	}
 
+	public boolean setImageFromItemOrCache(ItemViewHolder holder, ItemTop100 item) {
+
+		if(item.image != null){
+
+			//we get the poster from the cache
+			CacheableBitmapDrawable cacheBitmap = mBitmapCache.get(item.getPosterName());
+			if(cacheBitmap != null){
+				cacheBitmap.setBeingUsed(true); //we set the bitmap as used by the application
+				Out.d("", "SIZE Drawable " + cacheBitmap.getIntrinsicHeight() + " - " + cacheBitmap.getIntrinsicWidth());
+				Out.d("", "SIZE Image " + cacheBitmap.getBitmap().getHeight() + " - " + cacheBitmap.getBitmap().getWidth());
+				Out.d("", "SIZE View " + holder.image.getHeight() + " - " + holder.image.getWidth());
+				holder.image.setImageDrawable(cacheBitmap);
+				return true;
+			}
+
+			//we get the poster from the item
+			Bitmap bitmap = item.getPoster(false);
+			//if we found the poster
+			//we set the poster on the view
+			if(bitmap != null) {
+				holder.image.setImageBitmap(bitmap);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	static class ItemViewHolder{
 		ImageView image;
 		TextView text;
+		ItemTop100 item;
 	}
 	
 	public void updatePoster(ItemTop100 movie){
+		//TODO manage to very fast scroll up/down that add a bad image on the item
 		
-		int position = mArray.indexOf(movie);
-		if(position < 0)
-			return;
-		
+		Bitmap bmp = movie.getPoster(false);
+		CacheableBitmapDrawable cacheBmp = new CacheableBitmapDrawable(mFragment.getResources(), movie.getPosterName(), bmp, CacheableBitmapDrawable.RecyclePolicy.DISABLED);
+		mBitmapCache.put(cacheBmp);
+
 		//if we have the parent view
 		if(mGridParent != null){
-			int first = mGridParent.getFirstVisiblePosition();
-			int max = first + mGridParent.getChildCount();
+			
+			int position = mArray.indexOf(movie);
+			if(position < 0)
+				return;
+			
+			if(!mListScrolled) {
+				mListFirst = mGridParent.getFirstVisiblePosition();
+				mListCount = mGridParent.getChildCount();
+ 			}
 			
 			//if the item is displayed
-			if(first <= position && position < max){
-				View v = mGridParent.getChildAt(position-first);
-				if(v == null) 
-					return;
+			if(mListFirst <= position && position <= (mListFirst+mListCount)){
+				View v = null;
+				int count = 0;
+				//we get the view eventually several times if needed
+				//workaround because sometimes the view is not available on the GridView
+				while(v == null && count < 10){
+					v = mGridParent.getChildAt(position-mListFirst);
+					count++;
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					if(v != null){
+						break;
+					}
+				}
+				//if after the tests the view is still null
+				if(v == null){
+					return; //we give up the method
+				}
 				ItemViewHolder holder = (ItemViewHolder) v.getTag();
-				Bitmap bmp = movie.getPoster();
+				
 				if(bmp != null){
-					holder.image.post(new UpdatePoster(bmp, holder.image));
+					boolean run = holder.image.post(new UpdatePoster(cacheBmp, holder.image));
+					if(!run){
+						holder.image.post(new UpdatePoster(cacheBmp, holder.image));
+					}
+				} else {
+					mFragment.loadMoviePoster(movie);
 				}
 			}
 		}
 	}
 
+	
+	
 	/**
 	 * This override manage to launch the action on the UI thread
 	 */
@@ -129,25 +212,41 @@ public class Top100Adapter extends BaseAdapter {
 	public void notifyDataSetChanged() {
 		if(Looper.myLooper() == Looper.getMainLooper())
 			super.notifyDataSetChanged();
-		else
-			mFragment.getActivity().runOnUiThread(mUpdateContentRunnable);
+		else{
+			Activity a = mFragment.getActivity();
+			if(a != null)
+				a.runOnUiThread(mUpdateContentRunnable);
+		}
 	}
 	
 	public class UpdatePoster implements Runnable {
 
-		Bitmap mImage;
+		CacheableBitmapDrawable mImage;
 		ImageView mView;
+		Animation mFadeIn;
 		
-		public UpdatePoster(Bitmap image, ImageView view){
+		public UpdatePoster(CacheableBitmapDrawable image, ImageView view){
 			mImage = image;
 			mView = view;
+			mFadeIn = new AlphaAnimation(0, 1);
+			mFadeIn.setDuration(300);
 		}
 		
 		@Override
 		public void run() {
-			mView.setImageBitmap(mImage);
-//			mView.startAnimation(mFadeIn);
-			mView.invalidate();
+			Animation anim = mView.getAnimation();
+			if(anim != null){
+				anim.cancel();
+				anim.reset();
+				mView.setImageDrawable(mImage);
+				mImage.setBeingUsed(true);
+				anim.startNow();
+				Out.d("", "SIZE Image" + mImage.getIntrinsicHeight() + " - " + mImage.getIntrinsicWidth());
+				Out.d("", "SIZE View" + mView.getHeight() + " - " + mView.getWidth());
+			} else {
+				mView.setImageDrawable(mImage);
+				mView.startAnimation(mFadeIn);
+			}
 		}
 	}
 
@@ -161,6 +260,44 @@ public class Top100Adapter extends BaseAdapter {
 			notifyDataSetChanged();
 		}
 		
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		if(visibleItemCount == 0)
+			return;
+		
+		mListScrolled = true;
+		mListFirst = firstVisibleItem;
+		mListCount = visibleItemCount;
+		
+		mFragment.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		mFragment.onScrollStateChanged(view, scrollState);
+	}
+
+	@Override
+	public void onMovedToScrapHeap(View view) {
+		ItemViewHolder holder = (ItemViewHolder) view.getTag();
+		if(holder == null)
+			return;
+		
+		Animation anim = holder.image.getAnimation();
+		if(anim != null && anim.hasStarted()){
+			anim.cancel();
+			anim.reset();
+			holder.image.clearAnimation();
+		}
+		
+		//we remove the used state of the image on the cache
+		if(holder.item != null && holder.item.getPosterName() != null){
+			CacheableBitmapDrawable cacheBitmap = mBitmapCache.get(holder.item.getPosterName());
+			if(cacheBitmap != null)
+				cacheBitmap.setBeingUsed(false);
+		}
 	}
 
 }

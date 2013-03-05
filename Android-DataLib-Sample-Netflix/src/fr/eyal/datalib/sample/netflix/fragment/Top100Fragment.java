@@ -1,10 +1,18 @@
 package fr.eyal.datalib.sample.netflix.fragment;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +29,9 @@ import fr.eyal.datalib.sample.netflix.fragment.Top100Adapter.ItemViewHolder;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.model.BusinessResponse;
+import fr.eyal.lib.data.service.model.ComplexOptions;
 import fr.eyal.lib.data.service.model.DataLibRequest;
+import fr.eyal.lib.util.Out;
 
 public class Top100Fragment extends NetflixFragment implements OnScrollListener {
 
@@ -30,6 +40,9 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 	SparseArray<ItemTop100> mPendingItem;
 	ArrayList<ItemTop100> mPendingItemCache;
 	int mScrollState;
+	private static Object sharedLock = new Object(); //the shared lock
+	float mItemHeight;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,9 +50,11 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 		mPendingItem = new SparseArray<ItemTop100>();
 		mPendingItemCache = new ArrayList<ItemTop100>();
 		super.onCreate(savedInstanceState);
-		
+		setRetainInstance(true);
+		mItemHeight = getResources().getDimension(R.dimen.item_height_small);
+
 		try {
-			int requestId = mDataManager.getTop100(DataManager.TYPE_CACHE_THEN_NETWORK, this, DataLibRequest.OPTION_NO_OPTION);
+			int requestId = mDataManager.getTop100(DataManager.TYPE_CACHE, this, DataLibRequest.OPTION_NO_OPTION, null, null);
 			mRequestIds.add(requestId);
 
 		} catch (UnsupportedEncodingException e) {
@@ -58,7 +73,7 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 		View emptyView = inflater.inflate(R.layout.empty_grid, null);
 		mGridView.setEmptyView(emptyView);
 		mGridView.setAdapter(mAdapter);
-//		mGridView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//		mGridView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 		mGridView.setOnScrollListener(this);
 		
 		return mGridView;
@@ -66,34 +81,37 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 	
 	
 	/**
-	 * Ask to download the movie's poster
+	 * Ask to display the movie's poster asynchronously
 	 * 
-	 * @param item
+	 * @param item the item concerned by the display
 	 */
-	public void getMoviePoster(ItemTop100 item){
+	public void loadMoviePoster(ItemTop100 item){
 		
-		if(mScrollState == OnScrollListener.SCROLL_STATE_FLING)
-			return;
-				
+//		if(mScrollState == OnScrollListener.SCROLL_STATE_FLING){
+//			Out.e("", "UPDATE " + "Scrolling" + item.title);
+//			return;
+//		}
+		
 		synchronized (mPendingItemCache) {
-			//we set the request type
-			int type = DataManager.TYPE_NETWORK;
-			if(item.image != null)
-				type = DataManager.TYPE_CACHE;
 
-			if(type == DataManager.TYPE_CACHE && mPendingItemCache.contains(item)){
+			if(mPendingItemCache.contains(item)){
+				Out.e("", "UPDATE " + "No item " + item.title);
 				return;
 			}
-		
+			
 			try {
-				int requestId = mDataManager.getMovieImage(type, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION);
-				mRequestIds.add(requestId);
-				mPendingItem.append(requestId, item);
-
-				if(type == DataManager.TYPE_CACHE){
-					mPendingItemCache.add(item);	
+				synchronized (sharedLock) {
+					Out.e("", "UPDATE " + "Request Cache");
+					ComplexOptions options = new ComplexOptions();
+					BitmapFactory.Options bmpOption = new BitmapFactory.Options();
+					bmpOption.inSampleSize = 2;
+					options.putBitmapOptions(bmpOption);
+					
+					int requestId = mDataManager.getMovieImage(DataManager.TYPE_CACHE, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION, options, null);
+					mRequestIds.add(requestId);
+					mPendingItem.append(requestId, item);
+					mPendingItemCache.add(item);
 				}
-
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
@@ -109,23 +127,92 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
 		
 		if(response instanceof Top100){
-			updateTop100((Top100) response);			
+			Top100 top = (Top100) response;
+
+			//we update the page content
+			updateTop100(top);
+
+			//we compute the update time
+			Calendar updateTime = Calendar.getInstance();
+			updateTime.setTimeInMillis(top._updatedAt.getTimeInMillis());
+			updateTime.add(Calendar.MINUTE, top.ttl);
 			
-		} else if(response instanceof MovieImage){
-			ItemTop100 item = updateTop100Image(requestId, (MovieImage) response);
-			
-			if(item != null){
-				synchronized (mPendingItemCache) {
-					mPendingItemCache.remove(item);
+			//we update the content if the ttl is consumed
+			if(updateTime.compareTo(Calendar.getInstance()) <= 0) {
+				try {
+					mDataManager.getTop100(DataManager.TYPE_NETWORK, this, DataLibRequest.OPTION_NO_OPTION, null, null);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
 				}
 			}
+			
+		} else if(response instanceof MovieImage){
+			
+			MovieImage movieImage = (MovieImage) response;
 
-		}		
+			ItemTop100 item = getItemAndTreatPendings(requestId);
+			
+			Bitmap unscaledBmp = null;
+			if(movieImage.image != null && movieImage.image.get() != null)
+				unscaledBmp = movieImage.image.get();
+			
+			Out.e("", "Size " + unscaledBmp);
+			
+			//if the cache object does not contains the good information
+			if(unscaledBmp == null){
+
+				//if the list is scrolling we don't ask for a network request
+				if(mScrollState == OnScrollListener.SCROLL_STATE_FLING){
+					Out.e("", "UPDATE " + "Scrolling" + item.title);
+					return;
+				}
+
+				//we ask for a network request
+				try {
+					if(item != null){
+						
+						int id = mDataManager.getMovieImage(DataManager.TYPE_NETWORK, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION, null, null);
+						mRequestIds.add(id);
+						mPendingItem.append(id, item);
+					} else {
+					}
+					
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				
+			} else {
+				Out.d("", "SIZE CACHE " + movieImage.image.get().getHeight() + " - " + movieImage.image.get().getWidth() + " " + movieImage.image.get().getDensity());
+				Out.d("", "SIZE HEIGHT " + getResources().getDimension(R.dimen.item_height_small));
+								
+				float ratio = (float)unscaledBmp.getWidth()/unscaledBmp.getHeight();
+				
+				Bitmap scaledBmp = scaleBitmap(unscaledBmp, ratio*mItemHeight, mItemHeight, ScalingLogic.FIT);
+				unscaledBmp.recycle();
+				Out.d("", "SIZE SCALED " + scaledBmp.getHeight() + " - " + scaledBmp.getWidth() + " " + scaledBmp.getDensity());
+				
+				movieImage.image = new SoftReference<Bitmap>(scaledBmp);
+				//we ask to update the ImageView
+				updateTop100Image(item, movieImage);
+			}
+		}
+	}
+
+	private ItemTop100 getItemAndTreatPendings(int requestId) {
+		ItemTop100 item = null;
+		
+		synchronized (sharedLock) {
+			item = mPendingItem.get(requestId);
+			mPendingItem.remove(requestId);
+			if(item != null){
+				mPendingItemCache.remove(item);
+			}
+		}
+		return item;
 	}
 
 	@Override
 	public void onDataFromDatabase(int code, ArrayList<?> data) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -140,7 +227,8 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 			break;
 			
 		case NetflixService.WEBSERVICE_MOVIEIMAGE:
-			updateTop100Image(requestId, (MovieImage) response.response);
+			ItemTop100 item = getItemAndTreatPendings(requestId);
+			updateTop100Image(item, (MovieImage) response.response);
 			break;
 
 		default:
@@ -171,15 +259,13 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 	 * 
 	 * @return the {@link ItemTop100} item concerned by the updating or null if it is not found
 	 */
-	private ItemTop100 updateTop100Image(int requestId, MovieImage response) {
+	private ItemTop100 updateTop100Image(ItemTop100 item, MovieImage response) {
 		//we update the object
-		ItemTop100 item = mPendingItem.get(requestId);
 		if(item == null || response == null)
 			return null;
 		item.image = response;
 		//we update the current displayed list
 		mAdapter.updatePoster(item);
-		mPendingItem.remove(requestId);
 		return item;
 	}
 
@@ -209,11 +295,10 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 					if(v != null){
 						Top100Adapter.ItemViewHolder holder = (ItemViewHolder) v.getTag();
 						if(holder != null){
-							Bitmap bitmap = item.getPoster();
-							if(bitmap != null)
-								holder.image.setImageBitmap(bitmap);
-							else
-								getMoviePoster(item);
+							
+							boolean isImageSet = mAdapter.setImageFromItemOrCache(holder, item);
+							if(!isImageSet)
+								loadMoviePoster(item);
 						}
 					}
 				}
@@ -222,4 +307,55 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 		}
 		mScrollState = scrollState;
 	}
+	
+	public static Bitmap scaleBitmap(Bitmap unscaledBitmap, float dstWidth, float dstHeight, ScalingLogic scalingLogic) {
+	    Rect srcRect = calculateSrcRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
+	    Rect dstRect = calculateDstRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
+	    Bitmap scaledBitmap = Bitmap.createBitmap(dstRect.width(), dstRect.height(), Config.ARGB_8888);
+	    Canvas canvas = new Canvas(scaledBitmap);
+	    canvas.drawBitmap(unscaledBitmap, srcRect, dstRect, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+	    return scaledBitmap;
+	}
+	
+	public static Rect calculateSrcRect(int srcWidth, int srcHeight, float dstWidth, float dstHeight, ScalingLogic scalingLogic) {
+	    if (scalingLogic == ScalingLogic.CROP) {
+	        final float srcAspect = (float)srcWidth / (float)srcHeight;
+	        final float dstAspect = dstWidth / dstHeight;
+
+	        if (srcAspect > dstAspect) {
+	            final int srcRectWidth = (int)(srcHeight * dstAspect);
+	            final int srcRectLeft = (srcWidth - srcRectWidth) / 2;
+	            return new Rect(srcRectLeft, 0, srcRectLeft + srcRectWidth, srcHeight);
+	        } else {
+	            final int srcRectHeight = (int)(srcWidth / dstAspect);
+	            final int scrRectTop = (int)(srcHeight - srcRectHeight) / 2;
+	            return new Rect(0, scrRectTop, srcWidth, scrRectTop + srcRectHeight);
+	        }
+	    } else {
+	        return new Rect(0, 0, srcWidth, srcHeight);
+	    }
+	}
+
+	public static Rect calculateDstRect(int srcWidth, int srcHeight, float dstWidth, float dstHeight, ScalingLogic scalingLogic) {
+	    if (scalingLogic == ScalingLogic.FIT) {
+	        final float srcAspect = (float)srcWidth / (float)srcHeight;
+	        final float dstAspect = dstWidth / dstHeight;
+
+	        if (srcAspect > dstAspect) {
+	            return new Rect(0, 0, (int)dstWidth, (int)(dstWidth / srcAspect));
+	        } else {
+	            return new Rect(0, 0, (int)(dstHeight * srcAspect), (int)dstHeight);
+	        }
+	    } else {
+	        return new Rect(0, 0, (int)dstWidth, (int)dstHeight);
+	    }
+	}
+	
+	
+	public enum ScalingLogic {
+		CROP, FIT
+	}
+
+	
 }

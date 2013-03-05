@@ -77,7 +77,7 @@ public class SelectionFragment extends NetflixFragment {
 		}
 		
 		try {
-			int requestId = mDataManager.getTop100(DataManager.TYPE_NETWORK, this, DataLibRequest.OPTION_NO_OPTION);
+			int requestId = mDataManager.getTop100(DataManager.TYPE_NETWORK, this, DataLibRequest.OPTION_NO_OPTION, null, null);
 			mRequestIds.add(requestId);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -119,7 +119,7 @@ public class SelectionFragment extends NetflixFragment {
 
 				//we ask for movie's picture
 				//the movie item holder will handle the bitmap received 
-				mDataManager.getMovieImage(DataManager.TYPE_NETWORK, mMovies.get(i), movies.get(i).getImageUrl(), DataLibRequest.OPTION_NO_OPTION);
+				mDataManager.getMovieImage(DataManager.TYPE_NETWORK, mMovies.get(i), movies.get(i).getImageUrl(), DataLibRequest.OPTION_NO_OPTION, null, null);
 				
 				}
 			} catch (UnsupportedEncodingException e) {

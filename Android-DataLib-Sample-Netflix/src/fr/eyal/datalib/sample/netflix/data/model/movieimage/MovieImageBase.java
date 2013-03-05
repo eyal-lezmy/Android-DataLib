@@ -5,21 +5,36 @@ import java.lang.ref.SoftReference;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
+import fr.eyal.lib.data.service.model.ComplexOptions;
 import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.lib.util.FileManager;
 
 
 public class MovieImageBase implements ResponseBusinessObject {
 
+	@SuppressWarnings("unused")
     private static final String TAG = MovieImageBase.class.getSimpleName();
 
     protected static String CACHE_DIRECTORY = "movieimage";
 
+	/**
+	 * A soft reference to the Bitmap
+	 */
 	public SoftReference<Bitmap> image;
+	
+	/**
+	 * The last {@link BitmapFactory.Options} used to load the bitmap
+	 */
+	public BitmapFactory.Options lastOptions;
+	
+	/**
+	 * The image file path
+	 */
 	public String imagePath;
 
 	protected FileManager mFileManager = null;
@@ -34,9 +49,9 @@ public class MovieImageBase implements ResponseBusinessObject {
      * 
      * @param fingerprint
      */
-    public MovieImageBase(String fingerprint) {
+    public MovieImageBase(String fingerprint, ComplexOptions complexOptions) {
         super();
-        loadFromCache(fingerprint);
+        loadFromCache(fingerprint, complexOptions);
     }
 
 
@@ -78,7 +93,7 @@ public class MovieImageBase implements ResponseBusinessObject {
     	String extension = FileManager.getFileExtension(request.url);
 		String name = request.getFingerprint();
 
-    	imagePath = mFileManager.saveInInternalCache(CACHE_DIRECTORY, name, image.get(), 100);
+    	imagePath = mFileManager.saveInInternalCache(CACHE_DIRECTORY, name, extension, image.get(), 100);
     }
 
 	/**
@@ -86,11 +101,28 @@ public class MovieImageBase implements ResponseBusinessObject {
      * 
      * @param fingerprint
      */
-    protected void loadFromCache(String fingerprint){
+    protected void loadFromCache(String fingerprint, ComplexOptions complexOptions){
     	if((mFileManager = FileManager.getInstance()) == null)
     		return;
-    	image = new SoftReference<Bitmap>(mFileManager.getPictureFromInternalCache(CACHE_DIRECTORY, fingerprint));
-    	imagePath = mFileManager.getPathFromInternalCache(CACHE_DIRECTORY, fingerprint);
+		
+    	//we get the bitmap options
+    	BitmapFactory.Options options;
+    	if(complexOptions != null)
+    		options = (BitmapFactory.Options) complexOptions.getBitmapOptions();
+    	else
+    		options = new BitmapFactory.Options();
+    	
+    	//we get the bitmap from a cache file
+    	Bitmap bmp = mFileManager.getPictureFromInternalCache(CACHE_DIRECTORY, fingerprint, options);
+    	if(bmp != null)
+    		image = new SoftReference<Bitmap>(bmp);
+    	else
+    		image = null;
+    	
+    	//we store the options after treatment
+    	lastOptions = options;
+    	//we store the image path file for futur use
+		imagePath = mFileManager.getPathFromInternalCache(CACHE_DIRECTORY, fingerprint);
     }
 }
 
