@@ -62,7 +62,7 @@ public class CacheableBitmapDrawable extends BitmapDrawable {
 		init(url, recyclePolicy);
 	}
 
-	public void init(String url, RecyclePolicy recyclePolicy) {
+	private void init(String url, RecyclePolicy recyclePolicy) {
 		mUrl = url;
         mRecyclePolicy = recyclePolicy;
 		mDisplayingCount = 0;
