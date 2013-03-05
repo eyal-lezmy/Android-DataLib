@@ -17,14 +17,17 @@
 package fr.eyal.lib.data.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.CookieSpecRegistry;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
@@ -32,12 +35,14 @@ import fr.eyal.lib.data.model.BusinessObjectDAO;
 import fr.eyal.lib.data.model.ResponseBusinessObjectDAO;
 import fr.eyal.lib.data.processor.ProcessorResponseHandler;
 import fr.eyal.lib.data.service.model.BusinessResponse;
+import fr.eyal.lib.data.service.model.ComplexOptions;
 import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.lib.data.service.model.DataLibResponse;
 import fr.eyal.lib.service.MultiThreadService;
 import fr.eyal.lib.util.FileManager;
 import fr.eyal.lib.util.Out;
 
+@TargetApi(Build.VERSION_CODES.CUPCAKE)
 public abstract class DataLibService extends MultiThreadService implements ProcessorResponseHandler {
 
     private static final String TAG = "DataLibService";
@@ -85,11 +90,16 @@ public abstract class DataLibService extends MultiThreadService implements Proce
      * Intext extra content : parsing type of the response
      */
     public static final String INTENT_EXTRA_PARSE_TYPE = "parseType";
+    /**
+     * Intext extra content : complex option for the request
+     */
+    public static final String INTENT_EXTRA_COMPLEX_OPTIONS = "complexOptions";
 
     /**
      * title of the cookies' header
      */
     protected static final String COOKIE_HEADER_TITLE = "Set-Cookie";
+
 
 
     protected ArrayList<Header> mHeaders; //Headers to send at every client request with NetworkConnection
@@ -118,7 +128,8 @@ public abstract class DataLibService extends MultiThreadService implements Proce
         super.onCreate();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected void onHandleIntent(final Intent intent) {
         final int processorType = intent.getIntExtra(INTENT_EXTRA_PROCESSOR_TYPE, -1);
 
@@ -133,8 +144,13 @@ public abstract class DataLibService extends MultiThreadService implements Proce
         request.url = intent.getStringExtra(INTENT_EXTRA_URL);
         request.params = intent.getParcelableExtra(INTENT_EXTRA_PARAMS);
         request.parseType = intent.getIntExtra(INTENT_EXTRA_PARSE_TYPE, DataLibRequest.PARSE_TYPE_SAX_XML);
-        request.context = getApplicationContext();
+
+        //we eventually add the complex options
+        Object complexOptions = intent.getSerializableExtra(INTENT_EXTRA_COMPLEX_OPTIONS);
+        if(complexOptions instanceof ComplexOptions)
+        	request.complexOptions = (ComplexOptions) complexOptions;  
         
+        request.context = getApplicationContext();
         //we get the options to apply
         int option = intent.getIntExtra(INTENT_EXTRA_REQUEST_OPTION, DataLibRequest.OPTION_NO_OPTION);
         DataLibWebConfig.applyToRequest(request, option, true);

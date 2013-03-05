@@ -13,6 +13,7 @@ _class:String = aBusinessObject.javaName.toUpperFirst();
 package [_package/];
 
 import android.os.Parcel;
+import fr.eyal.lib.data.service.model.ComplexOptions;
 
 public class [_class/] extends [_class/]Base {
 
@@ -22,8 +23,8 @@ public class [_class/] extends [_class/]Base {
         super();
     }
 	
-	public [_class/](final String fingerprint) {
-        super(fingerprint);
+    public MovieImage(String fingerprint, ComplexOptions complexOptions) {
+        super(fingerprint, complexOptions);
     }
 
     public [_class/](final Parcel in) {

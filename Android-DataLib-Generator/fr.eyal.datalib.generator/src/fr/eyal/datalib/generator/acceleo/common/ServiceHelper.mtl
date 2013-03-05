@@ -18,6 +18,7 @@ import android.content.Context;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
 import fr.eyal.lib.data.service.ServiceHelper;
 import fr.eyal.lib.data.service.model.DataLibRequest;
+import fr.eyal.lib.data.service.model.ComplexOptions;
 // [protected (aProject.name.toUpperFirst()+'ServiceHelper imports')]
 // You can add here your personal imports
 // DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
@@ -73,6 +74,9 @@ public class [aProject.name.toUpperFirst()/]ServiceHelper extends ServiceHelper 
 	[for (param : Parameter | webService.parameters)]
      * @param [param.name.toLowerFirst()/] [param.description/]. To disable the adding of it, just define it as null
 	[/for]
+     * 
+     * @param complexOptionsNetwork a {@link ComplexOptions} you want to use when processing the network request. 
+     * Set this parameter to <code>null</code> if you prefer to ignore this value.
      *
      * @return the request's id. If the request have already been sent, it returns the id previously generated. Otherwise it provide a new one that have to be stored.
      * 
@@ -82,7 +86,7 @@ public class [aProject.name.toUpperFirst()/]ServiceHelper extends ServiceHelper 
 		
 		[declareUrlAndParameters(webService, aProject)/]
         
-        return launchRequest(options, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.contentResponse.name.toUpper()/], params, [aProject.name.toUpperFirst()/]Service.class, __url);
+        return launchRequest(options, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.contentResponse.name.toUpper()/], params, [aProject.name.toUpperFirst()/]Service.class, __url, complexOptionsNetwork);
     }
     
 [/for]
@@ -105,7 +109,7 @@ public class [aProject.name.toUpperFirst()/]ServiceHelper extends ServiceHelper 
 [/template]
 
 [template public displayLaunchMethod (webService : WebService) ]
-public int [if (webService.method=HttpMethod::GET)]get[elseif (webService.method=HttpMethod::DELETE)]delete[elseif (webService.method=HttpMethod::HEAD)]head[elseif (webService.method=HttpMethod::POST)]post[elseif (webService.method=HttpMethod::PUT)]put[/if][webService.name.toUpperFirst()/]([listParameters(webService)/] final int options) throws UnsupportedEncodingException {
+public int [if (webService.method=HttpMethod::GET)]get[elseif (webService.method=HttpMethod::DELETE)]delete[elseif (webService.method=HttpMethod::HEAD)]head[elseif (webService.method=HttpMethod::POST)]post[elseif (webService.method=HttpMethod::PUT)]put[/if][webService.name.toUpperFirst()/]([listParameters(webService)/] final int options, ComplexOptions complexOptionsNetwork) throws UnsupportedEncodingException {
 [/template]
 
 [template public listParameters (webService: WebService) ]

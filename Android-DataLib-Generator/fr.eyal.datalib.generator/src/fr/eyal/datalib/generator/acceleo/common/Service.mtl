@@ -102,19 +102,11 @@ public static final int WEBSERVICE_[aBusinessObject.javaName.toUpper()/] = [coun
 [for (webService : WebService | aProject.webservices) ]
 case WEBSERVICE_[webService.contentResponse.javaName.toUpper()/]:
     [webService.contentResponse.javaName.toUpperFirst()/]WebConfig.applyToRequest(request, [webService.contentResponse.javaName.toUpperFirst()/]WebConfig.getInstance());
-    handler = new [webService.contentResponse.javaName.toUpperFirst()/]Parser();
-    break;
+	[if (webService.parseType = ParseType::IMAGE)]
+    handler = new [webService.contentResponse.javaName.toUpperFirst()/]Parser(request.complexOptions);
+    [else]
+	handler = new [webService.contentResponse.javaName.toUpperFirst()/]Parser();
+	[/if]
+	break;
 [/for]
 [/template]
-
-[comment] Not Used
-[template public launchProcessorCases (aBusinessObject : BusinessObject) post (trim()) ]
-case WEBSERVICE_[aBusinessObject.javaName.toUpper()/]:
-    [aBusinessObject.javaName.toUpperFirst()/]WebConfig.applyToRequest(request, [aBusinessObject.javaName.toUpperFirst()/]WebConfig.getInstance());
-    handler = new [aBusinessObject.javaName.toUpperFirst()/]Parser();
-    break;
-[for (businessObject : BusinessObject | aBusinessObject.childs)]
-[launchProcessorCases (businessObject) /]
-[/for]
-[/template]
-[/comment]

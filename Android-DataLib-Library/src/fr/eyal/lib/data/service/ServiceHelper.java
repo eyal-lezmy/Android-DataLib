@@ -19,9 +19,13 @@ package fr.eyal.lib.data.service;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.HashMap;
+import java.util.Map;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -29,6 +33,7 @@ import android.util.SparseArray;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.service.model.BusinessResponse;
+import fr.eyal.lib.data.service.model.ComplexOptions;
 import fr.eyal.lib.util.FileManager;
 import fr.eyal.lib.util.Out;
 
@@ -118,7 +123,8 @@ public class ServiceHelper {
      * The ResultReceiver that will receive the result from the Service
      */
     private class EvalReceiver extends ResultReceiver {
-        EvalReceiver(final Handler h) {
+        @TargetApi(Build.VERSION_CODES.CUPCAKE)
+		EvalReceiver(final Handler h) {
             super(h);
         }
 
@@ -338,14 +344,34 @@ public class ServiceHelper {
     }
 
     public int checkRequestExists(final Intent intent) {
-        //		 Check if a request is already launched
+    	
+    	String sourceUrl = intent.getStringExtra(DataLibService.INTENT_EXTRA_URL);
+    	ParameterMap sourceParams = intent.getParcelableExtra(DataLibService.INTENT_EXTRA_PARAMS);
+
+    	String sourceParamsUrl = "";
+    	if(sourceParams != null)
+    		sourceParamsUrl = sourceParams.urlEncode(true);
+    	
+
+    	// Check if a request is already launched
         final int requestSparseArrayLength = mRequestSparseArray.size();
         for (int i = 0; i < requestSparseArrayLength; i++) {
+        	
+        	//TODO check the exception occuring sometime here when there is a very intensive request rythme
             final Intent savedIntent = mRequestSparseArray.valueAt(i);
 
-            //we compare the both URL by default
-            String source = intent.getStringExtra(DataLibService.INTENT_EXTRA_URL);
-            if (savedIntent.getStringExtra(DataLibService.INTENT_EXTRA_URL).equals(source))
+            if(savedIntent == null)
+            	continue;
+            
+            String savedUrl = savedIntent.getStringExtra(DataLibService.INTENT_EXTRA_URL);
+            ParameterMap savedParams = savedIntent.getParcelableExtra(DataLibService.INTENT_EXTRA_PARAMS);
+            
+            String savedParamsUrl = "";
+            if(savedParams != null)
+            	savedParamsUrl = savedParams.urlEncode(true);
+
+            //we compare the whole URL
+            if (savedUrl.equals(sourceUrl) && savedParamsUrl.equals(sourceParamsUrl))
                 return mRequestSparseArray.keyAt(i);
 
         }
@@ -363,9 +389,9 @@ public class ServiceHelper {
      * @return
      * @throws UnsupportedEncodingException
      */
-    public int launchRequest(final int options, final int webserviceType, final ParameterMap params, final Class<?> service, final String url) throws UnsupportedEncodingException {
+    public int launchRequest(final int options, final int webserviceType, final ParameterMap params, final Class<?> service, final String url, final ComplexOptions complexOptions) throws UnsupportedEncodingException {
 
-        return launchRequest(options, webserviceType, params, service, url, -1);
+        return launchRequest(options, webserviceType, params, service, url, complexOptions, -1);
     }
 
     /**
@@ -380,7 +406,7 @@ public class ServiceHelper {
      * @return
      * @throws UnsupportedEncodingException
      */
-    public int launchRequest(final int options, final int webserviceType, final ParameterMap params, final Class<?> service, final String url, final int parseType) throws UnsupportedEncodingException {
+    public int launchRequest(final int options, final int webserviceType, final ParameterMap params, final Class<?> service, final String url, final ComplexOptions complexOptions, final int parseType) throws UnsupportedEncodingException {
 
         //we buid the Intent to send
         Intent i = new Intent(mContext, service);
@@ -390,9 +416,9 @@ public class ServiceHelper {
         if (parseType > 0)
             i.putExtra(DataLibService.INTENT_EXTRA_PARSE_TYPE, parseType);
 
-        //        i.putExtra(DataLibService.INTENT_EXTRA_URL, getServiceUrl(url, params));
         i.putExtra(DataLibService.INTENT_EXTRA_URL, url);
         i.putExtra(DataLibService.INTENT_EXTRA_PARAMS, params);
+        i.putExtra(DataLibService.INTENT_EXTRA_COMPLEX_OPTIONS, complexOptions);
 
         int requestId = checkRequestExists(i);
 

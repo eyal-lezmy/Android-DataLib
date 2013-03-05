@@ -18,6 +18,8 @@ package fr.eyal.lib.data.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -33,6 +35,7 @@ import fr.eyal.lib.data.model.provider.BusinessObjectProvider;
 import fr.eyal.lib.data.service.ServiceHelper.OnRequestFinishedListener;
 import fr.eyal.lib.data.service.ServiceHelper.OnRequestFinishedRelayer;
 import fr.eyal.lib.data.service.model.BusinessResponse;
+import fr.eyal.lib.data.service.model.ComplexOptions;
 import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.lib.util.Out;
 
@@ -329,10 +332,10 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
      * @param url The url field in the database to get the response from
      * @return Returns the id to return to the launcher of the retrieve function
      */
-    protected int sendDataCache(final OnDataListener listener, final String url, final int type) {
+    protected int sendDataCache(final OnDataListener listener, final String url, final int type, ComplexOptions complexOptions) {
         //we create and launch the data cache access
         final int requestId = ServiceHelper.generateRequestId();
-    	final DataCacheRunnable runnable = new DataCacheRunnable(requestId, url, type, listener);
+    	final DataCacheRunnable runnable = new DataCacheRunnable(requestId, url, type, listener, complexOptions);
         final Thread thread = new Thread(runnable);
         thread.start();
         return requestId;
@@ -370,7 +373,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
      * @throws UnsupportedEncodingException
 	 * 
 	 */
-	protected int launchRequest(final ServiceHelper serviceHelper, final int policy, final OnDataListener datacacheListener, final ParameterMap params, final int options, final String url, int webService, Class<?> serviceClass) throws UnsupportedEncodingException {
+	protected int launchRequest(final ServiceHelper serviceHelper, final int policy, final OnDataListener datacacheListener, final ParameterMap params, final int options, final String url, int webService, Class<?> serviceClass, final ComplexOptions complexOptionsCache, final ComplexOptions complexOptionsNetwork) throws UnsupportedEncodingException {
 		switch (policy) {
 
             case TYPE_CACHE:
@@ -378,7 +381,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
                 if (datacacheListener != null){
                 	//TODO maybe improve the fingerprint process
                 	DataLibRequest request = new DataLibRequest(url, params);
-                	return sendDataCache(datacacheListener, request.getFingerprint(), webService);
+                	return sendDataCache(datacacheListener, request.getFingerprint(), webService, complexOptionsCache);
                 }
                 break;
 
@@ -387,26 +390,26 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
                 if (datacacheListener != null){
                 	//TODO maybe improve the fingerprint process
                 	DataLibRequest request = new DataLibRequest(url, params);
-                	sendDataCache(datacacheListener, request.getFingerprint(), webService);
+                	sendDataCache(datacacheListener, request.getFingerprint(), webService, complexOptionsCache);
                 }
                 //we launch the network request
-    			return serviceHelper.launchRequest(options, webService, params, serviceClass, url);
+    			return serviceHelper.launchRequest(options, webService, params, serviceClass, url, complexOptionsNetwork);
 
             case TYPE_NETWORK:
                 //we launch the network request
-    			return serviceHelper.launchRequest(options, webService, params, serviceClass, url);
+    			return serviceHelper.launchRequest(options, webService, params, serviceClass, url, complexOptionsNetwork);
 
             case TYPE_NETWORK_OTHERWISE_CACHE:
                 //if the device is connected
                 final NetworkInfo infos = mConnectivityManager.getActiveNetworkInfo();
                 if (infos != null && infos.isConnected()) {
                     //we launch the network request
-        			return serviceHelper.launchRequest(options, webService, params, serviceClass, url);
+        			return serviceHelper.launchRequest(options, webService, params, serviceClass, url, complexOptionsNetwork);
 
                 } else if (datacacheListener != null) {
                 	//TODO maybe improve the fingerprint process
                 	DataLibRequest request = new DataLibRequest(url, params);
-                	return sendDataCache(datacacheListener, request.getFingerprint(), webService);
+                	return sendDataCache(datacacheListener, request.getFingerprint(), webService, complexOptionsCache);
                 }
                 break;
 
@@ -429,20 +432,22 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
         protected String mId;
         protected int mType;
         protected OnDataListener mListener;
+        protected ComplexOptions mOptions;
 
-        protected DataCacheRunnable(final int requestId, final String id, final int type, final OnDataListener listener) {
+        protected DataCacheRunnable(final int requestId, final String id, final int type, final OnDataListener listener, ComplexOptions complexOptions) {
             super();
             mRequestId = requestId;
             mId = id;
             mType = type;
             mListener = listener;
+            mOptions = complexOptions;
         }
 
         @Override
         public void run() {
 
             //we reach the data from cache
-            final ResponseBusinessObject data = (ResponseBusinessObject) getBusinessObjectFromCacheByUrl(mType, mId);
+            final ResponseBusinessObject data = (ResponseBusinessObject) getBusinessObjectFromCacheByUrl(mType, mId, mOptions);
 
             //we return the result to the listener
             mListener.onCacheRequestFinished(mRequestId, data);
@@ -457,7 +462,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
      *            
      * @return returns the {@code BusinessObjectDAO} if exists or null if the asked webservice don't implements the cache process
      */
-    public abstract ResponseBusinessObject getBusinessObjectFromCacheByUrl(int type, String url);
+    public abstract ResponseBusinessObject getBusinessObjectFromCacheByUrl(int type, String url, ComplexOptions complexOptions);
 
     /**
      * FUNCTIONS TO GET INFORMATION DIRECTLY FROM THE DATABASE
@@ -530,22 +535,6 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
             ArrayList<?> result;
 
             result = getBusinessObjectsFromDatabase(mCode, mWhere, mWhereArgs, mOrder, mJoin);
-
-            //			OLD CODE PROVIDED TO GIVE AN EXAMPLE INSIDE A IMPLEMENTED CLASS
-            //
-            //			switch (mCode) {
-            //
-            //			case BusinessObjectProvider.CODE_PREVISION_METEO:
-            //				result = DataManager.this.retrieveDataPrevisionMeteo(mWhere, mWhereArgs, mOrder, mJoin);
-            //				break;
-            //
-            //			case BusinessObjectProvider.CODE_METEO_WEATHER:
-            //				result = DataManager.this.retrieveDataMeteoWeather(mWhere, mWhereArgs, mOrder, mJoin);
-            //				break;
-            //
-            //			default:
-            //				break;
-            //			}
 
             //we delete the pending request if it exists
             mDataCacheRequestIds.delete(mId);

@@ -19,6 +19,7 @@ import android.graphics.BitmapFactory;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.parser.GenericHandler;
 import [aBusinessObject._package+'.model.'+getPackage(aBusinessObject)+'.*'/];
+import fr.eyal.lib.data.service.model.ComplexOptions;
 // [protected (aBusinessObject.name.toUpperFirst()+'Parser imports')]
 // You can add here your personal imports
 // DO NOT MODIFY THE GENERATED COMMENTS "Start of user code" and "End of user code"
@@ -28,12 +29,15 @@ import [aBusinessObject._package+'.model.'+getPackage(aBusinessObject)+'.*'/];
 
 public class [aBusinessObject.javaName.toUpperFirst()/]Parser implements GenericHandler {
 
+	@SuppressWarnings("unused")
     private static final String TAG = [aBusinessObject.javaName.toUpperFirst()/]Parser.class.getSimpleName();
 
 	[aBusinessObject.javaName.toUpperFirst()/] [aBusinessObject.javaName.toLowerFirst()/];
-	
-	public [aBusinessObject.javaName.toUpperFirst()/]Parser(){
+	ComplexOptions complexOptions;
+
+	public [aBusinessObject.javaName.toUpperFirst()/]Parser(ComplexOptions options){
 		[aBusinessObject.javaName.toLowerFirst()/] = new [aBusinessObject.javaName.toUpperFirst()/]();
+		complexOptions = options;
 	}
 	
 	@Override
@@ -44,8 +48,12 @@ public class [aBusinessObject.javaName.toUpperFirst()/]Parser implements Generic
 	@Override
 	public void parse(Object content) {
 		
+		BitmapFactory.Options options = null;
+		if(complexOptions != null)
+			options = (BitmapFactory.Options) complexOptions.getBitmapOptions();
+		
 		byte['['/]] data = (byte['['/]]) content;
-		[aBusinessObject.javaName.toLowerFirst()/].image = new SoftReference<Bitmap>(BitmapFactory.decodeByteArray(data, 0, data.length));
+		[aBusinessObject.javaName.toLowerFirst()/].image = new SoftReference<Bitmap>(BitmapFactory.decodeByteArray(data, 0, data.length, options));
 	}
 	
 

@@ -21,6 +21,8 @@ import java.security.NoSuchAlgorithmException;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
 import fr.eyal.lib.data.service.ServiceHelper;
 
@@ -94,6 +96,7 @@ public class DataLibRequest {
      */
     public static final int OPTION_HELPER_CACHE_DISABLED = 0x00010000;
 
+        
     /**
      * Ask to not use the database to store the BusinessObjects. In this case the request
      * option OPTION_SEND_WITH_PARCELABLE is also enabled.
@@ -149,6 +152,11 @@ public class DataLibRequest {
     public int option;
     
     /**
+     * An HashMap containing all the complex options of the request
+     */
+    public ComplexOptions complexOptions;
+        
+    /**
      * request type (REST_GET, REST_POST, ..., SOAP)
      */
     public int requestMethod;
@@ -172,7 +180,6 @@ public class DataLibRequest {
      * The application's context of execution
      */
     public Context context;
-
     
     public DataLibRequest() {
         option = OPTION_NO_OPTION;
@@ -180,10 +187,14 @@ public class DataLibRequest {
     }
 
     public DataLibRequest(String url, ParameterMap params) {
-    	option = OPTION_NO_OPTION;
-        parseType = PARSE_TYPE_SAX_XML;
-        this.url = url;
+    	this();
+    	this.url = url;
         this.params = params;
+	}
+
+    public DataLibRequest(String url, ParameterMap params, ComplexOptions options) {
+    	this(url, params);
+    	complexOptions = options;
 	}
 
 	/**
@@ -292,7 +303,7 @@ public class DataLibRequest {
     public boolean hasOptionEnabled() {
         return (option != OPTION_NO_OPTION);
     }
-
+    
     /**
      * Compute the fingerprint of the request. This function is use when you want to compare this request with another
      * 
