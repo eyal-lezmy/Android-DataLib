@@ -9,7 +9,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-public class LightTextViewUnderlined extends TextView {
+public class LightTextViewUnderlined extends LightTextView {
 
 	Paint mLinePaint = null;
 	
@@ -20,33 +20,27 @@ public class LightTextViewUnderlined extends TextView {
 
 	public LightTextViewUnderlined(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init(context);
 	}
 
 	public LightTextViewUnderlined(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		init(context);
-	}
-
-	private void init(Context context) {
-		if(!isInEditMode())
-			setTypeface(Typeface.createFromAsset(context.getAssets(),"Roboto-Light.ttf"));
 	}
 
 	@Override
-	public void draw(Canvas canvas) {
-		super.draw(canvas);
+	protected void init(Context context) {
+		super.init(context);
 		
 		if(mLinePaint == null){
 			mLinePaint = new Paint();
 			mLinePaint.setColor(getPaint().getColor());
 			mLinePaint.setStrokeWidth(2);
 		}
-//		getPaint().setStrokeWidth(1);
-//		getPaint().setStyle(Style.STROKE);
+	}
+
+	@Override
+	public void draw(Canvas canvas) {
+		super.draw(canvas);
 		
 		canvas.drawLine(0, getHeight()-1, getWidth(), getHeight()-1, mLinePaint);
 	}
-
-
 }

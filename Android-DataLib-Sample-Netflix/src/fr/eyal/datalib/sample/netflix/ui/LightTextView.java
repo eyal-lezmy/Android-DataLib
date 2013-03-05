@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 public class LightTextView extends TextView {
 	
+	protected static Typeface typo = null;
+	
 	public LightTextView(Context context) {
 		super(context);
 		init(context);
@@ -22,9 +24,12 @@ public class LightTextView extends TextView {
 		init(context);
 	}
 
-	private void init(Context context) {
-		if(!isInEditMode())
-			setTypeface(Typeface.createFromAsset(context.getAssets(),"Roboto-Light.ttf"));
+	protected void init(Context context) {
+		if(!isInEditMode()) {
+			if(typo == null)
+				typo = Typeface.createFromAsset(context.getAssets(),"Roboto-Light.ttf");
+				setTypeface(typo);
+		}
 	}
 
 }
