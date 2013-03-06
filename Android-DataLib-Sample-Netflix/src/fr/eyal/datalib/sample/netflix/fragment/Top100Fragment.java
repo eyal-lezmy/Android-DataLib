@@ -12,7 +12,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,20 +101,35 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 			try {
 				synchronized (sharedLock) {
 					Out.e("", "UPDATE " + "Request Cache");
-					ComplexOptions options = new ComplexOptions();
-					BitmapFactory.Options bmpOption = new BitmapFactory.Options();
-					bmpOption.inSampleSize = 2;
-					options.putBitmapOptions(bmpOption);
-					
-					int requestId = mDataManager.getMovieImage(DataManager.TYPE_CACHE, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION, options, null);
-					mRequestIds.add(requestId);
-					mPendingItem.append(requestId, item);
-					mPendingItemCache.add(item);
+					launchMovieImageCacheRequest(item, 1, true);
 				}
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Launch a cache request for movie image
+	 * 
+	 * @param item the {@link ItemTop100} object associated to the request
+	 * @param inSampleSize bitmap option the sample size
+	 * @param inJustDecodeBounds ask to just decode bounds of the bitmap
+	 * 
+	 * @throws UnsupportedEncodingException
+	 */
+	public void launchMovieImageCacheRequest(ItemTop100 item, int inSampleSize, boolean inJustDecodeBounds) throws UnsupportedEncodingException {
+		ComplexOptions options = new ComplexOptions();
+		BitmapFactory.Options bmpOption = new BitmapFactory.Options();
+		bmpOption.inSampleSize = inSampleSize;
+		bmpOption.inJustDecodeBounds = inJustDecodeBounds;
+		options.putBitmapOptions(bmpOption);
+		
+		Out.d("", "ITEM "+item);
+		int requestId = mDataManager.getMovieImage(DataManager.TYPE_CACHE, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION, options, null);
+		mRequestIds.add(requestId);
+		mPendingItem.append(requestId, item);
+		mPendingItemCache.add(item);
 	}
 	
 	
@@ -152,12 +166,28 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 
 			ItemTop100 item = getItemAndTreatPendings(requestId);
 			
-			Bitmap unscaledBmp = null;
-			if(movieImage.image != null && movieImage.image.get() != null)
-				unscaledBmp = movieImage.image.get();
-			
+			//if we didn't receive the image's soft reference
+			if(movieImage.image == null && item != null){
+				
+				BitmapFactory.Options options = movieImage.lastOptions;
+				if(options != null && options.outHeight != 0){
+
+					//we calculate the sample size
+					int sampleSize = (int) (options.outHeight/mItemHeight);
+					Out.d("", "SAMPLE SIZE"+sampleSize);
+					
+					//then we ask for the image content including the sample size
+					try {
+						launchMovieImageCacheRequest(item, sampleSize, false);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+					return;
+				}
+			}
+					
 			//if the cache object does not contains the good information
-			if(unscaledBmp == null){
+			if(movieImage.image == null || movieImage.image.get() == null){
 
 				//if the list is scrolling we don't ask for a network request
 				if(mScrollState == OnScrollListener.SCROLL_STATE_FLING){
@@ -180,13 +210,15 @@ public class Top100Fragment extends NetflixFragment implements OnScrollListener 
 				}
 				
 			} else {
-								
-				float ratio = (float)unscaledBmp.getWidth()/unscaledBmp.getHeight();
 				
-				Bitmap scaledBmp = scaleBitmap(unscaledBmp, ratio*mItemHeight, mItemHeight, ScalingLogic.FIT);
-				unscaledBmp.recycle();
-				
-				movieImage.image = new SoftReference<Bitmap>(scaledBmp);
+				//we scale the Bitmap
+//				float ratio = (float)unscaledBmp.getWidth()/unscaledBmp.getHeight();
+//				
+//				Bitmap scaledBmp = scaleBitmap(unscaledBmp, ratio*mItemHeight, mItemHeight, ScalingLogic.FIT);
+//				unscaledBmp.recycle();
+//				
+//				movieImage.image = new SoftReference<Bitmap>(scaledBmp);
+
 				//we ask to update the ImageView
 				updateTop100Image(item, movieImage);
 			}
