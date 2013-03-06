@@ -25,6 +25,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Process;
 
 
 abstract public class MultiThreadService extends Service {
@@ -104,6 +105,9 @@ abstract public class MultiThreadService extends Service {
 
         @Override
         public void run() {
+        	//we set the thread as background
+        	Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+
             onHandleIntent(mIntent);
             mHandler.post(mHasFinishedWorkingRunnable);
         }

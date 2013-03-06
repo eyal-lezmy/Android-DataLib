@@ -18,14 +18,13 @@ package fr.eyal.lib.data.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Process;
 import android.util.SparseArray;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
 import fr.eyal.lib.data.model.BusinessObject;
@@ -445,7 +444,9 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
 
         @Override
         public void run() {
-
+        	//we set the thread as background
+        	Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+        	
             //we reach the data from cache
             final ResponseBusinessObject data = (ResponseBusinessObject) getBusinessObjectFromCacheByUrl(mType, mId, mOptions);
 
