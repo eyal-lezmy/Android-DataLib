@@ -2,13 +2,11 @@ package fr.eyal.datalib.sample.netflix.fragment;
 
 import java.util.ArrayList;
 
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixDataManager;
 import fr.eyal.lib.data.service.DataManager.OnDataListener;
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 public abstract class NetflixFragment extends Fragment implements OnDataListener {
 
