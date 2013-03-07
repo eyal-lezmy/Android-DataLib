@@ -1,15 +1,14 @@
 package fr.eyal.datalib.sample.netflix;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.widget.Button;
-import fr.eyal.datalib.sample.netflix.data.service.NetflixDataLibActivity;
-import fr.eyal.lib.data.model.ResponseBusinessObject;
-import fr.eyal.lib.data.service.model.BusinessResponse;
 
-public class NetflixActivity extends NetflixDataLibActivity {
+import com.viewpagerindicator.TitlePageIndicator;
+
+public class NetflixActivity extends FragmentActivity {
 
 	Button mBtnSearchTitle;
 	Button mBtnNewReleases;
@@ -23,12 +22,23 @@ public class NetflixActivity extends NetflixDataLibActivity {
 	Button mBtnGetDirectors;
 	Button mBtnGetCast;
 	
+	NetflixFragmentAdapter mAdapter;
+	ViewPager mViewPager;
+	TitlePageIndicator mTitlePageIndicator;
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_netflix);
+		
+		mAdapter = new NetflixFragmentAdapter(getSupportFragmentManager());
+		
+		mViewPager = (ViewPager) findViewById(R.id.viewpager);
+		mViewPager.setAdapter(mAdapter);
+		
+		mTitlePageIndicator = (TitlePageIndicator) findViewById(R.id.indicator);
+		mTitlePageIndicator.setViewPager(mViewPager);
 		
 //		mBtnGetCast = (Button) findViewById(R.id.getCast);
 //		mBtnGetDirectors = (Button) findViewById(R.id.getDirectors);
@@ -169,23 +179,4 @@ public class NetflixActivity extends NetflixDataLibActivity {
 		getMenuInflater().inflate(R.menu.activity_netflix, menu);
 		return true;
 	}
-
-	@Override
-	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onDataFromDatabase(int code, ArrayList<?> data) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onRequestFinished(int requestId, boolean suceed, BusinessResponse response) {
-		
-		
-	}
-
 }

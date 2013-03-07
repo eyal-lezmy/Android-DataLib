@@ -21,17 +21,15 @@ import android.widget.TextView;
 import fr.eyal.datalib.sample.cache.BitmapMemoryLruCache;
 import fr.eyal.datalib.sample.cache.CacheableBitmapDrawable;
 import fr.eyal.datalib.sample.netflix.R;
-import fr.eyal.datalib.sample.netflix.data.model.top100.ItemTop100;
-import fr.eyal.lib.util.Out;
 
 /**
  * @author Eyal LEZMY
  *
  */
-public class Top100Adapter extends BaseAdapter implements OnScrollListener, RecyclerListener{
+public class NetflixListAdapter extends BaseAdapter implements OnScrollListener, RecyclerListener{
 
-	ArrayList<ItemTop100> mArray = new ArrayList<ItemTop100>();
-	Top100Fragment mFragment;
+	ArrayList<MovieItem> mArray = new ArrayList<MovieItem>();
+	NetflixListFragment mFragment;
 	GridView mGridParent = null;
 	UpdateContent mUpdateContentRunnable = new UpdateContent();
 	int mListFirst = 0;
@@ -39,10 +37,10 @@ public class Top100Adapter extends BaseAdapter implements OnScrollListener, Recy
 	boolean mListScrolled = false;
 	BitmapMemoryLruCache mBitmapCache;
 	
-	public Top100Adapter(Top100Fragment top100Fragment) {
+	public NetflixListAdapter(NetflixListFragment fragment) {
 		super();
-		mFragment = top100Fragment;
-		mArray = new ArrayList<ItemTop100>();
+		mFragment = fragment;
+		mArray = new ArrayList<MovieItem>();
 		final int maxMemory = (int) Runtime.getRuntime().maxMemory()/8;
 		mBitmapCache = new BitmapMemoryLruCache(maxMemory);
 	}
@@ -91,13 +89,13 @@ public class Top100Adapter extends BaseAdapter implements OnScrollListener, Recy
             holder = (ItemViewHolder) convertView.getTag();
         }
 
-		ItemTop100 item = mArray.get(position);
+		MovieItem item = mArray.get(position);
 		holder.item = item;
 
 		if(item != null){
 			
 			//we create the title
-			String title = (position+1) + ". " + item.title;
+			String title = item.getLabel(position);
 
 			holder.text.setText(title);
 
@@ -114,9 +112,9 @@ public class Top100Adapter extends BaseAdapter implements OnScrollListener, Recy
 		return convertView;
 	}
 
-	public boolean setImageFromItemOrCache(ItemViewHolder holder, ItemTop100 item) {
+	public boolean setImageFromItemOrCache(ItemViewHolder holder, MovieItem item) {
 
-		if(item.image != null){
+		if(item.getImage() != null){
 
 			//we get the poster from the cache
 			CacheableBitmapDrawable cacheBitmap = mBitmapCache.get(item.getPosterName());
@@ -142,10 +140,10 @@ public class Top100Adapter extends BaseAdapter implements OnScrollListener, Recy
 	static class ItemViewHolder{
 		ImageView image;
 		TextView text;
-		ItemTop100 item;
+		MovieItem item;
 	}
 	
-	public void updatePoster(ItemTop100 movie){
+	public void updatePoster(MovieItem movie){
 		//TODO manage to very fast scroll up/down that add a bad image on the item
 		
 		Bitmap bmp = movie.getPoster(false);

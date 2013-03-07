@@ -6,11 +6,13 @@ import java.lang.ref.SoftReference;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Movie;
 import android.os.Parcel;
 import fr.eyal.datalib.sample.netflix.data.model.movieimage.MovieImage;
 import fr.eyal.lib.util.FileManager;
+import fr.eyal.datalib.sample.netflix.fragment.MovieItem;
 
-public class ItemTop100 extends ItemTop100Base {
+public class ItemTop100 extends ItemTop100Base implements MovieItem {
 
 	private static final String TAG = ItemTop100.class.getSimpleName();
 
@@ -43,14 +45,7 @@ public class ItemTop100 extends ItemTop100Base {
         super(id);
     }
 
-    /**
-     * Get the movie's poster {@link Bitmap}
-     * 
-     * @param context the context of execution. Needed to have access to the stored images.
-     * @param forceCache force to get the image file from the cache if it is not already linked to the {@link SoftReference}
-     * 
-     * @return return a {@link Bitmap} corresponding to the movie's poster or <code>null</code> whether there is no loaded image.
-     */
+    @Override
     public Bitmap getPoster(boolean forceCache){
     	if(image == null || image.image == null)
     		return null;
@@ -68,6 +63,7 @@ public class ItemTop100 extends ItemTop100Base {
     	return result;
     }
 
+    @Override
     public String getPosterPath(){
     	if(image == null)
     		return null;
@@ -75,6 +71,7 @@ public class ItemTop100 extends ItemTop100Base {
     	return image.imagePath;
     }
     
+    @Override
     public String getPosterName(){
     	if(image == null)
     		return null;
@@ -89,11 +86,7 @@ public class ItemTop100 extends ItemTop100Base {
     }
     
     
-    /**
-     * Get the HD image's url of the item
-     * 
-     * @return the URL needed
-     */
+    @Override
     public String getImageUrl(){
     	
     	if(imageUrl == null){
@@ -106,6 +99,20 @@ public class ItemTop100 extends ItemTop100Base {
     	}
     	return imageUrl;
     }
+
+	@Override
+	public String getLabel(int position) {
+		return (position+1) + ". " + title;
+	}
     
+	@Override
+	public void setImage(MovieImage newImage) {
+		image = newImage;
+	}
+
+	@Override
+	public MovieImage getImage() {
+		return image;
+	}
 }
 // End of user code

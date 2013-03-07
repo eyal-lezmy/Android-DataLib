@@ -1,9 +1,42 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:name="fr.eyal.datalib.sample.netflix.fragment.Top100Fragment"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/indicator"
+        android:padding="10dip"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_alignParentTop="true"
+        android:background="@color/vpi__background_holo_light"
+        android:textColor="@color/netflix_red"
+        app:footerColor="@color/netflix_red"
+        app:selectedColor="@color/netflix_red"
+        app:footerLineHeight="1dp"
+        app:footerIndicatorHeight="3dp"
+        app:footerIndicatorStyle="underline"
+        app:selectedBold="true"
+        />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/indicator"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>
+
+
+<!-- <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="fr.eyal.datalib.sample.netflix.fragment.SelectionFragment"
     android:id="@+id/list"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
-
+ -->
 <!-- <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scroll"
