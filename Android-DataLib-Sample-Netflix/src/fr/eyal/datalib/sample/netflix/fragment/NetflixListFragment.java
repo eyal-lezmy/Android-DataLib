@@ -43,7 +43,6 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 
 		try {
 			int requestId = callDataCache(null, null);
-//			int requestId = mDataManager.getTop100(DataManager.TYPE_CACHE, this, DataLibRequest.OPTION_NO_OPTION, null, null);
 			mRequestIds.add(requestId);
 
 		} catch (UnsupportedEncodingException e) {
@@ -118,7 +117,6 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 		
 		Out.w("", "ITEM "+item);
 		int requestId = callImageCache(item.getImageUrl(), options, null);
-//		int requestId = mDataManager.getMovieImage(DataManager.TYPE_CACHE, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION, options, null);
 		mRequestIds.add(requestId);
 		mPendingItem.append(requestId, item);
 		mPendingItemCache.add(item);
@@ -149,7 +147,6 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 			if(updateTime.compareTo(Calendar.getInstance()) <= 0) {
 				try {
 					callDataNetwork(null, null);
-//					mDataManager.getTop100(DataManager.TYPE_NETWORK, this, DataLibRequest.OPTION_NO_OPTION, null, null);
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
@@ -196,7 +193,6 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 					if(item != null){
 						
 						int id = callImageNetwork(item.getImageUrl(), null, null);
-//						int id = mDataManager.getMovieImage(DataManager.TYPE_NETWORK, this, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION, null, null);
 						mRequestIds.add(id);
 						mPendingItem.append(id, item);
 					} else {
