@@ -22,8 +22,7 @@
         android:background="@color/padding_grey"
         android:paddingLeft="0dp"
         android:paddingRight="@dimen/image_border_small"
-        android:scaleType="centerCrop"
-        android:src="@drawable/movie" />
+        android:scaleType="centerCrop" />
 
     <fr.eyal.datalib.sample.netflix.ui.LightTextView
         android:id="@+id/item_text"
