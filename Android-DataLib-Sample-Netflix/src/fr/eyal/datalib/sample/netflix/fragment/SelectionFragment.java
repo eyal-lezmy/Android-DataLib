@@ -96,7 +96,8 @@ public class SelectionFragment extends NetflixFragment {
 
 	@Override
 	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
-	
+		mRequestIds.remove(Integer.valueOf(requestId));
+		
 		if(response instanceof Top100){
 			Top100 top = (Top100) response;
 			mCurrentTop = top;
@@ -119,6 +120,8 @@ public class SelectionFragment extends NetflixFragment {
 			}
 			
 			
+			
+			
 		}
 		
 	}
@@ -130,6 +133,7 @@ public class SelectionFragment extends NetflixFragment {
 
 	@Override
 	public void onRequestFinished(int requestId, boolean suceed, BusinessResponse response) {
+		mRequestIds.remove(Integer.valueOf(requestId));
 		
 		if(!suceed)
 			return;
