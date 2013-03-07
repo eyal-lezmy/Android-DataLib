@@ -39,7 +39,7 @@
                 android:adjustViewBounds="true"
                 android:background="@color/padding_grey"
                 android:paddingRight="@dimen/image_border_big"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextViewUnderlined
                 android:id="@+id/item1_text"
@@ -54,7 +54,7 @@
                 android:layout_toRightOf="@+id/item1_image"
                 android:gravity="right"
                 android:paddingBottom="2dp"
-                android:text="Hunger Game"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size" />
 
@@ -98,7 +98,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item3_text"
@@ -106,10 +106,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+        		android:layout_marginLeft="@dimen/item_text_margin_hor"
+        		android:layout_marginRight="@dimen/item_text_margin_hor"
+        		android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item3_image"
                 android:gravity="right"
-                android:text="Hunger Game"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
 
@@ -140,7 +143,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item4_text"
@@ -148,10 +151,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+		        android:layout_marginLeft="@dimen/item_text_margin_hor"
+		        android:layout_marginRight="@dimen/item_text_margin_hor"
+		        android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item4_image"
                 android:gravity="right"
-                android:text="Hunger Game"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
         </RelativeLayout>
@@ -179,7 +185,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item5_text"
@@ -187,11 +193,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+		        android:layout_marginLeft="@dimen/item_text_margin_hor"
+		        android:layout_marginRight="@dimen/item_text_margin_hor"
+		        android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item5_image"
                 android:gravity="right"
-                android:text="Hunger Game"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
         </RelativeLayout>
@@ -218,7 +226,7 @@
                 android:adjustViewBounds="true"
                 android:background="@color/padding_grey"
                 android:paddingRight="@dimen/image_border_big"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextViewUnderlined
                 android:id="@+id/item6_text"
@@ -233,7 +241,7 @@
                 android:layout_toRightOf="@+id/item6_image"
                 android:gravity="right"
                 android:paddingBottom="2dp"
-                android:text="Hunger Game"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size" />
 
@@ -262,7 +270,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item7_text"
@@ -270,10 +278,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+		        android:layout_marginLeft="@dimen/item_text_margin_hor"
+		        android:layout_marginRight="@dimen/item_text_margin_hor"
+		        android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item7_image"
                 android:gravity="right"
-                android:text="Hunger Game"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
         </RelativeLayout>
@@ -303,7 +314,7 @@
                 android:paddingLeft="0dp"
 				android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item8_text"
@@ -311,10 +322,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+		        android:layout_marginLeft="@dimen/item_text_margin_hor"
+		        android:layout_marginRight="@dimen/item_text_margin_hor"
+		        android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item8_image"
                 android:gravity="right"
-                android:text="Hunger Game"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
         </RelativeLayout>
@@ -342,7 +356,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item9_text"
@@ -350,11 +364,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+		        android:layout_marginLeft="@dimen/item_text_margin_hor"
+		        android:layout_marginRight="@dimen/item_text_margin_hor"
+		        android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item9_image"
                 android:gravity="right"
-                android:text="Hunger Game"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
         </RelativeLayout>
@@ -380,7 +396,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item10_text"
@@ -388,11 +404,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+		        android:layout_marginLeft="@dimen/item_text_margin_hor"
+		        android:layout_marginRight="@dimen/item_text_margin_hor"
+		        android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item10_image"
                 android:gravity="right"
-                android:text="Hunger Game 10"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
         </RelativeLayout>
@@ -420,7 +438,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item11_text"
@@ -428,10 +446,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+		        android:layout_marginLeft="@dimen/item_text_margin_hor"
+		        android:layout_marginRight="@dimen/item_text_margin_hor"
+		        android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item11_image"
                 android:gravity="right"
-                android:text="Hunger Game 11"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
         </RelativeLayout>
@@ -461,7 +482,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item12_text"
@@ -469,10 +490,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+		        android:layout_marginLeft="@dimen/item_text_margin_hor"
+		        android:layout_marginRight="@dimen/item_text_margin_hor"
+		        android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item12_image"
                 android:gravity="right"
-                android:text="Hunger Game 12"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
         </RelativeLayout>
@@ -500,7 +524,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item13_text"
@@ -508,11 +532,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+		        android:layout_marginLeft="@dimen/item_text_margin_hor"
+		        android:layout_marginRight="@dimen/item_text_margin_hor"
+		        android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item13_image"
                 android:gravity="right"
-                android:text="Hunger Game 13"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
         </RelativeLayout>
@@ -538,7 +564,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="@dimen/image_border_small"
                 android:scaleType="fitStart"
-                android:src="@drawable/movie" />
+                android:src="@drawable/movie_back" />
 
             <fr.eyal.datalib.sample.netflix.ui.LightTextView
                 android:id="@+id/item14_text"
@@ -546,11 +572,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginTop="@dimen/item_text_margin_vert"
+		        android:layout_marginLeft="@dimen/item_text_margin_hor"
+		        android:layout_marginRight="@dimen/item_text_margin_hor"
+		        android:layout_marginBottom="@dimen/item_text_margin_vert"
                 android:layout_toRightOf="@+id/item14_image"
                 android:gravity="right"
-                android:text="Hunger Game 14"
+                android:text=""
                 android:textColor="@color/netflix_red"
                 android:textSize="@dimen/item_font_size_small" />
         </RelativeLayout>
