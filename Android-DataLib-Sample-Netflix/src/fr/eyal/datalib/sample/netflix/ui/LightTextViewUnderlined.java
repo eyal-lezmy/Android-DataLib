@@ -1,6 +1,7 @@
 package fr.eyal.datalib.sample.netflix.ui;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -20,19 +21,21 @@ public class LightTextViewUnderlined extends LightTextView {
 
 	public LightTextViewUnderlined(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		init(context);
 	}
 
 	public LightTextViewUnderlined(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		init(context);
 	}
 
 	@Override
 	protected void init(Context context) {
 		super.init(context);
-		
 		if(mLinePaint == null){
+			ColorStateList colors = getTextColors();
 			mLinePaint = new Paint();
-			mLinePaint.setColor(getPaint().getColor());
+			mLinePaint.setColor(colors.getDefaultColor());
 			mLinePaint.setStrokeWidth(2);
 		}
 	}
