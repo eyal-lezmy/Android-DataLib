@@ -8,6 +8,10 @@ import android.widget.Button;
 
 import com.viewpagerindicator.TitlePageIndicator;
 
+import fr.eyal.datalib.sample.cache.BitmapMemoryLruCache;
+import fr.eyal.datalib.sample.netflix.util.Resources;
+import fr.eyal.lib.util.Out;
+
 public class NetflixActivity extends FragmentActivity {
 
 	Button mBtnSearchTitle;
@@ -25,12 +29,18 @@ public class NetflixActivity extends FragmentActivity {
 	NetflixFragmentAdapter mAdapter;
 	ViewPager mViewPager;
 	TitlePageIndicator mTitlePageIndicator;
-	
+	BitmapMemoryLruCache mBitmapCache;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_netflix);
+		
+		//we initialize the bitmap cache
+		final int maxMemory = (int) Runtime.getRuntime().maxMemory()/5;
+		Out.w("", "CACHE SIZE = "+maxMemory);
+		mBitmapCache = new BitmapMemoryLruCache(maxMemory);
+		Resources.getInstance().mBitmapCache = mBitmapCache;
 		
 		mAdapter = new NetflixFragmentAdapter(getSupportFragmentManager());
 		

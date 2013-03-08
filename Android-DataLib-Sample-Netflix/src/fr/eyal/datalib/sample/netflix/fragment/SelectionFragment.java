@@ -17,12 +17,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import fr.eyal.datalib.sample.cache.BitmapMemoryLruCache;
+import fr.eyal.datalib.sample.cache.CacheableBitmapDrawable;
 import fr.eyal.datalib.sample.netflix.R;
 import fr.eyal.datalib.sample.netflix.data.model.top100.ItemTop100;
 import fr.eyal.datalib.sample.netflix.data.model.top100.Top100;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixService;
 import fr.eyal.datalib.sample.netflix.ui.GridLayout;
 import fr.eyal.datalib.sample.netflix.ui.MovieItemHolder;
+import fr.eyal.datalib.sample.netflix.util.Resources;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.model.BusinessResponse;
@@ -43,6 +46,7 @@ public class SelectionFragment extends NetflixFragment {
 	ArrayList<MovieItemHolder> mMovies = new ArrayList<MovieItemHolder>();	
 	ImageView mNetflixItem;
 	Top100 mCurrentTop;
+	BitmapMemoryLruCache mBitmapCache;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,7 @@ public class SelectionFragment extends NetflixFragment {
 		display.getSize(mPoint);
 		display.getMetrics(mMetrics);
 		setRetainInstance(true);
-		
+		mBitmapCache = Resources.getInstance().mBitmapCache;
 
 		super.onCreate(savedInstanceState);
 
@@ -80,7 +84,11 @@ public class SelectionFragment extends NetflixFragment {
 			for (int i = 0; i < size; i++) {
 				View v = selectionLayout.getChildAt(i);
 				if(v instanceof RelativeLayout){
-					MovieItemHolder holder = new MovieItemHolder();
+					boolean isBig = false;
+					if(i == 0 || i == 5)
+						isBig = true;
+					
+					MovieItemHolder holder = new MovieItemHolder(getActivity(), isBig);
 					RelativeLayout layout = (RelativeLayout) v;
 					holder.image = (ImageView) layout.getChildAt(0);
 					holder.text = (TextView) layout.getChildAt(1);
@@ -117,11 +125,7 @@ public class SelectionFragment extends NetflixFragment {
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-			}
-			
-			
-			
-			
+			}			
 		}
 		
 	}
@@ -170,17 +174,32 @@ public class SelectionFragment extends NetflixFragment {
 		ArrayList<ItemTop100> movies = top100.itemTop100;
 		
 		try {
-			
-		int size = mMovies.size();
-		for (int i = 0; i < size; i++) {
-			MovieItemHolder m = mMovies.get(i);
-			m.text.post(new UpdateText(m.text, movies.get(i).title));
 
-			//we ask for movie's picture
-			//the movie item holder will handle the bitmap received 
-			mDataManager.getMovieImage(DataManager.TYPE_CACHE, mMovies.get(i), movies.get(i).getImageUrl(), DataLibRequest.OPTION_NO_OPTION, null, null);
-			
+			int size = mMovies.size();
+			for (int i = 0; i < size; i++) {
+				MovieItemHolder holder = mMovies.get(i);
+				ItemTop100 item = movies.get(i);
+				holder.item = item;
+				holder.text.post(new UpdateText(holder.text, movies.get(i).title));
+
+				CacheableBitmapDrawable bmp = null;
+				if(item.image != null){
+					String appendix = "";
+					if(holder.mBigImage) //this is dirty but handles the different size of the big elements on the selection panel
+						appendix = MovieItemHolder.BIG_APPENDIX;
+					bmp = mBitmapCache.get(item.getPosterName() + appendix);
+					if(bmp != null){
+						holder.image.post(holder.new UpdatePoster(bmp, holder.image));
+					}
+				}
+				//if we didn't updated the item
+				if(bmp == null) {
+					//we ask for movie's picture
+					//the movie item holder will handle the bitmap received 
+					mDataManager.getMovieImage(DataManager.TYPE_CACHE, holder, item.getImageUrl(), DataLibRequest.OPTION_NO_OPTION, null, null);
+				}
 			}
+			
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

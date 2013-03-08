@@ -21,6 +21,7 @@ import android.widget.TextView;
 import fr.eyal.datalib.sample.cache.BitmapMemoryLruCache;
 import fr.eyal.datalib.sample.cache.CacheableBitmapDrawable;
 import fr.eyal.datalib.sample.netflix.R;
+import fr.eyal.datalib.sample.netflix.util.Resources;
 
 /**
  * @author Eyal LEZMY
@@ -41,8 +42,7 @@ public class NetflixListAdapter extends BaseAdapter implements OnScrollListener,
 		super();
 		mFragment = fragment;
 		mArray = new ArrayList<MovieItem>();
-		final int maxMemory = (int) Runtime.getRuntime().maxMemory()/8;
-		mBitmapCache = new BitmapMemoryLruCache(maxMemory);
+		mBitmapCache = Resources.getInstance().mBitmapCache;
 	}
 	
 	@Override
