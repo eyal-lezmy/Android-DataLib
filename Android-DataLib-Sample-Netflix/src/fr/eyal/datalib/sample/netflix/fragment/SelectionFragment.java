@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -30,8 +31,9 @@ import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.model.BusinessResponse;
 import fr.eyal.lib.data.service.model.DataLibRequest;
+import fr.eyal.lib.util.Out;
 
-public class SelectionFragment extends NetflixFragment {
+public class SelectionFragment extends NetflixFragment implements OnClickListener{
 
 	public static final String TAG = SelectionFragment.class.getSimpleName(); 
 	
@@ -83,6 +85,8 @@ public class SelectionFragment extends NetflixFragment {
 			
 			for (int i = 0; i < size; i++) {
 				View v = selectionLayout.getChildAt(i);
+				v.setOnClickListener(this);
+				
 				if(v instanceof RelativeLayout){
 					boolean isBig = false;
 					if(i == 0 || i == 5)
@@ -219,6 +223,12 @@ public class SelectionFragment extends NetflixFragment {
 		public void run() {
 			mView.setText(mContent);
 		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		v.setPressed(true);
+		Out.d("", "Press");
 	}
 	
 }
