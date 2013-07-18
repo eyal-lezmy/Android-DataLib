@@ -284,7 +284,7 @@
 		datalib:httpMethod="GET"
 		datalib:parseType="SAX"
 		datalib:name="Movie"
-		datalib:url="http://api-public.netflix.com/catalog/titles/movies/{0}">
+		datalib:url="http://api-public.netflix.com/catalog/titles/{0}/{1}">
 		<!-- Configuration of the web service -->
 		<datalib:config>
 			<datalib:httpMethod>GET</datalib:httpMethod>
@@ -293,7 +293,8 @@
 <!-- 				<datalib:OPTION_DATABASE_CACHE_DISABLED /> -->
 			</datalib:options>
 			<datalib:parameters>
- 				<movie_id datalib:type="int" datalib:urlParameter="0" datalib:description="Movie's ID"/>
+ 				<type datalib:type="string" datalib:urlParameter="0" datalib:description="Type you are looking for. It can be 'movies', 'series' or 'programs'"/>
+ 				<movie_id datalib:type="int" datalib:urlParameter="1" datalib:description="Movie's ID"/>
  				<oauth_consumer_key datalib:type="string" datalib:description="The OAuth consumer key of the developer"/>
  				<oauth_nonce datalib:type="string" datalib:description="A random string"/>
 				<oauth_signature_method datalib:type="string" datalib:description="The OAuth signature method. Here we use HMAC-SHA1"/>

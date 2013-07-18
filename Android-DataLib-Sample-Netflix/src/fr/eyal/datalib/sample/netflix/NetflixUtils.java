@@ -49,11 +49,23 @@ public class NetflixUtils {
 	public static final int GENRE_THRILLER = 387;
 
 	
+	/**
+	 * Generates a random string
+	 * 
+	 * @return a random string
+	 */
 	public static String getNonce(){
 		Random random = new Random();
 		return getNonce(MIN_NONCE_SIZE+random.nextInt(MAX_NONCE_SIZE-MIN_NONCE_SIZE+1));
 	}
-	
+
+	/**
+	 * Generates a random string
+	 * 
+	 * @param size the size of the string
+	 * 
+	 * @return a random string
+	 */
 	public static String getNonce(int size){
 		StringBuilder builder = new StringBuilder(size);
 		Random random = new Random();

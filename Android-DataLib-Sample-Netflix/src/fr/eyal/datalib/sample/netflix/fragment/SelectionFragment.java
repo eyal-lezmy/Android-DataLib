@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -20,10 +21,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import fr.eyal.datalib.sample.cache.BitmapMemoryLruCache;
 import fr.eyal.datalib.sample.cache.CacheableBitmapDrawable;
+import fr.eyal.datalib.sample.netflix.MovieActivity;
 import fr.eyal.datalib.sample.netflix.R;
 import fr.eyal.datalib.sample.netflix.data.model.top100.ItemTop100;
 import fr.eyal.datalib.sample.netflix.data.model.top100.Top100;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixService;
+import fr.eyal.datalib.sample.netflix.fragment.model.MovieItem;
 import fr.eyal.datalib.sample.netflix.ui.GridLayout;
 import fr.eyal.datalib.sample.netflix.ui.MovieItemHolder;
 import fr.eyal.datalib.sample.netflix.util.Resources;
@@ -37,14 +40,6 @@ public class SelectionFragment extends NetflixFragment implements OnClickListene
 
 	public static final String TAG = SelectionFragment.class.getSimpleName(); 
 	
-	public static final int DEFAULT_SCREEN_WIDTH = 360;
-	public static final int DEFAULT_WIDTH = 170;
-	public static final int DEFAULT_HEIGHT = 80;
-
-	
-	Point mPoint = new Point();
-	DisplayMetrics mMetrics = new DisplayMetrics();
-
 	ArrayList<MovieItemHolder> mMovies = new ArrayList<MovieItemHolder>();	
 	ImageView mNetflixItem;
 	Top100 mCurrentTop;
@@ -53,10 +48,6 @@ public class SelectionFragment extends NetflixFragment implements OnClickListene
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
-		WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
-		Display display = wm.getDefaultDisplay();
-		display.getSize(mPoint);
-		display.getMetrics(mMetrics);
 		setRetainInstance(true);
 		mBitmapCache = Resources.getInstance().mBitmapCache;
 
@@ -96,6 +87,7 @@ public class SelectionFragment extends NetflixFragment implements OnClickListene
 					RelativeLayout layout = (RelativeLayout) v;
 					holder.image = (ImageView) layout.getChildAt(0);
 					holder.text = (TextView) layout.getChildAt(1);
+					layout.setTag(holder);
 					mMovies.add(holder);
 				}
 			}
@@ -189,7 +181,7 @@ public class SelectionFragment extends NetflixFragment implements OnClickListene
 				CacheableBitmapDrawable bmp = null;
 				if(item.image != null){
 					String appendix = "";
-					if(holder.mBigImage) //this is dirty but handles the different size of the big elements on the selection panel
+					if(holder.mBigImage) //this is dirty but handles the different size of the big elements on the selection panel... quickly :-)
 						appendix = MovieItemHolder.BIG_APPENDIX;
 					bmp = mBitmapCache.get(item.getPosterName() + appendix);
 					if(bmp != null){
@@ -227,8 +219,22 @@ public class SelectionFragment extends NetflixFragment implements OnClickListene
 
 	@Override
 	public void onClick(View v) {
-		v.setPressed(true);
 		Out.d("", "Press");
+		
+		if(v instanceof RelativeLayout){
+			Object tag = v.getTag();
+			
+			if(tag instanceof MovieItemHolder){
+				MovieItemHolder holder = (MovieItemHolder) tag;
+				
+				if(holder.item != null){
+					ItemTop100 item = holder.item;
+					Intent i = new Intent(getActivity(), MovieActivity.class);
+					i.putExtra(MovieActivity.EXTRA_MOVIE, item);
+					getActivity().startActivity(i);
+				}
+			}
+		}
 	}
 	
 }

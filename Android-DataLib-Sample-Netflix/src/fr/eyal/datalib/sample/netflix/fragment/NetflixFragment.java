@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixDataManager;
 import fr.eyal.lib.data.service.DataManager.OnDataListener;
+import fr.eyal.lib.util.Out;
 
 public abstract class NetflixFragment extends Fragment implements OnDataListener {
 
@@ -18,13 +19,12 @@ public abstract class NetflixFragment extends Fragment implements OnDataListener
 	/**
 	 * List of requests currently running for this activity
 	 */
-	protected ArrayList<Integer> mRequestIds;
+	final protected ArrayList<Integer> mRequestIds = new ArrayList<Integer>();
 	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
-		mRequestIds = new ArrayList<Integer>();
 		mDataManager = NetflixDataManager.getInstance(getActivity());
 
 		super.onCreate(savedInstanceState);
@@ -32,18 +32,38 @@ public abstract class NetflixFragment extends Fragment implements OnDataListener
 
 	@Override
 	public void onResume() {
-		// we launch the request's data reception
-		for (final int requestId : mRequestIds) {
-			mDataManager.addOnDataListener(requestId, this);
+		if(mRequestIds != null && mDataManager != null){
+			// we launch the request's data reception
+			synchronized (mRequestIds) {
+				int size = mRequestIds.size();
+				for (int i = 0; i < size; i++) {
+					Integer requestId = mRequestIds.get(i);
+					Out.w("", "RESUME" + requestId + " " + mRequestIds);
+					if(requestId != null)
+						mDataManager.addOnDataListener(requestId, this);
+					else
+						Out.e("", "REQUEST ID NULL !!!!!!!!!!!!!");
+				}
+			}
 		}
 		super.onResume();
 	}
 	
 	@Override
 	public void onPause() {
-		// we stop the request's data reception
-		for (final int requestId : mRequestIds) {
-			mDataManager.removeOnDataListener(requestId, this);
+		if(mRequestIds != null && mDataManager != null){
+			// we stop the request's data reception
+			synchronized (mRequestIds) {
+				int size = mRequestIds.size();
+				for (int i = 0; i < size; i++) {
+					Integer requestId = mRequestIds.get(i);
+					Out.e("", "PAUSE " + requestId + " " + mRequestIds);
+					if(requestId != null)
+						mDataManager.removeOnDataListener(requestId, this);
+					else
+						Out.e("", "REQUEST ID NULL !!!!!!!!!!!!!");
+				}
+			}
 		}
 		super.onPause();
 	}

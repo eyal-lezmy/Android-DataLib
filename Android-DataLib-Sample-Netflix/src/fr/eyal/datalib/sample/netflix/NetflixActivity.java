@@ -1,10 +1,13 @@
 package fr.eyal.datalib.sample.netflix;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.SearchView;
 
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -50,6 +53,9 @@ public class NetflixActivity extends FragmentActivity {
 		mTitlePageIndicator = (TitlePageIndicator) findViewById(R.id.indicator);
 		mTitlePageIndicator.setViewPager(mViewPager);
 		
+		// Test for Backup Manager
+//		Log.d("NetflixActivity", "UUID : " + Settings.getUuid(this));
+
 //		mBtnGetCast = (Button) findViewById(R.id.getCast);
 //		mBtnGetDirectors = (Button) findViewById(R.id.getDirectors);
 //		mBtnGetFilmography = (Button) findViewById(R.id.getFilmography);
@@ -187,6 +193,13 @@ public class NetflixActivity extends FragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_netflix, menu);
+
+	    // Get the SearchView and set the searchable configuration
+	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	    SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+	    searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+
 		return true;
 	}
 }
