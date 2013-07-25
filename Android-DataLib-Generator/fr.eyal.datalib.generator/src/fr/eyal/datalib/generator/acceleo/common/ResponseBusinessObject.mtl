@@ -13,6 +13,8 @@ _class:String = aBusinessObject.javaName.toUpperFirst();
 package [_package/];
 
 import android.os.Parcel;
+import android.os.Parcelable;
+
 
 public class [_class/] extends [_class/]Base {
 
@@ -22,9 +24,17 @@ public class [_class/] extends [_class/]Base {
         super();
     }
 
+	
+    /**
+     * PARCELABLE MANAGMENT
+     */
+
+	[declareParcelableCreatorNotBase(aBusinessObject)/]
+
     public [_class/](final Parcel in) {
         super(in);
     }
+
 
 }
 // [/protected]

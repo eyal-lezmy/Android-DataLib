@@ -229,6 +229,21 @@ public int describeContents() {
 }
 [/template]
 
+
+[template public declareParcelableCreatorNotBase (aBusinessObject : BusinessObject) post (trim())]
+public static final Parcelable.Creator<[aBusinessObject.javaName.toUpperFirst()/]> CREATOR = new Parcelable.Creator<[aBusinessObject.javaName.toUpperFirst()/]>() {
+    @Override
+    public [aBusinessObject.javaName.toUpperFirst()/] createFromParcel(final Parcel in) {
+        return new [aBusinessObject.javaName.toUpperFirst()/](in);
+    }
+
+    @Override
+    public [aBusinessObject.javaName.toUpperFirst()/]['['/]] newArray(final int size) {
+        return new [aBusinessObject.javaName.toUpperFirst()/]['['/]size];
+    }
+};
+[/template]
+
 [template public getCompleteNameToLower (aBusinessObject : BusinessObject, separator : String) post (trim())]
 [if (aBusinessObject.parent <> null)][getCompleteNameToLower (aBusinessObject.parent, separator)/][/if][separator/][aBusinessObject.javaName.toLower()/]
 [/template]
