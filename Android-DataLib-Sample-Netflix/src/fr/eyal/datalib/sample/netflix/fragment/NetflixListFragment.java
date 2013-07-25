@@ -20,6 +20,7 @@ import fr.eyal.datalib.sample.netflix.fragment.adapter.NetflixListAdapter;
 import fr.eyal.datalib.sample.netflix.fragment.model.MovieItem;
 import fr.eyal.datalib.sample.netflix.fragment.model.MovieItemResponse;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
+import fr.eyal.lib.data.service.ServiceHelper;
 import fr.eyal.lib.data.service.model.BusinessResponse;
 import fr.eyal.lib.data.service.model.ComplexOptions;
 import fr.eyal.lib.util.Out;
@@ -46,7 +47,10 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 
 		try {
 			int requestId = callDataCache(null, null);
-			mRequestIds.add(requestId);
+			if(requestId == ServiceHelper.BAD_REQUEST_ID)
+				requestId = callDataNetwork(null, null);
+			if(requestId == ServiceHelper.BAD_REQUEST_ID)
+				mRequestIds.add(requestId);
 
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
