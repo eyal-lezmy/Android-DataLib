@@ -46,6 +46,7 @@ public class ServiceHelper {
 
     private static final int MAX_RANDOM_REQUEST_ID = Integer.MAX_VALUE;
     private static int REQUEST_ID_CPT = 0;
+    public static int BAD_REQUEST_ID = -1;
 
     /**
      * Singleton of the ServiceHelper
@@ -375,7 +376,7 @@ public class ServiceHelper {
                 return mRequestSparseArray.keyAt(i);
 
         }
-        return -1;
+        return BAD_REQUEST_ID;
     }
 
     /**
