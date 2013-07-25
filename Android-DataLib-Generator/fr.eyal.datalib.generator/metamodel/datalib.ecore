@@ -136,6 +136,9 @@
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="urlParameter" lowerBound="1"
             eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="fingerprintKey" lowerBound="1"
+            eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+            defaultValueLiteral="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="FieldBusinessObject" eSuperTypes="#//datalib/model/Field">
         <eStructuralFeatures xsi:type="ecore:EReference" name="content" lowerBound="1"

@@ -24,6 +24,7 @@ public class DataLibLabels {
 	public static final String XML_DEFAULT = XML_PREFIX + "default";
 	public static final String XML_DESCRIPTION = XML_PREFIX + "description";
 	public static final String XML_URL_PARAMETERS = XML_PREFIX + "urlParameter";
+	public static final String XML_FINGERPRINT_KEY = XML_PREFIX + "fingerprintKey";
 	
 	//webservice options
 	public static final String XML_OPTION_NO_OPTION = XML_PREFIX + "OPTION_NO_OPTION";

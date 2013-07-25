@@ -20,5 +20,11 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
 Export-Package: fr.eyal.datalib.generator,
- fr.eyal.datalib.generator.acceleo.common
+ fr.eyal.datalib.generator.acceleo.common,
+ fr.eyal.lib.datalib.genmodel.android,
+ fr.eyal.lib.datalib.genmodel.android.datalib,
+ fr.eyal.lib.datalib.genmodel.android.datalib.model,
+ fr.eyal.lib.datalib.genmodel.android.datalib.model.util,
+ fr.eyal.lib.datalib.genmodel.android.datalib.util,
+ fr.eyal.lib.datalib.genmodel.android.util
 

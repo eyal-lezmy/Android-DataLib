@@ -474,6 +474,15 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getParameter_FingerprintKey() {
+		return (EAttribute)parameterEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getFieldBusinessObject() {
 		return fieldBusinessObjectEClass;
 	}
@@ -554,6 +563,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		createEAttribute(parameterEClass, PARAMETER__TYPE);
 		createEAttribute(parameterEClass, PARAMETER__DESCRIPTION);
 		createEAttribute(parameterEClass, PARAMETER__URL_PARAMETER);
+		createEAttribute(parameterEClass, PARAMETER__FINGERPRINT_KEY);
 
 		fieldBusinessObjectEClass = createEClass(FIELD_BUSINESS_OBJECT);
 		createEReference(fieldBusinessObjectEClass, FIELD_BUSINESS_OBJECT__CONTENT);
@@ -638,6 +648,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		initEAttribute(getParameter_Type(), theContentPackage.getParameterType(), "type", null, 1, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getParameter_Description(), ecorePackage.getEString(), "description", null, 1, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getParameter_UrlParameter(), ecorePackage.getEInt(), "urlParameter", "-1", 1, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getParameter_FingerprintKey(), ecorePackage.getEBoolean(), "fingerprintKey", "true", 1, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(fieldBusinessObjectEClass, FieldBusinessObject.class, "FieldBusinessObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getFieldBusinessObject_Content(), this.getBusinessObject(), null, "content", null, 1, 1, FieldBusinessObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

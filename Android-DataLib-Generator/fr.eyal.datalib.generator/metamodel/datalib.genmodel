@@ -107,6 +107,7 @@
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/Parameter/type"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/Parameter/description"/>
           <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/Parameter/urlParameter"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute datalib.ecore#//datalib/model/Parameter/fingerprintKey"/>
         </genClasses>
         <genClasses ecoreClass="datalib.ecore#//datalib/model/FieldBusinessObject">
           <genFeatures notify="false" createChild="false" propertySortChoices="true"

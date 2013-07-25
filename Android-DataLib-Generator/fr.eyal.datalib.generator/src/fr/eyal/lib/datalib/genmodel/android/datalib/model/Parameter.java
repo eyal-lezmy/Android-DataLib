@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#getType <em>Type</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#getDescription <em>Description</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#getUrlParameter <em>Url Parameter</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#isFingerprintKey <em>Fingerprint Key</em>}</li>
  * </ul>
  * </p>
  *
@@ -137,5 +138,32 @@ public interface Parameter extends EObject {
 	 * @generated
 	 */
 	void setUrlParameter(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Fingerprint Key</b></em>' attribute.
+	 * The default value is <code>"true"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Fingerprint Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Fingerprint Key</em>' attribute.
+	 * @see #setFingerprintKey(boolean)
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.ModelPackage#getParameter_FingerprintKey()
+	 * @model default="true" required="true"
+	 * @generated
+	 */
+	boolean isFingerprintKey();
+
+	/**
+	 * Sets the value of the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#isFingerprintKey <em>Fingerprint Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Fingerprint Key</em>' attribute.
+	 * @see #isFingerprintKey()
+	 * @generated
+	 */
+	void setFingerprintKey(boolean value);
 
 } // Parameter

@@ -3,7 +3,7 @@
 [import fr::eyal::datalib::generator::acceleo::common::Tools /]
 [import fr::eyal::datalib::generator::acceleo::common::BusinessObjectTool /]
 
-[template public responseBusinessObjectBaseDAO(aBusinessObject : ResponseBusinessObjectDAO) {
+[template public responseBusinessObjectBaseDAO(aBusinessObject : ResponseBusinessObjectDAO, aWebService : WebService) {
 project:DataLibProject = aBusinessObject.project;
 _package:String = aBusinessObject._package+'.model.'+getPackage(aBusinessObject);
 _directory:String = getDirectoryFromPackage(_package);
@@ -35,6 +35,11 @@ import [getProviderPackage(project)/].[getProviderClassName(project)/];
 public class [_class/]Base extends ResponseBusinessObjectDAO {
 
     private static final String TAG = [_class/]Base.class.getSimpleName();
+
+	/**
+	 * List of request parameters that will define the fingerprint composition of the object
+	 */
+	[declareFingerprintKeys(aWebService)/]
 
 	[declareFields(aBusinessObject)/]
 
@@ -357,7 +362,7 @@ public class [_class/]Base extends ResponseBusinessObjectDAO {
 
     @Override
     public void save(final DataLibRequest request) throws RemoteException, OperationApplicationException {
-        _url = request.getFingerprint();
+        _url = request.getFingerprint(FINGERPRINT_KEYS);
         save();
     }
 

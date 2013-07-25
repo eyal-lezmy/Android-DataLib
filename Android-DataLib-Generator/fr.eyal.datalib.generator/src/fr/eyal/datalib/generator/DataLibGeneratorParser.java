@@ -370,9 +370,20 @@ public class DataLibGeneratorParser extends DefaultHandler {
 			break;
 
 		case PARAMETERS:
+			//description
 			String description = attributes.getValue(DataLibLabels.XML_DESCRIPTION);
+			
+			//type
 			ParameterType type = getParameterType(attributes.getValue(DataLibLabels.XML_TYPE));
 
+			//fingerprintKey
+			boolean isKey = true;
+			String fingerprintKey = attributes.getValue(DataLibLabels.XML_FINGERPRINT_KEY);
+			if(fingerprintKey != null){
+				//we parse the attribute following the Boolean's parse method
+				isKey = Boolean.parseBoolean(fingerprintKey);
+			 }
+				 
 			//we eventually add the url parameter
 			int urlIndex = -1;
 			String urlParam = attributes.getValue(DataLibLabels.XML_URL_PARAMETERS);
@@ -383,10 +394,11 @@ public class DataLibGeneratorParser extends DefaultHandler {
 				//we scope the urlIndex and set it as the maximum acceptable value for the actual array
 				int index = (urlIndex+1 > urlParamsList.size()) ? urlParamsList.size() : urlIndex;
 				
-				webservice.getUrlParameters().add(index, DataLibGenerator.createParameter(modelFactory, qName, type, description, urlIndex));
+				webservice.getUrlParameters().add(index, DataLibGenerator.createParameter(modelFactory, qName, type, description, urlIndex, isKey));
 			}
 			
-			webservice.getParameters().add(DataLibGenerator.createParameter(modelFactory, qName, type, description, urlIndex));
+			webservice.getParameters().add(DataLibGenerator.createParameter(modelFactory, qName, type, description, urlIndex, isKey));
+
 			
 		default:
 			// do nothing

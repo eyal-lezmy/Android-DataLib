@@ -179,8 +179,11 @@ public class [aProject.name.toUpperFirst()/]DataManager extends DataManager {
      */
 	[displayLaunchMethod(webService)/]
 		[declareUrlAndParameters(webService, aProject)/]
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.name.toUpper()/], [aProject.name.toUpperFirst()/]Service.class, complexOptionsCache, complexOptionsNetwork);
-
+		[if (webService.parseType = ParseType::IMAGE)]
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.name.toUpper()/], [aProject.name.toUpperFirst()/]Service.class, complexOptionsCache, complexOptionsNetwork, null);
+		[else]
+		int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, [aProject.name.toUpperFirst()/]Service.WEBSERVICE_[webService.name.toUpper()/], [aProject.name.toUpperFirst()/]Service.class, complexOptionsCache, complexOptionsNetwork, [webService.name.toUpperFirst()/].FINGERPRINT_KEYS);
+		[/if]
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);

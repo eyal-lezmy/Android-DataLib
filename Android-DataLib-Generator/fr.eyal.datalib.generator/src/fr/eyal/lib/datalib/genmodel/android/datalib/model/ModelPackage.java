@@ -632,13 +632,22 @@ public interface ModelPackage extends EPackage {
 	int PARAMETER__URL_PARAMETER = 3;
 
 	/**
+	 * The feature id for the '<em><b>Fingerprint Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARAMETER__FINGERPRINT_KEY = 4;
+
+	/**
 	 * The number of structural features of the '<em>Parameter</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PARAMETER_FEATURE_COUNT = 4;
+	int PARAMETER_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldImpl <em>Field</em>}' class.
@@ -685,6 +694,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int FIELD__URL_PARAMETER = PARAMETER__URL_PARAMETER;
+
+	/**
+	 * The feature id for the '<em><b>Fingerprint Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD__FINGERPRINT_KEY = PARAMETER__FINGERPRINT_KEY;
 
 	/**
 	 * The feature id for the '<em><b>Default Value</b></em>' attribute.
@@ -830,6 +848,15 @@ public interface ModelPackage extends EPackage {
 	 * @ordered
 	 */
 	int FIELD_BUSINESS_OBJECT__URL_PARAMETER = FIELD__URL_PARAMETER;
+
+	/**
+	 * The feature id for the '<em><b>Fingerprint Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FIELD_BUSINESS_OBJECT__FINGERPRINT_KEY = FIELD__FINGERPRINT_KEY;
 
 	/**
 	 * The feature id for the '<em><b>Default Value</b></em>' attribute.
@@ -1309,6 +1336,17 @@ public interface ModelPackage extends EPackage {
 	EAttribute getParameter_UrlParameter();
 
 	/**
+	 * Returns the meta object for the attribute '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#isFingerprintKey <em>Fingerprint Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Fingerprint Key</em>'.
+	 * @see fr.eyal.lib.datalib.genmodel.android.datalib.model.Parameter#isFingerprintKey()
+	 * @see #getParameter()
+	 * @generated
+	 */
+	EAttribute getParameter_FingerprintKey();
+
+	/**
 	 * Returns the meta object for class '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.FieldBusinessObject <em>Field Business Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1634,6 +1672,14 @@ public interface ModelPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PARAMETER__URL_PARAMETER = eINSTANCE.getParameter_UrlParameter();
+
+		/**
+		 * The meta object literal for the '<em><b>Fingerprint Key</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PARAMETER__FINGERPRINT_KEY = eINSTANCE.getParameter_FingerprintKey();
 
 		/**
 		 * The meta object literal for the '{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.FieldBusinessObjectImpl <em>Field Business Object</em>}' class.

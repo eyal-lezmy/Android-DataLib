@@ -49,7 +49,7 @@
 
 		[for (aBusinessObject : ResponseBusinessObject | aWebService.contentResponse)]
 			[if (aWebService.cached)]
-			[mainResponseBusinessObjectDAO(aBusinessObject.oclAsType(ResponseBusinessObjectDAO))/]
+			[mainResponseBusinessObjectDAO(aBusinessObject.oclAsType(ResponseBusinessObjectDAO), aWebService)/]
 			[else]
 			[mainResponseBusinessObject(aBusinessObject)/]
 			[/if]
@@ -67,9 +67,9 @@
 	[/for]
 	
 [/template]
-[template public mainResponseBusinessObjectDAO(aResponseBusinessObjectDAO : ResponseBusinessObjectDAO)]
+[template public mainResponseBusinessObjectDAO(aResponseBusinessObjectDAO : ResponseBusinessObjectDAO, aWebService : WebService)]
 	
-	[aResponseBusinessObjectDAO.responseBusinessObjectBaseDAO()/]
+	[aResponseBusinessObjectDAO.responseBusinessObjectBaseDAO(aWebService)/]
 	[aResponseBusinessObjectDAO.responseBusinessObjectDAO()/]
 
 	[for (businessObject : BusinessObject | aResponseBusinessObjectDAO.childs)]

@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.ParameterImpl#getType <em>Type</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.ParameterImpl#getDescription <em>Description</em>}</li>
  *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.ParameterImpl#getUrlParameter <em>Url Parameter</em>}</li>
+ *   <li>{@link fr.eyal.lib.datalib.genmodel.android.datalib.model.impl.ParameterImpl#isFingerprintKey <em>Fingerprint Key</em>}</li>
  * </ul>
  * </p>
  *
@@ -114,6 +115,26 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 	 * @ordered
 	 */
 	protected int urlParameter = URL_PARAMETER_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isFingerprintKey() <em>Fingerprint Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isFingerprintKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean FINGERPRINT_KEY_EDEFAULT = true;
+
+	/**
+	 * The cached value of the '{@link #isFingerprintKey() <em>Fingerprint Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isFingerprintKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean fingerprintKey = FINGERPRINT_KEY_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -223,6 +244,27 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isFingerprintKey() {
+		return fingerprintKey;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setFingerprintKey(boolean newFingerprintKey) {
+		boolean oldFingerprintKey = fingerprintKey;
+		fingerprintKey = newFingerprintKey;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ModelPackage.PARAMETER__FINGERPRINT_KEY, oldFingerprintKey, fingerprintKey));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -234,6 +276,8 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 				return getDescription();
 			case ModelPackage.PARAMETER__URL_PARAMETER:
 				return getUrlParameter();
+			case ModelPackage.PARAMETER__FINGERPRINT_KEY:
+				return isFingerprintKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -257,6 +301,9 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 				return;
 			case ModelPackage.PARAMETER__URL_PARAMETER:
 				setUrlParameter((Integer)newValue);
+				return;
+			case ModelPackage.PARAMETER__FINGERPRINT_KEY:
+				setFingerprintKey((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -282,6 +329,9 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 			case ModelPackage.PARAMETER__URL_PARAMETER:
 				setUrlParameter(URL_PARAMETER_EDEFAULT);
 				return;
+			case ModelPackage.PARAMETER__FINGERPRINT_KEY:
+				setFingerprintKey(FINGERPRINT_KEY_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -302,6 +352,8 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case ModelPackage.PARAMETER__URL_PARAMETER:
 				return urlParameter != URL_PARAMETER_EDEFAULT;
+			case ModelPackage.PARAMETER__FINGERPRINT_KEY:
+				return fingerprintKey != FINGERPRINT_KEY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -324,6 +376,8 @@ public class ParameterImpl extends EObjectImpl implements Parameter {
 		result.append(description);
 		result.append(", urlParameter: ");
 		result.append(urlParameter);
+		result.append(", fingerprintKey: ");
+		result.append(fingerprintKey);
 		result.append(')');
 		return result.toString();
 	}

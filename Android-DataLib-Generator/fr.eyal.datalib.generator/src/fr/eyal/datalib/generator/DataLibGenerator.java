@@ -256,10 +256,12 @@ public class DataLibGenerator {
 	 * @param description
 	 * @return
 	 */
-	public static Parameter createParameter(ModelFactory modelFactory, String name, ParameterType type, String description, int urlParam){
+	public static Parameter createParameter(ModelFactory modelFactory, String name, ParameterType type, String description, int urlParam, boolean fingerprintKey){
 		Parameter parameter = modelFactory.createParameter();
 		fillParameter(parameter, name, type, description);
 		parameter.setUrlParameter(urlParam);
+		parameter.setFingerprintKey(fingerprintKey);
+		
 		
 		return parameter;
 	}
@@ -332,6 +334,7 @@ public class DataLibGenerator {
 		parameter.setName(name);
 		parameter.setType(type);
 		parameter.setDescription(description);
+		parameter.setFingerprintKey(true);
 	}
 
 	/**

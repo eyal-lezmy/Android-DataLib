@@ -1,6 +1,13 @@
 [comment encoding = UTF-8 /]
 [module BusinessObjectTool('http://www.eyal.fr/android/datalib')]
 
+[template public declareFingerprintKeys (aWebService : WebService) post (trim()) ]
+public static final String['['/]] FINGERPRINT_KEYS = {
+[for (parameter : Parameter | aWebService.parameters)][if (parameter.fingerprintKey)]"[parameter.name/]",
+[/if][/for]
+};
+[/template]
+
 [template public declareFields (aBusinessObject : BusinessObject) post (trim()) ]
 [if (aBusinessObject.attributes->size() > 0)]
 //list of attributes
