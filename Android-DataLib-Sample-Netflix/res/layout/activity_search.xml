@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/search_holder"
-    android:padding="8dp"
-    android:horizontalSpacing="4dp"
-	android:verticalSpacing="4dp"
     >
+    
 </FrameLayout>
