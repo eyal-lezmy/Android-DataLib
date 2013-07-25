@@ -18,6 +18,7 @@ package fr.eyal.lib.data.service.model;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
@@ -307,15 +308,17 @@ public class DataLibRequest {
     /**
      * Compute the fingerprint of the request. This function is use when you want to compare this request with another
      * 
+     * @param keys the list of parameter you want to define as keys for the fingerprint
+     * 
      * @return returns the fingerprint of the request.
      */
-    public String getFingerprint() {
+    public String getFingerprint(String[] keys) {
 
         //assembling the data
         StringBuilder builder = new StringBuilder();
         builder.append(url);
         builder.append(path);
-        builder.append(params.urlEncode());
+        builder.append(params.urlEncode(keys));
         builder.append(userAgent);
         builder.append(requestMethod);
         builder.append(contentType);
@@ -341,7 +344,7 @@ public class DataLibRequest {
 
         return builder.toString();
     }
-    
+
     /**
      * Get the filename of the request
      * 

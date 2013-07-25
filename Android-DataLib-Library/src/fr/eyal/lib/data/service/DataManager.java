@@ -372,7 +372,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
      * @throws UnsupportedEncodingException
 	 * 
 	 */
-	protected int launchRequest(final ServiceHelper serviceHelper, final int policy, final OnDataListener datacacheListener, final ParameterMap params, final int options, final String url, int webService, Class<?> serviceClass, final ComplexOptions complexOptionsCache, final ComplexOptions complexOptionsNetwork) throws UnsupportedEncodingException {
+	protected int launchRequest(final ServiceHelper serviceHelper, final int policy, final OnDataListener datacacheListener, final ParameterMap params, final int options, final String url, int webService, Class<?> serviceClass, final ComplexOptions complexOptionsCache, final ComplexOptions complexOptionsNetwork, String[] fingerPrintKeys) throws UnsupportedEncodingException {
 		switch (policy) {
 
             case TYPE_CACHE:
@@ -380,7 +380,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
                 if (datacacheListener != null){
                 	//TODO maybe improve the fingerprint process
                 	DataLibRequest request = new DataLibRequest(url, params);
-                	return sendDataCache(datacacheListener, request.getFingerprint(), webService, complexOptionsCache);
+                	return sendDataCache(datacacheListener, request.getFingerprint(fingerPrintKeys), webService, complexOptionsCache);
                 }
                 break;
 
@@ -389,7 +389,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
                 if (datacacheListener != null){
                 	//TODO maybe improve the fingerprint process
                 	DataLibRequest request = new DataLibRequest(url, params);
-                	sendDataCache(datacacheListener, request.getFingerprint(), webService, complexOptionsCache);
+                	sendDataCache(datacacheListener, request.getFingerprint(fingerPrintKeys), webService, complexOptionsCache);
                 }
                 //we launch the network request
     			return serviceHelper.launchRequest(options, webService, params, serviceClass, url, complexOptionsNetwork);
@@ -408,7 +408,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
                 } else if (datacacheListener != null) {
                 	//TODO maybe improve the fingerprint process
                 	DataLibRequest request = new DataLibRequest(url, params);
-                	return sendDataCache(datacacheListener, request.getFingerprint(), webService, complexOptionsCache);
+                	return sendDataCache(datacacheListener, request.getFingerprint(fingerPrintKeys), webService, complexOptionsCache);
                 }
                 break;
 

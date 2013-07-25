@@ -88,7 +88,7 @@ public abstract class ResponseBusinessObjectDAO extends BusinessObjectDAO implem
     @Override
     public void save(final DataLibRequest request) throws RemoteException, OperationApplicationException {
 
-        _url = request.getFingerprint();
+        _url = request.getFingerprint(null);
 
         save();
     }

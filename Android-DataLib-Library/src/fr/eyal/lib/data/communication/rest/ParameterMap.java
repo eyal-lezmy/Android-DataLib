@@ -18,7 +18,11 @@ package fr.eyal.lib.data.communication.rest;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -162,26 +166,50 @@ public class ParameterMap implements Parcelable {
      * @return URL encoded String
      */
     public String urlEncode() {
-    	return urlEncode(false);
+    	return urlEncode(false, null);
     }
     
     /**
      * Returns URL encoded data
      * 
+     * @param pivots the list of parameters you want to include on the encoded url
+     * 
+     * @return URL encoded String
+     */
+    public String urlEncode(String[] pivots) {
+    	return urlEncode(false, pivots);
+    }
+
+    /**
+     * Returns URL encoded data
+     * 
      * @param ordered asks to order the parameter keys before building the result String
-     *  
+     * 
      * @return URL encoded String
      */
     public String urlEncode(boolean ordered) {
+    	return urlEncode(ordered, null);
+    }
+
+    /**
+     * Returns URL encoded data
+     * 
+     * @param pivots the list of parameters you want to include on the encoded url
+     * 
+     * @return URL encoded String
+     */
+    public String urlEncode(boolean ordered, String[] pivots) {
         StringBuilder sb = new StringBuilder();
         
         Set<String> keys;
-        
-        if(ordered){
-        	keys = (SortedSet<String>) new TreeSet<String>(mValues.keySet());
-        } else {
+        if(pivots != null)
+        	keys = new HashSet<String>(Arrays.asList(pivots));
+        else
         	keys = mValues.keySet();
-        }
+                
+        if(ordered)
+        	keys = (SortedSet<String>) new TreeSet<String>(keys);
+        
         
         for (String key : keys) {
             if (sb.length() > 0) {
