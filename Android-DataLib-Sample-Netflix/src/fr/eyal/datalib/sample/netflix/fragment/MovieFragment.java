@@ -461,10 +461,13 @@ public class MovieFragment extends NetflixFragment {
 		mTxtTime.setText(builder.toString());
 		
 		ArrayList<MovieCategory> categories = movie.movieCategory;
-		if(categories.size() > 1)
-			mTxtCategory.setText(categories.get(1).attrLabel);
-		else
-			mTxtCategory.setText("");
+		
+		if(categories != null) {
+			if(categories.size() > 1)
+				mTxtCategory.setText(categories.get(1).attrLabel);
+			else
+				mTxtCategory.setText("");			
+		}
 	}
 	
 //    public void executeDalvikFiltering(View v) {
