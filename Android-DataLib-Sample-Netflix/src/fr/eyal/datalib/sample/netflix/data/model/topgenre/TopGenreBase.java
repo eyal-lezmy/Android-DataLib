@@ -23,6 +23,13 @@ public class TopGenreBase extends ResponseBusinessObjectDAO {
 
     private static final String TAG = TopGenreBase.class.getSimpleName();
 
+	/**
+	 * List of request parameters that will define the fingerprint composition of the object
+	 */
+	public static final String[] FINGERPRINT_KEYS = {
+	"gid",
+	};
+
 	//list of attributes
 	public String attrVersion = "";
 	
@@ -280,7 +287,7 @@ public class TopGenreBase extends ResponseBusinessObjectDAO {
 
     @Override
     public void save(final DataLibRequest request) throws RemoteException, OperationApplicationException {
-        _url = request.getFingerprint();
+        _url = request.getFingerprint(FINGERPRINT_KEYS);
         save();
     }
 

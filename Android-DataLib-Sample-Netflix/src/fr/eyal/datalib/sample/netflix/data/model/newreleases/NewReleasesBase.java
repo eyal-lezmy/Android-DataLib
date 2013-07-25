@@ -23,6 +23,12 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 
     private static final String TAG = NewReleasesBase.class.getSimpleName();
 
+	/**
+	 * List of request parameters that will define the fingerprint composition of the object
+	 */
+	public static final String[] FINGERPRINT_KEYS = {
+	};
+
 	//list of attributes
 	public String attrVersion = "";
 	
@@ -280,7 +286,7 @@ public class NewReleasesBase extends ResponseBusinessObjectDAO {
 
     @Override
     public void save(final DataLibRequest request) throws RemoteException, OperationApplicationException {
-        _url = request.getFingerprint();
+        _url = request.getFingerprint(FINGERPRINT_KEYS);
         save();
     }
 

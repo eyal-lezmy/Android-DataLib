@@ -23,6 +23,13 @@ public class FilmographyBase extends ResponseBusinessObjectDAO {
 
     private static final String TAG = FilmographyBase.class.getSimpleName();
 
+	/**
+	 * List of request parameters that will define the fingerprint composition of the object
+	 */
+	public static final String[] FINGERPRINT_KEYS = {
+	"person_id",
+	};
+
 	//list of content
 	public String error;
 	
@@ -235,7 +242,7 @@ public class FilmographyBase extends ResponseBusinessObjectDAO {
 
     @Override
     public void save(final DataLibRequest request) throws RemoteException, OperationApplicationException {
-        _url = request.getFingerprint();
+        _url = request.getFingerprint(FINGERPRINT_KEYS);
         save();
     }
 

@@ -94,7 +94,7 @@ public class MovieImageBase implements ResponseBusinessObject {
     		return;
 
     	String extension = FileManager.getFileExtension(request.url);
-		String name = request.getFingerprint();
+		String name = request.getFingerprint(null);
 
     	imagePath = mFileManager.saveInInternalCache(CACHE_DIRECTORY, name, extension, image.get(), 100);
     }

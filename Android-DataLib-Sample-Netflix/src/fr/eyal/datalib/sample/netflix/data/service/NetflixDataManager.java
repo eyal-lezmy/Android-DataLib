@@ -1560,8 +1560,7 @@ public class NetflixDataManager extends DataManager {
 		//we prepare the request's url
 		final String __url =  NetflixServiceHelper.URL_NEWRELEASES;
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_NEWRELEASES, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
-
+		int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_NEWRELEASES, NetflixService.class, complexOptionsCache, complexOptionsNetwork, NewReleases.FINGERPRINT_KEYS);
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);
@@ -1609,8 +1608,7 @@ public class NetflixDataManager extends DataManager {
 		//we prepare the request's url
 		final String __url = MessageFormat.format(NetflixServiceHelper.URL_MOVIEIMAGE, url);
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_MOVIEIMAGE, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
-
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_MOVIEIMAGE, NetflixService.class, complexOptionsCache, complexOptionsNetwork, null);
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);
@@ -1656,8 +1654,7 @@ public class NetflixDataManager extends DataManager {
 		//we prepare the request's url
 		final String __url =  NetflixServiceHelper.URL_TOP100;
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_TOP100, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
-
+		int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_TOP100, NetflixService.class, complexOptionsCache, complexOptionsNetwork, Top100.FINGERPRINT_KEYS);
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);
@@ -1706,8 +1703,7 @@ public class NetflixDataManager extends DataManager {
 		//we prepare the request's url
 		final String __url =  NetflixServiceHelper.URL_TOPGENRE;
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_TOPGENRE, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
-
+		int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_TOPGENRE, NetflixService.class, complexOptionsCache, complexOptionsNetwork, TopGenre.FINGERPRINT_KEYS);
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);
@@ -1880,8 +1876,7 @@ public class NetflixDataManager extends DataManager {
 		//we prepare the request's url
 		final String __url = MessageFormat.format(NetflixServiceHelper.URL_PEOPLE, person_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_PEOPLE, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
-
+		int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_PEOPLE, NetflixService.class, complexOptionsCache, complexOptionsNetwork, People.FINGERPRINT_KEYS);
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);
@@ -1944,8 +1939,7 @@ public class NetflixDataManager extends DataManager {
 		//we prepare the request's url
 		final String __url = MessageFormat.format(NetflixServiceHelper.URL_FILMOGRAPHY, person_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_FILMOGRAPHY, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
-
+		int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_FILMOGRAPHY, NetflixService.class, complexOptionsCache, complexOptionsNetwork, Filmography.FINGERPRINT_KEYS);
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);
@@ -2010,8 +2004,7 @@ public class NetflixDataManager extends DataManager {
 		//we prepare the request's url
 		final String __url = MessageFormat.format(NetflixServiceHelper.URL_MOVIE, type, movie_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_MOVIE, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
-
+		int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_MOVIE, NetflixService.class, complexOptionsCache, complexOptionsNetwork, Movie.FINGERPRINT_KEYS);
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);
@@ -2074,8 +2067,7 @@ public class NetflixDataManager extends DataManager {
 		//we prepare the request's url
 		final String __url = MessageFormat.format(NetflixServiceHelper.URL_SYNOPSIS, movie_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_SYNOPSIS, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
-
+		int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_SYNOPSIS, NetflixService.class, complexOptionsCache, complexOptionsNetwork, Synopsis.FINGERPRINT_KEYS);
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);
@@ -2138,8 +2130,7 @@ public class NetflixDataManager extends DataManager {
 		//we prepare the request's url
 		final String __url = MessageFormat.format(NetflixServiceHelper.URL_CAST, movie_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_CAST, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
-
+		int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_CAST, NetflixService.class, complexOptionsCache, complexOptionsNetwork, Cast.FINGERPRINT_KEYS);
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);
@@ -2202,8 +2193,7 @@ public class NetflixDataManager extends DataManager {
 		//we prepare the request's url
 		final String __url = MessageFormat.format(NetflixServiceHelper.URL_DIRECTORS, movie_id+"");
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_DIRECTORS, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
-
+		int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_DIRECTORS, NetflixService.class, complexOptionsCache, complexOptionsNetwork, Directors.FINGERPRINT_KEYS);
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
 			this.addOnDataListener(requestId, datacacheListener);
@@ -2264,7 +2254,7 @@ public class NetflixDataManager extends DataManager {
 
 		params.put("oauth_signature", oauth_signature);
 
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_MOVIE, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_MOVIE, NetflixService.class, complexOptionsCache, complexOptionsNetwork, Movie.FINGERPRINT_KEYS);
 
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -2323,7 +2313,7 @@ public class NetflixDataManager extends DataManager {
 
 		params.put("oauth_signature", oauth_signature);
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_SYNOPSIS, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_SYNOPSIS, NetflixService.class, complexOptionsCache, complexOptionsNetwork, Synopsis.FINGERPRINT_KEYS);
 
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
@@ -2383,7 +2373,7 @@ public class NetflixDataManager extends DataManager {
 
 		params.put("oauth_signature", oauth_signature);
 		
-        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_CAST, NetflixService.class, complexOptionsCache, complexOptionsNetwork);
+        int requestId = launchRequest(mServiceHelper, policy, datacacheListener, params, options, __url, NetflixService.WEBSERVICE_CAST, NetflixService.class, complexOptionsCache, complexOptionsNetwork, Cast.FINGERPRINT_KEYS);
 
 		//we add the listener subscription for this request
 		if(datacacheListener != null)
