@@ -21,11 +21,11 @@ public class Filmography_itemBase extends BusinessObjectDAO {
     protected long _parentId = ID_INVALID;
 
 	//list of attributes
-	public String attrTitleShort = "";
-	public String attrTitleRegular = "";
-	public String attrBox_artSmall = "";
-	public String attrBox_artMedium = "";
-	public String attrBox_artLarge = "";
+	public String attrTitleShort;
+	public String attrTitleRegular;
+	public String attrBox_artSmall;
+	public String attrBox_artMedium;
+	public String attrBox_artLarge;
 	
 	//list of content
 	public String id;

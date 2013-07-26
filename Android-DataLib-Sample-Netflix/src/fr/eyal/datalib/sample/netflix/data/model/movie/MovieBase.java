@@ -32,11 +32,11 @@ public class MovieBase extends ResponseBusinessObjectDAO {
 	};
 
 	//list of attributes
-	public String attrTitleShort = "";
-	public String attrTitleRegular = "";
-	public String attrBox_artSmall = "";
-	public String attrBox_artMedium = "";
-	public String attrBox_artLarge = "";
+	public String attrTitleShort;
+	public String attrTitleRegular;
+	public String attrBox_artSmall;
+	public String attrBox_artMedium;
+	public String attrBox_artLarge;
 	
 	//list of content
 	public String error;
@@ -63,6 +63,17 @@ public class MovieBase extends ResponseBusinessObjectDAO {
     public MovieBase(final String url) {
         super(url);
     }
+
+    @Override
+    protected void initialize() {
+    	attrTitleShort = "";
+    	attrTitleRegular = "";
+    	attrBox_artSmall = "";
+    	attrBox_artMedium = "";
+    	attrBox_artLarge = "";
+    	super.initialize();
+    }
+
 
     /**
      * DATABASE MANAGEMENT

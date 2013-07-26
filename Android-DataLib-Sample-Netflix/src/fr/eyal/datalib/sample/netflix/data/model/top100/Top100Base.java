@@ -30,7 +30,7 @@ public class Top100Base extends ResponseBusinessObjectDAO {
 	};
 
 	//list of attributes
-	public String attrVersion = "";
+	public String attrVersion;
 	
 	//list of content
 	public String title;
@@ -54,6 +54,13 @@ public class Top100Base extends ResponseBusinessObjectDAO {
     public Top100Base(final String url) {
         super(url);
     }
+
+    @Override
+    protected void initialize() {
+    	attrVersion = "";
+    	super.initialize();
+    }
+
 
     /**
      * DATABASE MANAGEMENT

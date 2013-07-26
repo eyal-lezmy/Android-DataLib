@@ -21,9 +21,9 @@ public class MovieCategoryBase extends BusinessObjectDAO {
     protected long _parentId = ID_INVALID;
 
 	//list of attributes
-	public String attrScheme = "";
-	public String attrLabel = "";
-	public String attrTerm = "";
+	public String attrScheme;
+	public String attrLabel;
+	public String attrTerm;
 
     public MovieCategoryBase() {
         super();

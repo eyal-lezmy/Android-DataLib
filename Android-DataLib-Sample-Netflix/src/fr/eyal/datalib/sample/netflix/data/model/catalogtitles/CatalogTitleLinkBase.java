@@ -10,9 +10,9 @@ public class CatalogTitleLinkBase implements BusinessObject {
     private static final String TAG = CatalogTitleLinkBase.class.getSimpleName();
 
 	//list of attributes
-	public String attrHref = "";
-	public String attrRel = "";
-	public String attrTitle = "";
+	public String attrHref;
+	public String attrRel;
+	public String attrTitle;
 
     public CatalogTitleLinkBase() {
         super();

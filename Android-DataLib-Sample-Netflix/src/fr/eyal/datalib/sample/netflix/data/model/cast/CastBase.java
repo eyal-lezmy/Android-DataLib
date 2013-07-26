@@ -49,6 +49,13 @@ public class CastBase extends ResponseBusinessObjectDAO {
         super(url);
     }
 
+    @Override
+    protected void initialize() {
+    	
+    	super.initialize();
+    }
+
+
     /**
      * DATABASE MANAGEMENT
      */

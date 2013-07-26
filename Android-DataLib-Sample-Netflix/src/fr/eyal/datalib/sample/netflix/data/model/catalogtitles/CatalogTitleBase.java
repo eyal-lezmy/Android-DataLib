@@ -10,11 +10,11 @@ public class CatalogTitleBase implements BusinessObject {
     private static final String TAG = CatalogTitleBase.class.getSimpleName();
 
 	//list of attributes
-	public String attrTitleShort = "";
-	public String attrTitleRegular = "";
-	public String attrBox_artSmall = "";
-	public String attrBox_artMedium = "";
-	public String attrBox_artLarge = "";
+	public String attrTitleShort;
+	public String attrTitleRegular;
+	public String attrBox_artSmall;
+	public String attrBox_artMedium;
+	public String attrBox_artLarge;
 	
 	//list of content
 	public String id;

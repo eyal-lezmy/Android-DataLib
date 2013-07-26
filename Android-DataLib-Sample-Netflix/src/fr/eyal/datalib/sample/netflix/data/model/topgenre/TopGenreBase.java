@@ -31,7 +31,7 @@ public class TopGenreBase extends ResponseBusinessObjectDAO {
 	};
 
 	//list of attributes
-	public String attrVersion = "";
+	public String attrVersion;
 	
 	//list of content
 	public String title;
@@ -55,6 +55,13 @@ public class TopGenreBase extends ResponseBusinessObjectDAO {
     public TopGenreBase(final String url) {
         super(url);
     }
+
+    @Override
+    protected void initialize() {
+    	attrVersion = "";
+    	super.initialize();
+    }
+
 
     /**
      * DATABASE MANAGEMENT

@@ -46,6 +46,13 @@ public class SynopsisBase extends ResponseBusinessObjectDAO {
         super(url);
     }
 
+    @Override
+    protected void initialize() {
+    	
+    	super.initialize();
+    }
+
+
     /**
      * DATABASE MANAGEMENT
      */

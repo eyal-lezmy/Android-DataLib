@@ -10,7 +10,7 @@ public class Autocomplete_itemBase implements BusinessObject {
     private static final String TAG = Autocomplete_itemBase.class.getSimpleName();
 
 	//list of attributes
-	public String attrTitleShort = "";
+	public String attrTitleShort;
 	
 	//list of content
 	public String title;

@@ -10,8 +10,8 @@ public class CatalogTitleCategoryBase implements BusinessObject {
     private static final String TAG = CatalogTitleCategoryBase.class.getSimpleName();
 
 	//list of attributes
-	public String attrLabel = "";
-	public String attrTerm = "";
+	public String attrLabel;
+	public String attrTerm;
 
     public CatalogTitleCategoryBase() {
         super();

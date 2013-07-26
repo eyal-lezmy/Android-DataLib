@@ -21,9 +21,9 @@ public class CastLinkBase extends BusinessObjectDAO {
     protected long _parentId = ID_INVALID;
 
 	//list of attributes
-	public String attrHref = "";
-	public String attrRel = "";
-	public String attrTitle = "";
+	public String attrHref;
+	public String attrRel;
+	public String attrTitle;
 
     public CastLinkBase() {
         super();
