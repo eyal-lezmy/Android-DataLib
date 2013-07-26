@@ -55,6 +55,13 @@ public class [_class/]Base extends ResponseBusinessObjectDAO {
         super(url);
     }
 
+    @Override
+    protected void initialize() {
+    	[initializeAttributes(aBusinessObject)/]
+    	super.initialize();
+    }
+
+
     /**
      * DATABASE MANAGEMENT
      */

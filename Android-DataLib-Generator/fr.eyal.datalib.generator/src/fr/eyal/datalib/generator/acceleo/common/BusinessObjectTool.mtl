@@ -58,17 +58,24 @@ public [field.type/] [field.javaName.toLowerFirst()/];
 [comment]we check if a default value has been set[/comment]
 [if (field.defaultValue <> null)]
 	[if (field.type = ParameterType::String)]
-public String attr[field.name.toUpperFirst()/] = "[field.defaultValue/]";
-	[elseif (field.defaultValue <> '')]
-public [field.type/] attr[field.javaName.toUpperFirst()/] = [field.defaultValue/];
+public String attr[field.name.toUpperFirst()/];
 	[else]
 public [field.type/] attr[field.javaName.toUpperFirst()/];
 	[/if]
-[else]
+[/if]
+[/for]
+[/template]
+
+[template public initializeAttributes (aBusinessObject : BusinessObject) post (trim())]
+[for (field : Field | aBusinessObject.attributes)]
+[comment]we check if a default value has been set[/comment]
+[if (field.defaultValue <> null)]
 	[if (field.type = ParameterType::String)]
-public String [field.javaName.toLowerFirst()/];
+attr[field.name.toUpperFirst()/] = "[field.defaultValue/]";
+	[elseif (field.defaultValue <> '')]
+attr[field.javaName.toUpperFirst()/] = [field.defaultValue/];
 	[else]
-public [field.type/] [field.javaName.toLowerFirst()/];
+attr[field.javaName.toUpperFirst()/];
 	[/if]
 [/if]
 [/for]
