@@ -90,9 +90,6 @@ public class CatalogTitle extends CatalogTitleBase implements MovieItem {
 
 	@Override
 	public String getLabel(int position) {
-		if(position > 0)
-			return (position+1) + ". " + attrTitleShort;
-		else 
 			return attrTitleShort;
 	}
 
