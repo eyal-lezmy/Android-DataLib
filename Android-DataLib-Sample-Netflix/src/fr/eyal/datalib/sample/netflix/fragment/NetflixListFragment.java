@@ -10,9 +10,12 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import fr.eyal.datalib.sample.netflix.R;
 import fr.eyal.datalib.sample.netflix.data.model.movieimage.MovieImage;
 import fr.eyal.datalib.sample.netflix.data.service.NetflixService;
@@ -27,7 +30,9 @@ import fr.eyal.lib.util.Out;
 
 public abstract class NetflixListFragment extends NetflixFragment implements OnScrollListener {
 
+	RelativeLayout mRootView;
 	GridView mGridView;
+	View mEmptyView;
 	NetflixListAdapter mAdapter;
 	SparseArray<MovieItem> mPendingItem;
 	ArrayList<MovieItem> mPendingItemCache;
@@ -61,18 +66,26 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
+//		if(container != null)
+//			mGridView = (GridView) inflater.inflate(R.layout.fgmt_new, null, false);
+//		else
+//			mGridView = (GridView) inflater.inflate(R.layout.fgmt_new, container);
+
 		if(container != null)
-			mGridView = (GridView) inflater.inflate(R.layout.fgmt_new, null, false);
+			mRootView = (RelativeLayout) inflater.inflate(R.layout.fgmt_new, null, false);
 		else
-			mGridView = (GridView) inflater.inflate(R.layout.fgmt_new, container);
-		
-		View emptyView = inflater.inflate(R.layout.empty_grid, null);
-		mGridView.setEmptyView(emptyView);
+			mRootView = (RelativeLayout) inflater.inflate(R.layout.fgmt_new, container);
+
+//		View emptyView = inflater.inflate(R.layout.empty_grid, null);
+//		getActivity().addContentView(emptyView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+//		mGridView.setEmptyView(emptyView);
+		mEmptyView = mRootView.findViewById(android.R.id.empty);
+		mGridView = (GridView) mRootView.findViewById(R.id.gridview);
+		mGridView.setEmptyView(mEmptyView);
 		mGridView.setAdapter(mAdapter);
-//		mGridView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 		mGridView.setOnScrollListener(this);
 		
-		return mGridView;
+		return mRootView;
 	}
 	
 	
@@ -269,8 +282,16 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 	 */
 	@SuppressWarnings("unchecked")
 	private void updateMovie(MovieItemResponse response) {
-		mAdapter.setData((ArrayList<MovieItem>) response.getItems());
-		mAdapter.notifyDataSetChanged();
+		
+		ArrayList<MovieItem> items = (ArrayList<MovieItem>) response.getItems();
+		
+		if(items.size() == 0 && mEmptyView instanceof TextView)
+			((TextView)mEmptyView).setText(getResources().getString(R.string.search_error));
+
+		else {
+			mAdapter.setData((ArrayList<MovieItem>) response.getItems());
+			mAdapter.notifyDataSetChanged();
+		}
 	}
 
 
