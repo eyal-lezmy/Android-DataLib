@@ -182,7 +182,6 @@ public class MovieFragment extends NetflixFragment {
 
 		synchronized (mRequestIds) {
 
-			Out.w("", "REMOVE" + requestId + " " + mRequestIds);
 			mRequestIds.remove(Integer.valueOf(requestId));
 
 			if(response instanceof MovieImage){
@@ -211,8 +210,9 @@ public class MovieFragment extends NetflixFragment {
 				Movie movie = (Movie) response;
 
 				if(!movie.isInvalidID()){
+					
 					mMovie = movie;
-					mTxtTitle.post(new UpdateContent(mMovie));
+					getActivity().runOnUiThread(new UpdateContent(mMovie));
 
 				} else {
 					try {
@@ -227,11 +227,14 @@ public class MovieFragment extends NetflixFragment {
 				}
 
 			} else if(response instanceof Synopsis) {
+				
 				Synopsis synopsis = (Synopsis) response;
-
+				
 				if(!synopsis.isInvalidID()){
+					
 					mSynopsis = synopsis;
-					mTxtSynopsis.post(new UpdateContent(mSynopsis));
+					getActivity().runOnUiThread(new UpdateContent(mSynopsis));
+
 
 				} else {
 					try {
@@ -246,11 +249,13 @@ public class MovieFragment extends NetflixFragment {
 				}
 
 			} else if(response instanceof Cast) {
+				
 				Cast cast = (Cast) response;
 
 				if(!cast.isInvalidID()){
 					mCast = cast;
-					mTxtCast1.post(new UpdateContent(mCast));
+					getActivity().runOnUiThread(new UpdateContent(mCast));
+
 
 				} else {
 					try {
@@ -277,7 +282,6 @@ public class MovieFragment extends NetflixFragment {
 	public void onRequestFinished(int requestId, boolean suceed, BusinessResponse response) {
 
 		synchronized (mRequestIds) {
-			Out.w("", "REMOVE" + requestId + " " + mRequestIds);
 			mRequestIds.remove(Integer.valueOf(requestId));
 		}
 		
@@ -301,21 +305,21 @@ public class MovieFragment extends NetflixFragment {
 		case NetflixService.WEBSERVICE_MOVIE:
 
 			Movie movie = (Movie) response.response;
-			mTxtTitle.post(new UpdateContent(movie));
+			getActivity().runOnUiThread(new UpdateContent(movie));
 			
 			break;
 
 		case NetflixService.WEBSERVICE_SYNOPSIS:
 
 			Synopsis synopsis = (Synopsis) response.response;
-			mTxtTitle.post(new UpdateContent(synopsis));
+			getActivity().runOnUiThread(new UpdateContent(synopsis));
 			
 			break;
 			
 		case NetflixService.WEBSERVICE_CAST:
 
 			Cast cast = (Cast) response.response;
-			mTxtTitle.post(new UpdateContent(cast));
+			getActivity().runOnUiThread(new UpdateContent(cast));
 			
 			break;
 
@@ -372,6 +376,7 @@ public class MovieFragment extends NetflixFragment {
 
 		@Override
 		public void run() {
+			
 			
 			if(mMovie != null) {
 				updateBasics(mMovie);				
