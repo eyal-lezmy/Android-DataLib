@@ -99,10 +99,10 @@ public class ItemTop100 extends ItemTop100Base implements MovieItem {
 
 	@Override
 	public String getLabel(int position) {
-//		if(position > 0)
+		if(position >= 0)
 			return (position+1) + ". " + title;
-//		else 
-//			return title;
+		else 
+			return title;
 	}
     
 	@Override
