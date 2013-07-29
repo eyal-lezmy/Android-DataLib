@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/gridview"
-    android:numColumns="3"
-    android:drawSelectorOnTop="true"
-    android:padding="8dp"
-    android:horizontalSpacing="4dp"
-	android:verticalSpacing="4dp"
-	android:scrollbarStyle="outsideOverlay"
-    >
-        
-</GridView>
+    android:layout_height="match_parent" >
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:drawSelectorOnTop="true"
+        android:horizontalSpacing="4dp"
+        android:numColumns="3"
+        android:padding="8dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:verticalSpacing="4dp" >
+    </GridView>
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Loading..." />
+
+</RelativeLayout>
