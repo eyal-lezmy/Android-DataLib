@@ -285,7 +285,7 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 		
 		ArrayList<MovieItem> items = (ArrayList<MovieItem>) response.getItems();
 		
-		if(items.size() == 0 && mEmptyView instanceof TextView)
+		if(items != null && items.size() == 0 && mEmptyView instanceof TextView)
 			((TextView)mEmptyView).setText(getResources().getString(R.string.search_error));
 
 		else {
