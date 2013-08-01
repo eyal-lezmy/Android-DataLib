@@ -26,7 +26,8 @@
                 <meta-data android:name="android.app.default_searchable" android:value="fr.eyal.datalib.sample.netflix.SearchableActivity" />
         </activity>
 
-        <activity android:name="fr.eyal.datalib.sample.netflix.SearchableActivity" android:launchMode="singleTop">
+        <activity android:name="fr.eyal.datalib.sample.netflix.SearchableActivity"
+            android:parentActivityName="fr.eyal.datalib.sample.netflix.NetflixActivity">
 	        <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -50,6 +51,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fr.eyal.datalib.sample.netflix.NetflixActivity" />
         </activity>
+        <activity android:name="fr.eyal.datalib.sample.netflix.CategoryTopActivity"
+            android:parentActivityName="fr.eyal.datalib.sample.netflix.NetflixActivity"></activity>
     </application>
 
 </manifest>
