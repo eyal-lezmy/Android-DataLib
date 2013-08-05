@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import fr.eyal.datalib.sample.netflix.CategoryTopActivity;
 import fr.eyal.datalib.sample.netflix.MovieActivity;
-import fr.eyal.datalib.sample.netflix.data.model.top100.ItemTop100;
+import fr.eyal.datalib.sample.netflix.data.model.topgenre.ItemTopGenre;
 import fr.eyal.datalib.sample.netflix.fragment.adapter.NetflixListAdapter.ItemViewHolder;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.model.ComplexOptions;
@@ -21,6 +21,7 @@ import fr.eyal.lib.util.Out;
 public class CategoryTopFragment extends NetflixListFragment implements OnItemClickListener {
 	
 	int mCategoryId;
+	String mCategory;
 	
 	public static CategoryTopFragment newInstance(String category, int id) {
 		
@@ -33,6 +34,14 @@ public class CategoryTopFragment extends NetflixListFragment implements OnItemCl
 		return f;
 	}
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		
+		mCategoryId = getArguments().getInt(CategoryTopActivity.ID);
+		mCategory = getArguments().getString(CategoryTopActivity.CATEGORY);
+		
+		super.onCreate(savedInstanceState);
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,7 +86,7 @@ public class CategoryTopFragment extends NetflixListFragment implements OnItemCl
 			if(holder.item == null)
 				return;
 
-			ItemTop100 item = (ItemTop100) holder.item;
+			ItemTopGenre item = (ItemTopGenre) holder.item;
 			
 			Intent i = new Intent(getActivity(), MovieActivity.class);
 			i.putExtra(MovieActivity.EXTRA_MOVIE, item);
