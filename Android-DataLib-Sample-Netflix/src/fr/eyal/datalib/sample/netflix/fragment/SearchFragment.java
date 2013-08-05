@@ -2,7 +2,6 @@ package fr.eyal.datalib.sample.netflix.fragment;
 
 import java.io.UnsupportedEncodingException;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import fr.eyal.datalib.sample.netflix.MovieActivity;
 import fr.eyal.datalib.sample.netflix.data.model.catalogtitles.CatalogTitle;
-import fr.eyal.datalib.sample.netflix.data.model.newreleases.ItemNewRelease;
 import fr.eyal.datalib.sample.netflix.fragment.adapter.NetflixListAdapter.ItemViewHolder;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.ServiceHelper;
