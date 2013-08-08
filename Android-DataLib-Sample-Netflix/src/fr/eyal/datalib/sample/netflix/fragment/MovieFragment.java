@@ -30,7 +30,6 @@ import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.service.DataManager;
 import fr.eyal.lib.data.service.model.BusinessResponse;
 import fr.eyal.lib.data.service.model.DataLibRequest;
-import fr.eyal.lib.util.Out;
 
 public class MovieFragment extends NetflixFragment {
 
@@ -66,13 +65,6 @@ public class MovieFragment extends NetflixFragment {
 		else
 			mDataType = "movies";
 		
-//		try {
-//			ComplexOptions o = new ComplexOptions();
-//			int id = mDataManager.getMovie(DataManager.TYPE_NETWORK, this, Integer.parseInt(mMovieItem.getId()), DataLibRequest.OPTION_NO_OPTION, null, null);
-//			mRequestIds.add(id);
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
 	}
 	
 	@Override
@@ -190,7 +182,7 @@ public class MovieFragment extends NetflixFragment {
 				if(movieImage.image != null) {
 					Bitmap bmp = movieImage.image.get();
 					if(bmp != null)
-						mImage.post(new UpdatePoster(bmp, mImage));
+						getActivity().runOnUiThread(new UpdatePoster(bmp, mImage));
 				} else {
 					try {
 						int id = mDataManager.getMovieImage(DataManager.TYPE_NETWORK, this, mMovieItem.getImageUrl(), DataLibRequest.OPTION_NO_OPTION, null, null);
@@ -434,11 +426,16 @@ public class MovieFragment extends NetflixFragment {
 	}
 	
 	private void updateBasics(Movie movie) {
-		mTxtTitle.setText(movie.attrTitleRegular);
-		mTxtYear.setText(""+movie.release_year);
+		if(mTxtTitle.getText().length() < movie.attrTitleRegular.length())
+			mTxtTitle.setText(movie.attrTitleRegular);
+		
+		if(movie.release_year > 0)
+			mTxtYear.setText(""+movie.release_year);
+		else
+			mTxtYear.setText("N.C.");
 		
 		int runtime = movie.runtime;
-		int hours = runtime/3600;
+//		int hours = runtime/3600;
 		int minutes = runtime/60; //(runtime%3600)/60;
 		int seconds = runtime%60;
 		
@@ -458,9 +455,11 @@ public class MovieFragment extends NetflixFragment {
 		if(minutes > 0) {
 			builder.append(minutes);
 			builder.append(" minutes");
-		} else {
+		} else if(seconds > 0) {
 			builder.append(seconds);
 			builder.append(" seconds");
+		} else {
+			builder.append("N.C.");
 		}
 		
 		mTxtTime.setText(builder.toString());
@@ -474,30 +473,4 @@ public class MovieFragment extends NetflixFragment {
 				mTxtCategory.setText("");			
 		}
 	}
-	
-//    public void executeDalvikFiltering(View v) {
-//        computeDalvikFiltering(mInBitmap, mOutBitmap);
-//        mImage.invalidate();
-//    }
-//	
-//    public void executeRenderScriptFiltering(View v) {
-//        computeRenderScriptFiltering(mInBitmap, mOutBitmap);
-//        mImage.invalidate();
-//    }
-//
-//    private void computeDalvikFiltering(Bitmap inputBitmap, Bitmap outputBitmap) {
-//        long t = System.currentTimeMillis();
-//        dalvikFilter.applyFilter(inputBitmap, outputBitmap);
-//        Toast.makeText(getActivity(),
-//                "Dalvik running time: " + (System.currentTimeMillis() - t) + " ms",
-//                Toast.LENGTH_SHORT).show();
-//    }
-//
-//    private void computeRenderScriptFiltering(Bitmap inputBitmap, Bitmap outputBitmap) {
-//        long t = System.currentTimeMillis();
-//        renderFilter.applyFilter(inputBitmap, outputBitmap);
-//        Toast.makeText(getActivity(),
-//                "Renderscript running time: " + (System.currentTimeMillis() - t) + " ms",
-//                Toast.LENGTH_SHORT).show();
-//    }
 }
