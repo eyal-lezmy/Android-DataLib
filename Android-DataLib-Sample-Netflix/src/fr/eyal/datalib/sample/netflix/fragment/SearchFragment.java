@@ -90,4 +90,8 @@ public class SearchFragment extends NetflixListFragment implements OnItemClickLi
 			getActivity().startActivity(i);
 		}
 	}
+
+	public String getQuery() {
+		return mSearchQuery;
+	}
 }

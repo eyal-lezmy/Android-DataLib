@@ -6,11 +6,11 @@ import java.util.Calendar;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.GridView;
@@ -71,17 +71,21 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 //		else
 //			mGridView = (GridView) inflater.inflate(R.layout.fgmt_new, container);
 
+//		View emptyView = inflater.inflate(R.layout.empty_grid, null);
+//		getActivity().addContentView(emptyView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+//		mGridView.setEmptyView(emptyView);
+		
 		if(container != null)
 			mRootView = (RelativeLayout) inflater.inflate(R.layout.fgmt_new, null, false);
 		else
 			mRootView = (RelativeLayout) inflater.inflate(R.layout.fgmt_new, container);
-
-//		View emptyView = inflater.inflate(R.layout.empty_grid, null);
-//		getActivity().addContentView(emptyView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-//		mGridView.setEmptyView(emptyView);
+		
 		mEmptyView = mRootView.findViewById(android.R.id.empty);
 		mGridView = (GridView) mRootView.findViewById(R.id.gridview);
 		mGridView.setEmptyView(mEmptyView);
+//		if(mEmptyView instanceof TextView){
+//			((TextView)mEmptyView).setText(getResources().getString(R.string.loading));			
+//		}
 		mGridView.setAdapter(mAdapter);
 		mGridView.setOnScrollListener(this);
 		
@@ -95,11 +99,6 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 	 * @param item the item concerned by the display
 	 */
 	public void loadMoviePoster(MovieItem item){
-		
-//		if(mScrollState == OnScrollListener.SCROLL_STATE_FLING){
-//			Out.e("", "UPDATE " + "Scrolling" + item.title);
-//			return;
-//		}
 		
 		synchronized (mPendingItemCache) {
 
@@ -156,7 +155,7 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 			MovieItemResponse movie = (MovieItemResponse) response;
 
 			//we update the page content
-			updateMovie(movie);
+			getActivity().runOnUiThread(new UpdateMovie((MovieItemResponse) movie, false));
 
 			//we compute the update time
 			Calendar updateTime = Calendar.getInstance();
@@ -228,7 +227,6 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 				updateMovieImage(item, movieImage);
 			}
 		}
-		
 	}
 
 	private MovieItem getItemAndTreatPendings(int requestId) {
@@ -265,10 +263,15 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 
 		default:
 			if(response.response instanceof MovieItemResponse)
-				updateMovie((MovieItemResponse) response.response);
+				if (Looper.getMainLooper().getThread() == Thread.currentThread()){
+					updateMovie((MovieItemResponse)response.response, true);
+					Out.d("TEST", "UI THREADDDDD!!!!!!!!!!!!!");
+				} else {
+					getActivity().runOnUiThread(new UpdateMovie((MovieItemResponse) response.response, true));
+					Out.d("TEST", "NO UI THREAD :-(");
+				}
 			break;
 		}
-		
 	}
 
 	/*
@@ -281,12 +284,13 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 	 * @param response the {@link MovieItemResponse} content
 	 */
 	@SuppressWarnings("unchecked")
-	private void updateMovie(MovieItemResponse response) {
+	private void updateMovie(MovieItemResponse response, boolean updateLabel) {
 		
 		ArrayList<MovieItem> items = (ArrayList<MovieItem>) response.getItems();
 		
-		if(items != null && items.size() == 0 && mEmptyView instanceof TextView)
+		if(updateLabel && (items == null || (items.size() == 0 && mEmptyView instanceof TextView))){
 			((TextView)mEmptyView).setText(getResources().getString(R.string.search_error));
+		}
 
 		else {
 			mAdapter.setData((ArrayList<MovieItem>) response.getItems());
@@ -313,6 +317,22 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 		return item;
 	}
 
+	private class UpdateMovie implements Runnable{
+		
+		MovieItemResponse mResponse;
+		boolean mUpdateLabel;
+		
+		public UpdateMovie(MovieItemResponse response, boolean updateLabel){
+			mResponse = response;
+			mUpdateLabel = updateLabel;
+		}
+		
+		@Override
+		public void run() {
+			updateMovie(mResponse, mUpdateLabel);
+		}
+		
+	}
 	
 	/*
 	 * Scroll management
