@@ -3,17 +3,15 @@ package fr.eyal.datalib.sample.netflix;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import com.viewpagerindicator.IconPagerAdapter;
-
-import fr.eyal.datalib.sample.netflix.data.model.top100.Top100;
+import fr.eyal.datalib.sample.netflix.fragment.CaterogiesFragment;
 import fr.eyal.datalib.sample.netflix.fragment.NewFragment;
 import fr.eyal.datalib.sample.netflix.fragment.SelectionFragment;
 import fr.eyal.datalib.sample.netflix.fragment.Top100Fragment;
 
 class NetflixFragmentAdapter extends FragmentPagerAdapter {
-    protected static final String[] CONTENT = new String[] { "Selection", "New", "Top 100"};
+    protected static final String[] CONTENT = new String[] {"Categories", "Selection", "New", "Top 100"};
     private int mCount = CONTENT.length;
-
+    
     public NetflixFragmentAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -24,17 +22,21 @@ class NetflixFragmentAdapter extends FragmentPagerAdapter {
     	Fragment page = null;
     	switch (position) {
 		case 0:
-			page = new SelectionFragment();
+			page = new CaterogiesFragment();
 			break;
 
 		case 1:
-			page = new NewFragment();
+			page = new SelectionFragment();
 			break;
 
 		case 2:
-			page = new Top100Fragment();
+			page = new NewFragment();
 			break;
 
+		case 3:
+			page = new Top100Fragment();
+			break;
+			
 		default:
 			break;
 		}
