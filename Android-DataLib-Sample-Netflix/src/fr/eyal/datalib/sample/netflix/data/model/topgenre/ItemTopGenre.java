@@ -76,6 +76,9 @@ public class ItemTopGenre extends ItemTopGenreBase implements MovieItem {
     	if(imageName != null)
     		return imageName;
 
+    	if(image.imagePath == null)
+    		return null;
+    	
     	String[] elements = image.imagePath.split(File.separator);
     	imageName = elements[elements.length-1];
     	return imageName;
