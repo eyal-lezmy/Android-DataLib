@@ -228,7 +228,8 @@ public abstract class DataLibService extends MultiThreadService implements Proce
             b.putInt(ServiceHelper.RECEIVER_EXTRA_WEBSERVICE_TYPE, intent.getIntExtra(INTENT_EXTRA_PROCESSOR_TYPE, -1));
             b.putInt(ServiceHelper.RECEIVER_EXTRA_RETURN_CODE, response.returnCode);
             b.putInt(ServiceHelper.RECEIVER_EXTRA_RESULT_CODE, response.status);
-            b.putString(ServiceHelper.RECEIVER_EXTRA_RESULT_MESSAGE, "");
+            b.putString(ServiceHelper.RECEIVER_EXTRA_RESULT_MESSAGE, response.statusMessage);
+            b.putParcelable(ServiceHelper.RECEIVER_EXTRA_REQUEST, request);
 
             receiver.send(code, b);
         }
