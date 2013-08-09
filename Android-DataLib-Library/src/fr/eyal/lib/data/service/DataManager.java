@@ -24,6 +24,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Process;
 import android.util.SparseArray;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
@@ -287,8 +289,20 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
 
             businessResponse.response = response;
 
+            DataLibRequest request = resultData.getParcelable(ServiceHelper.RECEIVER_EXTRA_REQUEST);
+        	boolean runOnUIThread = request.isResponseRunningOnUIThread();
+
+
             for (final OnRequestFinishedListener listener : listeners) {
-                listener.onRequestFinished(requestId, succeed, businessResponse);
+            	//if the option ask to run the callback on the UI Thread
+            	if(runOnUIThread && Thread.currentThread() != Looper.getMainLooper().getThread()){
+            		Handler mainThread = new Handler(Looper.getMainLooper());
+                    mainThread.post(new ResponseRunnable(listener, requestId, succeed, businessResponse) ); //we launch it on the UI Thread
+                    
+                // else we launch the callback on the same thread
+            	} else {
+            		listener.onRequestFinished(requestId, succeed, businessResponse);
+            	}
             }
 
             //if there is no listener
@@ -331,10 +345,10 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
      * @param url The url field in the database to get the response from
      * @return Returns the id to return to the launcher of the retrieve function
      */
-    protected int sendDataCache(final OnDataListener listener, final String url, final int type, ComplexOptions complexOptions) {
+    protected int sendDataCache(final OnDataListener listener, final String url, final int type, final int options, ComplexOptions complexOptions) {
         //we create and launch the data cache access
         final int requestId = ServiceHelper.generateRequestId();
-    	final DataCacheRunnable runnable = new DataCacheRunnable(requestId, url, type, listener, complexOptions);
+    	final DataCacheRunnable runnable = new DataCacheRunnable(requestId, url, type, listener, options, complexOptions);
         final Thread thread = new Thread(runnable);
         thread.start();
         return requestId;
@@ -380,7 +394,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
                 if (datacacheListener != null){
                 	//TODO maybe improve the fingerprint process
                 	DataLibRequest request = new DataLibRequest(url, params);
-                	return sendDataCache(datacacheListener, request.getFingerprint(fingerPrintKeys), webService, complexOptionsCache);
+                	return sendDataCache(datacacheListener, request.getFingerprint(fingerPrintKeys), webService, options, complexOptionsCache);
                 }
                 break;
 
@@ -389,7 +403,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
                 if (datacacheListener != null){
                 	//TODO maybe improve the fingerprint process
                 	DataLibRequest request = new DataLibRequest(url, params);
-                	sendDataCache(datacacheListener, request.getFingerprint(fingerPrintKeys), webService, complexOptionsCache);
+                	sendDataCache(datacacheListener, request.getFingerprint(fingerPrintKeys), webService, options, complexOptionsCache);
                 }
                 //we launch the network request
     			return serviceHelper.launchRequest(options, webService, params, serviceClass, url, complexOptionsNetwork);
@@ -408,7 +422,7 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
                 } else if (datacacheListener != null) {
                 	//TODO maybe improve the fingerprint process
                 	DataLibRequest request = new DataLibRequest(url, params);
-                	return sendDataCache(datacacheListener, request.getFingerprint(fingerPrintKeys), webService, complexOptionsCache);
+                	return sendDataCache(datacacheListener, request.getFingerprint(fingerPrintKeys), webService, options, complexOptionsCache);
                 }
                 break;
 
@@ -431,15 +445,18 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
         protected String mId;
         protected int mType;
         protected OnDataListener mListener;
-        protected ComplexOptions mOptions;
+        protected int mOptions;
+        protected ComplexOptions mComplexOptions;
+        protected ResponseBusinessObject mData;
 
-        protected DataCacheRunnable(final int requestId, final String id, final int type, final OnDataListener listener, ComplexOptions complexOptions) {
+        protected DataCacheRunnable(final int requestId, final String id, final int type, final OnDataListener listener, final int options, ComplexOptions complexOptions) {
             super();
             mRequestId = requestId;
             mId = id;
             mType = type;
             mListener = listener;
-            mOptions = complexOptions;
+            mOptions = options;
+            mComplexOptions = complexOptions;
         }
 
         @Override
@@ -448,10 +465,27 @@ public abstract class DataManager implements OnRequestFinishedRelayer {
         	Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
         	
             //we reach the data from cache
-            final ResponseBusinessObject data = (ResponseBusinessObject) getBusinessObjectFromCacheByUrl(mType, mId, mOptions);
+            mData = (ResponseBusinessObject) getBusinessObjectFromCacheByUrl(mType, mId, mComplexOptions);
 
+            //we create a DatalibRequest corresponding to the request's options
+            DataLibRequest request = new DataLibRequest();
+            request.option = mOptions;
+            boolean runOnUIThread = request.isResponseRunningOnUIThread();
+            
             //we return the result to the listener
-            mListener.onCacheRequestFinished(mRequestId, data);
+            //on the main thread if it is asked
+            if(runOnUIThread && Thread.currentThread() != Looper.getMainLooper().getThread()){
+        		Handler mainThread = new Handler(Looper.getMainLooper());
+        		mainThread.post(new Runnable() {
+					@Override
+					public void run() {
+						mListener.onCacheRequestFinished(mRequestId, mData);						
+					}
+				});
+        	//if the main thread is not asked
+            } else {
+            	mListener.onCacheRequestFinished(mRequestId, mData);
+            }
         }
     }
 

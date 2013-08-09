@@ -108,6 +108,8 @@ public class DataLibWebConfig {
             request.option |= requestOptions & DataLibRequest.Mask.OPTION_HELPER_CACHE;
         if (!request.isDefinedBehaviorParcelableMethod() || force)
             request.option |= requestOptions & DataLibRequest.Mask.OPTION_SEND_WITH_PARCELABLE;
+        if (!request.isDefinedResponseRunningOnUIThread() || force)
+            request.option |= requestOptions & DataLibRequest.Mask.OPTION_RESPONSE_ON_UI_THREAD;
 
         return request;
     }

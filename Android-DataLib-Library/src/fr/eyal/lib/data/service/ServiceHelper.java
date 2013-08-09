@@ -28,12 +28,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.ResultReceiver;
 import android.util.SparseArray;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
 import fr.eyal.lib.data.service.model.BusinessResponse;
 import fr.eyal.lib.data.service.model.ComplexOptions;
+import fr.eyal.lib.data.service.model.DataLibRequest;
 import fr.eyal.lib.util.FileManager;
 import fr.eyal.lib.util.Out;
 
@@ -73,16 +76,20 @@ public class ServiceHelper {
      */
     protected ArrayList<OnRequestFinishedRelayer> mRelayersArray;
 
+    /**
+     * HandlerThread used by ServiceHelper
+     */
+    protected ServiceHelperWorker mHandlerThread;
     
     /**
      * Handler used by the EvalReceiver
      */
-    protected Handler mHandler = new Handler();
+    protected Handler mHandler;
     
     /**
      * Receiver that receives the result from the DataLibService
      */
-    protected EvalReceiver mEvalReceiver = new EvalReceiver(mHandler);
+    protected EvalReceiver mEvalReceiver;
 
     //List of bundled information that can be received from the Service
     protected static final String RECEIVER_EXTRA_REQUEST_ID = "requestId";
@@ -93,7 +100,10 @@ public class ServiceHelper {
     protected static final String RECEIVER_EXTRA_RESULT_CODE = "resultCode";
     protected static final String RECEIVER_EXTRA_RESULT_MESSAGE = "Message";
     protected static final String RECEIVER_EXTRA_WEBSERVICE_TYPE = "webserviceType";
+	public static final String RECEIVER_EXTRA_RESULT_OPTIONS = "options";
+	public static final String RECEIVER_EXTRA_RESULT_COMPLEX_OPTIONS = "complexOptions";
 
+	private static final String HANDLER_THREAD_NAME = "ServiceHelper-Thread";
 
     /**
      * Get the instance of the {@link ServiceHelper}
@@ -118,8 +128,33 @@ public class ServiceHelper {
         mRelayersArray = new ArrayList<OnRequestFinishedRelayer>();
         //we initialize the FileManager
         FileManager.getInstance(context);
+        
+        mHandler = new Handler();
+	    mEvalReceiver = new EvalReceiver(mHandler);
+        
+//	    //we create the HandlerThread that will take care of the Service responses through the EvalReciever
+//	    mHandlerThread = new ServiceHelperWorker(HANDLER_THREAD_NAME);
+//	    mHandlerThread.start();
     }
 
+    /**
+     * The HandlerThread that will take care of the Service responses through the EvalReciever
+     */
+    class ServiceHelperWorker extends HandlerThread {
+
+        public ServiceHelperWorker(String name) {
+			super(name);
+		}
+        
+        @Override
+        public synchronized void start() {
+        	super.start();
+        	mHandler = new Handler(getLooper());
+        	mEvalReceiver = new EvalReceiver(mHandler);        	
+        }
+        
+    }
+    
     /**
      * The ResultReceiver that will receive the result from the Service
      */
@@ -267,12 +302,12 @@ public class ServiceHelper {
      * This method manages the result of the service
      */
     protected synchronized void handleResult(final int resultCode, final Bundle resultData) {
-
+    	
         int requestId = resultData.getInt(RECEIVER_EXTRA_REQUEST_ID);
         int webserviceType = resultData.getInt(RECEIVER_EXTRA_WEBSERVICE_TYPE);
         int returnCode = resultData.getInt(RECEIVER_EXTRA_RETURN_CODE);
         String statutMessage = resultData.getString(RECEIVER_EXTRA_RESULT_MESSAGE);
-
+        
         //state succeed or not of the request (to be sent to the OnRequestFinishedListener)
         boolean succeed = (resultCode == BusinessResponse.STATUS_OK);
 
@@ -305,9 +340,21 @@ public class ServiceHelper {
                 //we add the response business object
                 businessResponse.response = (ResponseBusinessObject) resultData.getParcelable(RECEIVER_EXTRA_RESULT);
 
+            	DataLibRequest request = resultData.getParcelable(RECEIVER_EXTRA_REQUEST);
+            	boolean runOnUIThread = request.isResponseRunningOnUIThread();
+
                 //we send the result to each Listener, waiting for this request's response
                 for (OnRequestFinishedListener listener : listeners) {
-                    listener.onRequestFinished(requestId, succeed, businessResponse);
+                	
+                	//if the option asks to run the callback on the UI Thread and e are not on the UI Thread
+                	if(runOnUIThread && Thread.currentThread() != Looper.getMainLooper().getThread()){
+                		Handler mainThread = new Handler(Looper.getMainLooper());
+                        mainThread.post(new ResponseRunnable(listener, requestId, succeed, businessResponse) ); //we launch it on the UI Thread
+                        
+                    // else we launch the callback on the same thread
+                	} else {
+                		listener.onRequestFinished(requestId, succeed, businessResponse);
+                	}
                 }
                 //we delete the erase the request's listeners
                 mListenersSparseArray.delete(requestId);
@@ -320,6 +367,8 @@ public class ServiceHelper {
             }
         }
     }
+    
+    
 
     /**
      * FUNCTIONS TO SEND REQUESTS TO THE SERVICE
@@ -436,6 +485,7 @@ public class ServiceHelper {
 
         mRequestSparseArray.append(requestId, i);
 
+        
         return requestId;
     }
 

@@ -24,13 +24,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
+import android.os.Parcel;
+import android.os.Parcelable;
 import fr.eyal.lib.data.communication.rest.ParameterMap;
 import fr.eyal.lib.data.service.ServiceHelper;
 
 /**
  * @author Eyal LEZMY
  */
-public class DataLibRequest {
+public class DataLibRequest implements Parcelable{
 
     public static final String TAG = "DataLibRequest";
 
@@ -96,6 +98,18 @@ public class DataLibRequest {
      * <b>Not implemented yet, for now the helper cache is always enabled</b> 
      */
     public static final int OPTION_HELPER_CACHE_DISABLED = 0x00010000;
+
+    /**
+     * Ask to run the listener's callback on the UI Thread
+     * <b>Not implemented yet, for now the helper cache is always enabled</b> 
+     */
+    public static final int OPTION_RESPONSE_ON_UI_THREAD_ENABLED = 0x00200000;
+
+    /**
+     * Ask to <b>NOT</b> run the listener's callback on the UI Thread
+     * <b>Not implemented yet, for now the helper cache is always enabled</b> 
+     */
+    public static final int OPTION_RESPONSE_ON_UI_THREAD_DISABLED = 0x00100000;
 
         
     /**
@@ -199,7 +213,8 @@ public class DataLibRequest {
 	}
 
 	/**
-     * This function tells if the DataLibRequest ask to conserve the cookie returned by the server
+     * This function tells if the DataLibRequest ask to conserve the cookie returned by the server.<br>
+     * If it is not specified, the option is considered as disabled.
      * 
      * @return return true if the cookie have to be conserved or false if not
      */
@@ -220,7 +235,8 @@ public class DataLibRequest {
      * This function tells if the DataLibRequest ask to not use the database to store
      * the BusinessObjects.
      * If its true, the request option OPTION_SEND_WITH_PARCELABLE is also enabled and the function
-     * isParcelableMethodEnabled return also true.
+     * isParcelableMethodEnabled return also true.<br>
+     * If it is not specified, the option is considered as enabled.
      * 
      * @return return true if no data is stored
      */
@@ -242,7 +258,8 @@ public class DataLibRequest {
 
     /**
      * This function tells if the DataLibRequest ask to use the Parcelable method
-     * to send the information between the DataLibService and the ServiceHelper
+     * to send the information between the DataLibService and the ServiceHelper.<br>
+     * If it is not specified, the option is considered as disabled.
      * 
      * @return return true if no data is stored
      */
@@ -261,7 +278,8 @@ public class DataLibRequest {
     }
 
     /**
-     * This function tells if the DataLibRequest ask to disable the host verifier
+     * This function tells if the DataLibRequest ask to disable the host verifier<br>
+     * If it is not specified, the option is considered as disabled.
      * 
      * @return return true if the host verifier is enabled, false if not
      */
@@ -279,7 +297,8 @@ public class DataLibRequest {
     }
 
     /**
-     * This function tells if the DataLibRequest ask to enable the {@link ServiceHelper} responses cache
+     * This function tells if the DataLibRequest ask to enable the {@link ServiceHelper} responses cache<br>
+     * If it is not specified, the option is considered as disabled.
      * 
      * @return return true if it is enabled
      */
@@ -297,12 +316,31 @@ public class DataLibRequest {
     }
 
     /**
-     * This function tells if the DataLibRequest ask to conserve the cookie returned by the server
+     * This function tells if the DataLibRequest has a specific option recorded
      * 
-     * @return return true if the cookie have to be conserved or false if not
+     * @return return true if there is at least one option
      */
     public boolean hasOptionEnabled() {
         return (option != OPTION_NO_OPTION);
+    }
+    
+    /**
+     * This function tells if the listener's callback has to been run on the UI Thread.<br>
+     * If it is not specified, the option is considered as disabled.
+     * 
+     * @return return true if the listener's callback has to been run on the UI Thread
+     */
+    public boolean isResponseRunningOnUIThread() {
+        return ((option & OPTION_RESPONSE_ON_UI_THREAD_ENABLED) == OPTION_RESPONSE_ON_UI_THREAD_ENABLED);
+    }
+    
+    /**
+     * This function tells if a behavior is defined for the the listener's callback has to been run on the UI Thread.
+     * 
+     * @return return true if a behavior is defined, false if not
+     */
+    public boolean isDefinedResponseRunningOnUIThread() {
+        return ((option & (OPTION_RESPONSE_ON_UI_THREAD_ENABLED | OPTION_HELPER_CACHE_DISABLED)) != 0);
     }
     
     /**
@@ -389,10 +427,67 @@ public class DataLibRequest {
         public static final int OPTION_HOST_VERIFIER = OPTION_HOST_VERIFIER_ENABLED | OPTION_HOST_VERIFIER_DISABLED;
 
         /**
-         * Ask to add the the response result to the {@link ServiceHelper} cache
+         * Ask to add the response result to the {@link ServiceHelper} cache
          * <b>Not implemented yet</b> 
          */
         public static final int OPTION_HELPER_CACHE = OPTION_HELPER_CACHE_ENABLED | OPTION_HELPER_CACHE_DISABLED;
+        
+        /**
+         * Ask to run the response listener's callback on the UI Thread
+         */
+        public static final int OPTION_RESPONSE_ON_UI_THREAD = OPTION_RESPONSE_ON_UI_THREAD_ENABLED | OPTION_RESPONSE_ON_UI_THREAD_DISABLED;
     }
+    
+    
+    
+    /**
+     * PARCELABLE MANAGMENT
+     */
+
+	public static final Parcelable.Creator<DataLibRequest> CREATOR = new Parcelable.Creator<DataLibRequest>() {
+	    @Override
+	    public DataLibRequest createFromParcel(final Parcel in) {
+	        return new DataLibRequest(in);
+	    }
+	
+	    @Override
+	    public DataLibRequest[] newArray(final int size) {
+	        return new DataLibRequest[size];
+	    }
+	};
+
+	@Override
+	public int describeContents() {
+	    return 0;
+	}
+
+	@Override
+	public void writeToParcel(final Parcel dest, final int flags) {
+		dest.writeString(url);
+		dest.writeString(path);
+		dest.writeParcelable(params, PARCELABLE_WRITE_RETURN_VALUE);
+		dest.writeString(userAgent);
+		dest.writeParcelable(intent, PARCELABLE_WRITE_RETURN_VALUE);
+		dest.writeInt(option);
+		dest.writeParcelable(complexOptions, PARCELABLE_WRITE_RETURN_VALUE);
+		dest.writeInt(requestMethod);
+		dest.writeInt(parseType);
+		dest.writeString(contentType);
+		dest.writeByteArray(data);
+	}
+
+	public DataLibRequest(final Parcel in) {
+		url = in.readString();
+		path = in.readString();
+		params = in.readParcelable(ParameterMap.class.getClassLoader());
+		userAgent = in.readString();
+		intent = in.readParcelable(Intent.class.getClassLoader());
+		option = in.readInt();
+		complexOptions = in.readParcelable(ComplexOptions.class.getClassLoader());
+		requestMethod = in.readInt();
+		parseType = in.readInt();
+		contentType = in.readString();
+		in.readByteArray(data);		
+	}
 
 }
