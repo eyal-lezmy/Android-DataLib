@@ -24,6 +24,7 @@ import fr.eyal.datalib.sample.netflix.R;
 import fr.eyal.datalib.sample.netflix.fragment.NetflixListFragment;
 import fr.eyal.datalib.sample.netflix.fragment.model.MovieItem;
 import fr.eyal.datalib.sample.netflix.util.Resources;
+import fr.eyal.lib.util.Out;
 
 /**
  * @author Eyal LEZMY
@@ -188,11 +189,18 @@ public class NetflixListAdapter extends BaseAdapter implements OnScrollListener,
 				}
 				ItemViewHolder holder = (ItemViewHolder) v.getTag();
 				
+				
 				if(bmp != null){
-					boolean run = holder.image.post(new UpdatePoster(cacheBmp, holder.image));
-					if(!run){
-						holder.image.post(new UpdatePoster(cacheBmp, holder.image));
+
+					if (Looper.getMainLooper().getThread() == Thread.currentThread()){
+						updateImageView(cacheBmp, holder.image);
+						Out.d("TEST", "UI THREADDDDD!!!!!!!!!!!!! IMAGE");
+						
+					} else {
+						mFragment.getActivity().runOnUiThread(new UpdatePoster(cacheBmp, holder.image));
+						Out.d("TEST", "NO UI THREAD :-( IMAGE");
 					}
+					
 				} else {
 					mFragment.loadMoviePoster(movie);
 				}
@@ -220,28 +228,32 @@ public class NetflixListAdapter extends BaseAdapter implements OnScrollListener,
 
 		CacheableBitmapDrawable mImage;
 		ImageView mView;
-		Animation mFadeIn;
 		
 		public UpdatePoster(CacheableBitmapDrawable image, ImageView view){
 			mImage = image;
 			mView = view;
-			mFadeIn = new AlphaAnimation(0, 1);
-			mFadeIn.setDuration(300);
 		}
 		
 		@Override
 		public void run() {
-			Animation anim = mView.getAnimation();
-			if(anim != null){
-				anim.cancel();
-				anim.reset();
-				mView.setImageDrawable(mImage);
-				mImage.setBeingUsed(true);
-				anim.startNow();
-			} else {
-				mView.setImageDrawable(mImage);
-				mView.startAnimation(mFadeIn);
-			}
+			updateImageView(mImage, mView);
+		}
+	}
+
+	public void updateImageView(CacheableBitmapDrawable image, ImageView view) {
+		Animation fadeIn = new AlphaAnimation(0, 1);
+		fadeIn.setDuration(300);
+		
+		Animation anim = view.getAnimation();
+		if(anim != null){
+			anim.cancel();
+			anim.reset();
+			view.setImageDrawable(image);
+			image.setBeingUsed(true);
+			anim.startNow();
+		} else {
+			view.setImageDrawable(image);
+			view.startAnimation(fadeIn);
 		}
 	}
 

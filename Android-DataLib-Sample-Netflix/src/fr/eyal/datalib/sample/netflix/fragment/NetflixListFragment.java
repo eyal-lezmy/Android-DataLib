@@ -154,8 +154,14 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 		if(response instanceof MovieItemResponse){
 			MovieItemResponse movie = (MovieItemResponse) response;
 
+			if (Looper.getMainLooper().getThread() == Thread.currentThread()){
+				updateMovie(movie, false);
+				Out.d("TEST", "UI THREADDDDD!!!!!!!!!!!!! Cache");
+			} else {
+				getActivity().runOnUiThread(new UpdateMovie((MovieItemResponse) movie, false));
+				Out.d("TEST", "NO UI THREAD :-( Cache");
+			}
 			//we update the page content
-			getActivity().runOnUiThread(new UpdateMovie((MovieItemResponse) movie, false));
 
 			//we compute the update time
 			Calendar updateTime = Calendar.getInstance();
@@ -265,10 +271,10 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 			if(response.response instanceof MovieItemResponse)
 				if (Looper.getMainLooper().getThread() == Thread.currentThread()){
 					updateMovie((MovieItemResponse)response.response, true);
-					Out.d("TEST", "UI THREADDDDD!!!!!!!!!!!!!");
+					Out.d("TEST", "UI THREADDDDD!!!!!!!!!!!!! Network");
 				} else {
 					getActivity().runOnUiThread(new UpdateMovie((MovieItemResponse) response.response, true));
-					Out.d("TEST", "NO UI THREAD :-(");
+					Out.d("TEST", "NO UI THREAD :-( Network");
 				}
 			break;
 		}
