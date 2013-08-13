@@ -115,16 +115,25 @@ public class NetflixListAdapter extends BaseAdapter implements OnScrollListener,
 		return convertView;
 	}
 
+	/**
+	 * Set the item's poster on the list from the DrawableCache or the item's content
+	 * 
+	 * @param holder
+	 * @param item
+	 * @return
+	 */
 	public boolean setImageFromItemOrCache(ItemViewHolder holder, MovieItem item) {
 
 		if(item.getImage() != null){
 
-			//we get the poster from the cache
-			CacheableBitmapDrawable cacheBitmap = mBitmapCache.get(item.getPosterName());
-			if(cacheBitmap != null){
-				cacheBitmap.setBeingUsed(true); //we set the bitmap as used by the application
-				holder.image.setImageDrawable(cacheBitmap);
-				return true;
+			if(item.getPosterName() != null) {
+				//we get the poster from the cache
+				CacheableBitmapDrawable cacheBitmap = mBitmapCache.get(item.getPosterName());
+				if(cacheBitmap != null){
+					cacheBitmap.setBeingUsed(true); //we set the bitmap as used by the application
+					holder.image.setImageDrawable(cacheBitmap);
+					return true;
+				}
 			}
 
 			//we get the poster from the item
@@ -146,13 +155,20 @@ public class NetflixListAdapter extends BaseAdapter implements OnScrollListener,
 		public MovieItem item;
 	}
 	
+	/**
+	 * Update the poster of a specific item on the list. This method apply the modification if the item is actually shown.
+	 * 
+	 * @param movie
+	 */
 	public void updatePoster(MovieItem movie){
-		//TODO manage to very fast scroll up/down that add a bad image on the item
 		
 		Bitmap bmp = movie.getPoster(false);
-		CacheableBitmapDrawable cacheBmp = new CacheableBitmapDrawable(mFragment.getResources(), movie.getPosterName(), bmp, CacheableBitmapDrawable.RecyclePolicy.DISABLED);
-		mBitmapCache.put(cacheBmp);
-
+		CacheableBitmapDrawable cacheBmp = null;
+		if(bmp != null){
+			cacheBmp = new CacheableBitmapDrawable(mFragment.getResources(), movie.getPosterName(), bmp, CacheableBitmapDrawable.RecyclePolicy.DISABLED);
+			mBitmapCache.put(cacheBmp);
+		}
+		
 		//if we have the parent view
 		if(mGridParent != null){
 			
@@ -172,6 +188,7 @@ public class NetflixListAdapter extends BaseAdapter implements OnScrollListener,
 				//we get the view eventually several times if needed
 				//workaround because sometimes the view is not available on the GridView
 				while(v == null && count < 10){
+					
 					v = mGridParent.getChildAt(position-mListFirst);
 					count++;
 					try {
@@ -190,7 +207,7 @@ public class NetflixListAdapter extends BaseAdapter implements OnScrollListener,
 				ItemViewHolder holder = (ItemViewHolder) v.getTag();
 				
 				
-				if(bmp != null){
+				if(cacheBmp != null){
 
 					if (Looper.getMainLooper().getThread() == Thread.currentThread()){
 						updateImageView(cacheBmp, holder.image);
