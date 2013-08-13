@@ -91,7 +91,7 @@ public class MovieFragment extends NetflixFragment {
 			
 			if(mMovieItem != null) {
 				mTxtTitle.setText(mMovieItem.getLabel(-1));
-				bmp = mMovieItem.getPoster(false);			
+				bmp = mMovieItem.getPoster(false);
 			}
 			
 			if(bmp != null) {
@@ -110,7 +110,7 @@ public class MovieFragment extends NetflixFragment {
 			
 		}
 		
-		if(bmp != null && bmp.getWidth() < mImage.getHeight()){
+		if(bmp == null || bmp.getWidth() < mImage.getHeight()){
 			
 			try {
 				int id = mDataManager.getMovieImage(DataManager.TYPE_CACHE, this, mMovieItem.getImageUrl(), DataLibRequest.OPTION_NO_OPTION, null, null);
@@ -343,6 +343,7 @@ public class MovieFragment extends NetflixFragment {
 				mView.setImageBitmap(mImage);
 				anim.startNow();
 			} else {
+				mView.setImageBitmap(mImage);
 				mView.startAnimation(mFadeIn);
 			}
 		}
