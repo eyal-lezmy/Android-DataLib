@@ -93,10 +93,12 @@ public class [_class/]Base implements ResponseBusinessObject {
 			dest.writeParcelable(image.get(), flags);
 		else
 			dest.writeParcelable(null, flags);
+		dest.writeString(imagePath);
 	}
 
 	public [_class/]Base(final Parcel in) {
 		image = new SoftReference<Bitmap>((Bitmap) in.readParcelable(Bitmap.class.getClassLoader()));
+		imagePath = in.readString();
 	}    
 
     @Override
