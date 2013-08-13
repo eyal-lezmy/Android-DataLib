@@ -2,7 +2,6 @@ package fr.eyal.datalib.sample.netflix.data.model.movieimage;
 
 import java.lang.ref.SoftReference;
 
-import android.content.Context;
 import android.content.OperationApplicationException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +36,9 @@ public class MovieImageBase implements ResponseBusinessObject {
 	 */
 	public String imagePath;
 
+	/**
+	 * The Datalib file manager
+	 */
 	protected FileManager mFileManager = null;
 
 	
@@ -82,10 +84,12 @@ public class MovieImageBase implements ResponseBusinessObject {
 			dest.writeParcelable(image.get(), flags);
 		else
 			dest.writeParcelable(null, flags);
+		dest.writeString(imagePath);
 	}
 
 	public MovieImageBase(final Parcel in) {
 		image = new SoftReference<Bitmap>((Bitmap) in.readParcelable(Bitmap.class.getClassLoader()));
+		imagePath = in.readString();
 	}    
 
     @Override
