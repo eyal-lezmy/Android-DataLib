@@ -23,6 +23,7 @@ import fr.eyal.datalib.sample.netflix.fragment.adapter.NetflixListAdapter;
 import fr.eyal.datalib.sample.netflix.fragment.model.MovieItem;
 import fr.eyal.datalib.sample.netflix.fragment.model.MovieItemResponse;
 import fr.eyal.lib.data.model.ResponseBusinessObject;
+import fr.eyal.lib.data.processor.Processor;
 import fr.eyal.lib.data.service.ServiceHelper;
 import fr.eyal.lib.data.service.model.BusinessResponse;
 import fr.eyal.lib.data.service.model.ComplexOptions;
@@ -258,9 +259,17 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 
 		mRequestIds.remove(Integer.valueOf(requestId));
 		mDataManager.removeOnDataListener(requestId, this);
-
-		if(!suceed)
+		
+		if(!suceed){
+			if(response.statusMessage.equals(Processor.PARSING_ERROR_MESSAGE)){
+				if (Looper.getMainLooper().getThread() == Thread.currentThread()){
+					updateErrorMessage(getString(R.string.parsing_error));
+				} else {
+					getActivity().runOnUiThread(new UpdateMovieError(getString(R.string.parsing_error)));
+				}
+			}
 			return;
+		}
 		
 		switch (response.webserviceType) {
 
@@ -286,6 +295,16 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 	 * Content update
 	 */
 	
+	/**
+	 * Update the label with an error message
+	 * 
+	 * @param string
+	 */
+	private void updateErrorMessage(String string) {
+		((TextView)mEmptyView).setText(getResources().getString(R.string.parsing_error));
+	}
+
+
 	/**
 	 * Update the movies list
 	 * 
@@ -323,6 +342,21 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 		//we update the current displayed list
 		mAdapter.updatePoster(item);
 		return item;
+	}
+
+	private class UpdateMovieError implements Runnable{
+		
+		String mMessage;
+		
+		public UpdateMovieError(String message){
+			mMessage = message;
+		}
+		
+		@Override
+		public void run() {
+			updateErrorMessage(mMessage);
+		}
+		
 	}
 
 	private class UpdateMovie implements Runnable{
