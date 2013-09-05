@@ -42,7 +42,8 @@ import fr.eyal.lib.util.Out;
  */
 public class Processor {
 
-    private static final String CONNECTIVITY_ERROR_MESSAGE = "Network is not accesible.";
+    public static final String CONNECTIVITY_ERROR_MESSAGE = "Network is not accesible.";
+    public static final String PARSING_ERROR_MESSAGE = "Parsing Error";
 
     private static final String TAG = "Processor";
 

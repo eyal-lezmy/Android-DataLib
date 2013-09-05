@@ -26,6 +26,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+import fr.eyal.lib.data.processor.Processor;
 import fr.eyal.lib.util.Out;
 
 /**
@@ -85,7 +86,7 @@ public class GenericParser {
 
             } catch (final Exception e) {
                 e.printStackTrace();
-                throw new ParseException("Parsing error");
+                throw new ParseException(Processor.PARSING_ERROR_MESSAGE);
             }
 
         } else if (parseType == PARSE_TYPE_JSON) {
