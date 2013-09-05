@@ -150,6 +150,7 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
 
 		mRequestIds.remove(Integer.valueOf(requestId));
+		mDataManager.removeOnDataListener(requestId, this);
 
 		if(response instanceof MovieItemResponse){
 			MovieItemResponse movie = (MovieItemResponse) response;
@@ -256,6 +257,7 @@ public abstract class NetflixListFragment extends NetflixFragment implements OnS
 	public void onRequestFinished(int requestId, boolean suceed, BusinessResponse response) {
 
 		mRequestIds.remove(Integer.valueOf(requestId));
+		mDataManager.removeOnDataListener(requestId, this);
 
 		if(!suceed)
 			return;

@@ -101,7 +101,8 @@ public class SelectionFragment extends NetflixFragment implements OnClickListene
 	@Override
 	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
 		mRequestIds.remove(Integer.valueOf(requestId));
-		
+		mDataManager.removeOnDataListener(requestId, this);
+
 		if(response instanceof Top100){
 			Top100 top = (Top100) response;
 			mCurrentTop = top;
@@ -134,6 +135,7 @@ public class SelectionFragment extends NetflixFragment implements OnClickListene
 	@Override
 	public void onRequestFinished(int requestId, boolean suceed, BusinessResponse response) {
 		mRequestIds.remove(Integer.valueOf(requestId));
+		mDataManager.removeOnDataListener(requestId, this);
 		
 		if(!suceed)
 			return;

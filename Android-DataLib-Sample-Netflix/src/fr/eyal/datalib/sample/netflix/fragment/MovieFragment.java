@@ -175,6 +175,7 @@ public class MovieFragment extends NetflixFragment {
 		synchronized (mRequestIds) {
 
 			mRequestIds.remove(Integer.valueOf(requestId));
+			mDataManager.removeOnDataListener(requestId, this);
 
 			if(response instanceof MovieImage){
 				MovieImage movieImage = (MovieImage) response;
@@ -275,6 +276,7 @@ public class MovieFragment extends NetflixFragment {
 
 		synchronized (mRequestIds) {
 			mRequestIds.remove(Integer.valueOf(requestId));
+			mDataManager.removeOnDataListener(requestId, this);
 		}
 		
 		if(!suceed){
