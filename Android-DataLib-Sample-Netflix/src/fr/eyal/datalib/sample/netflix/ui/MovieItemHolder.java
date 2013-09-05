@@ -31,18 +31,18 @@ public class MovieItemHolder implements OnDataListener {
 	public ItemTop100 item;
 	public boolean mBigImage;
 	private NetflixDataManager mDataManager;
-	private BitmapMemoryLruCache mBitmapCache;
 	private Context mContext;
 	
 	public MovieItemHolder(Context context, boolean bigImage) {
 		mDataManager = NetflixDataManager.getInstance();
-		mBitmapCache = Resources.getInstance().mBitmapCache;
-		mContext = context;
+		mContext = context.getApplicationContext();
 		mBigImage = bigImage;
 	}
 	
 	@Override
 	public void onRequestFinished(int requestId, boolean suceed, BusinessResponse response) {
+
+		mDataManager.removeOnDataListener(requestId, this);
 
 		if(!suceed)
 			return;
@@ -54,14 +54,15 @@ public class MovieItemHolder implements OnDataListener {
 			MovieImage img = (MovieImage) response.response;
 			Bitmap bitmap = img.image.get();
 			if(bitmap != null){
+				BitmapMemoryLruCache bitmapCache = Resources.getInstance().mBitmapCache;
 				CacheableBitmapDrawable cacheBmp = new CacheableBitmapDrawable(mContext.getResources(), item.getPosterName(), bitmap, CacheableBitmapDrawable.RecyclePolicy.DISABLED);
-				mBitmapCache.put(cacheBmp);
+				bitmapCache.put(cacheBmp);
 
 				//we cache another bitmap if we are on a big element
 				//this is dirty but handles the different size of the big elements on the selection panel
 				if(mBigImage){
 					cacheBmp = new CacheableBitmapDrawable(mContext.getResources(), item.getPosterName() + BIG_APPENDIX, bitmap, CacheableBitmapDrawable.RecyclePolicy.DISABLED);
-					mBitmapCache.put(cacheBmp);
+					bitmapCache.put(cacheBmp);
 				}
 				image.post(new UpdatePoster(cacheBmp, image));
 			}
@@ -76,6 +77,8 @@ public class MovieItemHolder implements OnDataListener {
 	@Override
 	public void onCacheRequestFinished(int requestId, ResponseBusinessObject response) {
 		
+		mDataManager.removeOnDataListener(requestId, this);
+		
 		if(response instanceof MovieImage){
 
 			MovieImage img = (MovieImage) response;
@@ -83,12 +86,13 @@ public class MovieItemHolder implements OnDataListener {
 			
 			Bitmap bitmap = img.getBitmap();
 			if(bitmap != null){
+				BitmapMemoryLruCache bitmapCache = Resources.getInstance().mBitmapCache;
 				CacheableBitmapDrawable cacheBmp = new CacheableBitmapDrawable(mContext.getResources(), item.getPosterName(), bitmap, CacheableBitmapDrawable.RecyclePolicy.DISABLED);
-				mBitmapCache.put(cacheBmp);
+				bitmapCache.put(cacheBmp);
 
 				if(mBigImage){
 					cacheBmp = new CacheableBitmapDrawable(mContext.getResources(), item.getPosterName() + "BIG", bitmap, CacheableBitmapDrawable.RecyclePolicy.DISABLED);
-					mBitmapCache.put(cacheBmp);
+					bitmapCache.put(cacheBmp);
 				}
 				image.post(new UpdatePoster(cacheBmp, image));
 			}
