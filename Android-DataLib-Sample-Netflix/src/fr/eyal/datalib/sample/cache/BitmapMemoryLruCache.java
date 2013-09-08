@@ -27,7 +27,7 @@ public final class BitmapMemoryLruCache extends LruCache<String, CacheableBitmap
 
 	public BitmapMemoryLruCache(int maxSize) {
 		super(maxSize);
-		Out.d("", "CACHE SIZE " + maxSize + " Ko");
+		Out.d("", "CACHE SIZE " + (maxSize/1024) + " Ko");
 	}
 
 	public CacheableBitmapDrawable put(CacheableBitmapDrawable value) {
