@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.app.ActionBar;
 
 public class MovieActivity extends FragmentActivity {
 
@@ -14,8 +15,7 @@ public class MovieActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_movie);
-		
-		
+
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -25,7 +25,9 @@ public class MovieActivity extends FragmentActivity {
 	 */
 	private void setupActionBar() {
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar ab = getActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setTitle("");
 
 	}
 

@@ -30,7 +30,10 @@ public class CategoryTopActivity extends FragmentActivity {
 	    Intent intent = getIntent();
 	    String category = intent.getStringExtra(CATEGORY);
 	    int id = intent.getIntExtra(ID, WRONG_ID);
-	    
+
+        //we set the page's title
+        getActionBar().setTitle(category);
+
 	    fragment = (CategoryTopFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
 
 	    if(fragment == null) {

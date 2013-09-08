@@ -59,6 +59,8 @@ public class SearchableActivity extends FragmentActivity {
 		String query = handleIntent(intent);
 		//TODO implement no query
 		
+		getActionBar().setTitle("Search: " + query);
+		
 		//we avoid the double queries
 		if(mFragment != null && mFragment.getQuery().compareTo(query) == 0)
 			return;
