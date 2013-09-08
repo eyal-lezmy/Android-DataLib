@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.widget.FrameLayout;
 import android.widget.SearchView;
@@ -66,9 +67,13 @@ public class SearchableActivity extends FragmentActivity {
 		
 		SearchFragment newFragment = SearchFragment.newInstance(query);
 	    //we add the Fragment into the layout
-	    getSupportFragmentManager().beginTransaction().remove(mFragment)
-	    											  .add(R.id.search_holder, newFragment)
-	    											  .commit();
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		
+		if(mFragment != null)
+			ft.remove(mFragment);
+		
+		ft.add(R.id.search_holder, newFragment).commit();
+		
 	    mFragment = newFragment;
 	}
 }
