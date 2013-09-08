@@ -32,7 +32,7 @@ import fr.eyal.lib.util.Out;
  */
 public class NetflixListAdapter extends BaseAdapter implements OnScrollListener, RecyclerListener{
 
-	private ArrayList<MovieItem> mArray = new ArrayList<MovieItem>();
+	private ArrayList<MovieItem> mArray;
 	NetflixListFragment mFragment;
 	GridView mGridParent = null;
 	UpdateContent mUpdateContentRunnable = new UpdateContent();
@@ -43,8 +43,9 @@ public class NetflixListAdapter extends BaseAdapter implements OnScrollListener,
 	
 	public NetflixListAdapter(NetflixListFragment fragment) {
 		super();
+		mArray = new ArrayList<MovieItem>();
 		mFragment = fragment;
-		setData(new ArrayList<MovieItem>());
+		setData(mArray);
 		mBitmapCache = Resources.getInstance().mBitmapCache;
 	}
 	
@@ -214,7 +215,8 @@ public class NetflixListAdapter extends BaseAdapter implements OnScrollListener,
 						Out.d("TEST", "UI THREADDDDD!!!!!!!!!!!!! IMAGE");
 						
 					} else {
-						mFragment.getActivity().runOnUiThread(new UpdatePoster(cacheBmp, holder.image));
+						if(mFragment != null && mFragment.getActivity() != null)
+							mFragment.getActivity().runOnUiThread(new UpdatePoster(cacheBmp, holder.image));
 						Out.d("TEST", "NO UI THREAD :-( IMAGE");
 					}
 					
